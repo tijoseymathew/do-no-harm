@@ -170,26 +170,26 @@ export const ExaminerOutputSchema = z
     contractVersion: ContractVersionSchema,
     kind: z.enum(["follow_up", "feedback"]),
     evidenceCutoffSequence: z.number().int().positive(),
-    followUpQuestion: z.string().min(1).optional(),
+    followUpQuestion: z.string().optional(),
     criteria: z.array(ExaminerCriterionOutputSchema),
-    strength: z.string().min(1).optional(),
+    strength: z.string().optional(),
     strengthEvidenceIds: z.array(z.string().min(1)).optional(),
-    priorityImprovement: z.string().min(1).optional(),
+    priorityImprovement: z.string().optional(),
     priorityImprovementEvidenceIds: z.array(z.string().min(1)).optional(),
-    nextPracticeObjective: z.string().min(1).optional(),
+    nextPracticeObjective: z.string().optional(),
   })
   .strict()
   .superRefine((value, context) => {
-    if (value.kind === "follow_up" && !value.followUpQuestion) {
+    if (value.kind === "follow_up" && !value.followUpQuestion?.trim()) {
       context.addIssue({ code: "custom", path: ["followUpQuestion"], message: "A follow-up output requires a question" });
     }
     if (
       value.kind === "feedback" &&
-      (!value.strength ||
+      (!value.strength?.trim() ||
         !value.strengthEvidenceIds?.length ||
-        !value.priorityImprovement ||
+        !value.priorityImprovement?.trim() ||
         !value.priorityImprovementEvidenceIds?.length ||
-        !value.nextPracticeObjective ||
+        !value.nextPracticeObjective?.trim() ||
         value.criteria.length !== 6)
     ) {
       context.addIssue({ code: "custom", message: "Feedback requires all six criteria and summary fields" });

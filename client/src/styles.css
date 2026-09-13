@@ -391,6 +391,9 @@ aside {
 /* The monitor is a physical device, not another card: dark bezel, black
    screen, and the only saturated colour in the interface. */
 .monitor {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   background: linear-gradient(#1b2a31, #131f25);
   border: 1px solid #35474f;
   border-radius: 10px;
@@ -913,9 +916,14 @@ textarea {
   background: #14342f;
 }
 .station-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
+  padding: 4px 0;
+  background: #071216f2;
 }
 .station-nav button {
   font-size: 0.73rem;
@@ -951,6 +959,319 @@ footer {
   border-radius: 5px;
   margin-bottom: 12px;
 }
+
+/* Debrief uses a wider, quieter evidence surface while retaining the bedside palette. */
+.debrief {
+  display: grid;
+  gap: 14px;
+}
+.debrief-header,
+.section-heading,
+.debrief-controls,
+.teach-back {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.debrief-header {
+  max-width: none;
+  margin: 2px 0 0;
+  padding: 18px 20px;
+  border: 1px solid #3b5963;
+  border-radius: 9px;
+  background: linear-gradient(110deg, #102a32, #12222b);
+}
+.debrief-header h2 {
+  margin: 3px 0 5px;
+  font-size: 1.65rem;
+}
+.debrief-header p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 0.72rem;
+}
+.debrief-controls {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.debrief-controls button,
+.debrief-controls a {
+  font-size: 0.7rem;
+}
+.cutoff-notice,
+.evaluation-unavailable {
+  padding: 10px 14px;
+  border-left: 3px solid #72d9c5;
+  background: #10272f;
+  color: #b9cbd0;
+  font-size: 0.7rem;
+}
+.evaluation-unavailable {
+  border-color: #e4a36f;
+  background: #493027;
+  color: #f1d4c6;
+}
+.trend-panel,
+.feedback-panel,
+.action-panel,
+.evidence-browser,
+.teach-back {
+  border: 1px solid #314a55;
+  border-radius: 8px;
+  background: #0b1d25;
+  padding: 14px;
+}
+.section-heading {
+  margin-bottom: 10px;
+}
+.section-heading h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.section-heading > span {
+  color: #91aab2;
+  font-size: 0.61rem;
+}
+.trend-panel svg {
+  display: block;
+  width: 100%;
+  background: #040b0e;
+  border: 1px solid #18313a;
+  border-radius: 5px;
+  overflow: visible;
+  font: 600 10px ui-monospace, monospace;
+}
+.chart-grid {
+  stroke: #18313a;
+  stroke-width: 1;
+}
+.chart-unit,
+.chart-axis {
+  fill: #6e8992;
+  font-size: 8px;
+}
+.chart-marker {
+  cursor: pointer;
+}
+.chart-marker line {
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.55;
+}
+.chart-marker.assessment line,
+.chart-marker.assessment circle { stroke: #75abc0; fill: #75abc0; }
+.chart-marker.treatment line,
+.chart-marker.treatment circle { stroke: #62d3a8; fill: #62d3a8; }
+.chart-marker.alarm line,
+.chart-marker.alarm circle { stroke: #ef8271; fill: #ef8271; }
+.chart-marker.escalation line,
+.chart-marker.escalation circle { stroke: #d8b86e; fill: #d8b86e; }
+.marker-key {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  color: #9cb1b8;
+  font-size: 0.58rem;
+}
+.marker-key span::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #75abc0;
+}
+.marker-key .treatment::before { background: #62d3a8; }
+.marker-key .alarm::before { background: #ef8271; }
+.marker-key .escalation::before { background: #d8b86e; }
+.debrief-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(310px, 0.7fr);
+  gap: 14px;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.summary-grid article {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #34515b;
+  border-top: 3px solid #6b9eaa;
+  background: #102831;
+}
+.summary-grid article.strength { border-top-color: #4dcc9a; }
+.summary-grid article.improvement { border-top-color: #e2a85f; }
+.summary-grid article > span,
+.evidence-detail > span {
+  color: #86b8b0;
+  font-size: 0.57rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.summary-grid p {
+  min-height: 3.5em;
+  margin: 6px 0;
+  font-size: 0.69rem;
+  line-height: 1.45;
+}
+.criteria-list,
+.action-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.criteria-list li {
+  padding: 10px 0;
+  border-top: 1px solid #28414b;
+}
+.criteria-list li > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.72rem;
+}
+.criteria-list p {
+  margin: 5px 0;
+  color: #b5c6ca;
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+.criteria-list small {
+  color: #8199a1;
+  font-size: 0.58rem;
+}
+.rating,
+.action-status {
+  border: 1px solid #56717a;
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: #a8bec5;
+  font-size: 0.54rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rating.demonstrated,
+.action-status.completed { border-color: #3d8a70; color: #76d9b7; }
+.rating.needs_work,
+.action-status.blocked { border-color: #a87950; color: #e0ad7d; }
+.rating.insufficient_evidence { border-color: #657078; color: #a9b1b5; }
+.action-status.prepared { border-color: #6c6e9b; color: #b9bae7; }
+.action-status.attempted { border-color: #837a53; color: #d3c789; }
+.citation-links {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+button.citation {
+  padding: 3px 6px;
+  border: 1px solid #3e626d;
+  background: #152e38;
+  color: #a9d8d1;
+  font-size: 0.52rem;
+  font-weight: 550;
+}
+.action-panel {
+  max-height: 570px;
+  overflow: auto;
+}
+.action-list li + li { border-top: 1px solid #223b45; }
+.action-list button {
+  display: grid;
+  grid-template-columns: 42px 68px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 8px 2px;
+  background: transparent;
+  color: #dce8eb;
+  text-align: left;
+  font-size: 0.6rem;
+}
+.action-list time { color: #829aa2; font: 0.57rem ui-monospace, monospace; }
+.action-list strong { overflow-wrap: anywhere; }
+.evidence-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+  gap: 12px;
+}
+.evidence-card-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  max-height: 370px;
+  overflow: auto;
+}
+.evidence-card-list > button {
+  display: block;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid #2f4b56;
+  background: #102831;
+  color: #dce9eb;
+  text-align: left;
+}
+.evidence-card-list > button[aria-pressed="true"] {
+  border-color: #78cfbe;
+  box-shadow: inset 3px 0 #78cfbe;
+}
+.evidence-card-list span,
+.evidence-card-list strong,
+.evidence-card-list small,
+.evidence-card-list i {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.evidence-card-list span { color: #7f9da5; font-size: 0.5rem; text-transform: uppercase; }
+.evidence-card-list strong { margin: 4px 0; font-size: 0.65rem; white-space: nowrap; }
+.evidence-card-list small { color: #9fb3b9; font-size: 0.55rem; white-space: nowrap; }
+.evidence-card-list i { margin-top: 4px; color: #e4b375; font-size: 0.5rem; }
+.evidence-detail {
+  min-width: 0;
+  min-height: 250px;
+  padding: 13px;
+  border: 1px solid #38545f;
+  background: #07161c;
+}
+.evidence-detail.empty {
+  display: grid;
+  place-items: center;
+  color: #829aa2;
+  text-align: center;
+}
+.evidence-detail h4 { margin: 6px 0; }
+.evidence-detail p { color: #bdcdd1; font-size: 0.68rem; }
+.evidence-detail pre {
+  max-height: 250px;
+  overflow: auto;
+  margin: 9px 0 0;
+  padding: 10px;
+  background: #030b0e;
+  color: #9fc0c4;
+  font: 0.58rem/1.5 ui-monospace, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.late-correction {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #2b4650;
+}
+.late-correction textarea { margin: 4px 0 7px; }
+.late-correction small { display: block; margin-top: 6px; color: #8fa7ae; font-size: 0.58rem; }
+.revision-history { margin-top: 10px; color: #a7bdc2; font-size: 0.62rem; }
+.teach-back h3,
+.teach-back p { margin: 3px 0; }
+.teach-back p { color: #a6bbc0; font-size: 0.65rem; }
+.teach-back form { width: min(760px, 100%); }
+.teach-back input { width: 100%; margin: 4px 0 7px; }
 @media (min-width: 1100px) and (max-height: 780px) {
   .workspace {
     grid-template-columns: minmax(0, 1fr) 440px;
@@ -1084,4 +1405,17 @@ footer {
   footer {
     gap: 10px;
   }
+  .debrief-header,
+  .teach-back {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .debrief-controls { justify-content: flex-start; }
+  .debrief-grid,
+  .evidence-layout,
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .action-panel { max-height: none; }
+  .evidence-card-list { grid-template-columns: 1fr; }
 }

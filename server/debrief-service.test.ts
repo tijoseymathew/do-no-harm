@@ -71,6 +71,18 @@ describe("visual debrief and evidence cutoff", () => {
     expect(result.actions.some(({ status }) => status === "blocked")).toBe(true);
   });
 
+  it("places only accepted administration receipts on the treatment chart", async () => {
+    const { store, run, debrief } = await setup();
+    await store.executeCurrent(run.id, { type: "confirm_medication_checks", allergyHistoryReviewed: true, administrationHistoryReviewed: true });
+    await store.executeCurrent(run.id, { type: "prepare_medication", order: { drugId: "aspirin_300mg_tablet", dose: 300, unit: "mg", route: "oral" } });
+    await store.executeCurrent(run.id, { type: "administer_prepared", preparedOrderId: store.get(run.id)!.treatments.preparedOrders[0]!.id });
+    await handoff(store, run.id);
+    const result = await debrief.finish(run.id, {});
+    const treatmentMarkers = result.markers.filter(({ kind }) => kind === "treatment");
+    expect(treatmentMarkers.map(({ eventId }) => eventId)).toEqual(store.get(run.id)!.receipts.map(({ id }) => id));
+    expect(treatmentMarkers[0]?.label).toContain("300 mg oral");
+  });
+
   it("uses insufficient evidence instead of inventing missing performance", async () => {
     const { store, run, debrief } = await setup();
     await handoff(store, run.id);

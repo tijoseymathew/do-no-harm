@@ -21,6 +21,8 @@ import { OxygenIv } from "./OxygenIv.js";
 import { Notes } from "./Notes.js";
 import { CallStation } from "./CallStation.js";
 import { Conversation } from "./Conversation.js";
+import { Debrief } from "./Debrief.js";
+import type { DebriefSnapshot } from "../../shared/contracts/debrief.js";
 
 class ApiError extends Error {
   constructor(
@@ -60,6 +62,7 @@ function Bedside() {
   const [patient, setPatient] = useState<StudentCase>();
   const [state, setState] = useState<ScenarioSnapshot>();
   const [conversation, setConversation] = useState<ConversationSnapshot>();
+  const [debrief, setDebrief] = useState<DebriefSnapshot>();
   const [selected, setSelected] = useState<Station>("Patient");
   const [syncLost, setSyncLost] = useState(false);
   const [reduced, setReduced] = useState(
@@ -72,9 +75,11 @@ function Bedside() {
   const locked = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const audio = useRef<AudioContext>(undefined);
+  const noteDraft = useRef("");
+  const finishTranscript = useRef<() => string>(() => "");
   const select = useCallback((station: Station) => {
     setSelected(station);
-    requestAnimationFrame(() => heading.current?.focus());
+    requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
   }, []);
   useEffect(() => {
     let active = true;
@@ -206,6 +211,43 @@ function Bedside() {
     );
     setConversation(result);
   }, []);
+  const finish = useCallback(async () => {
+    const current = authoritative.current;
+    if (!current) return;
+    setBusy(true);
+    try {
+      const result = await json<DebriefSnapshot>(`/api/debriefs/${current.id}/finish`, {
+        noteContent: noteDraft.current || null,
+        pendingTranscript: finishTranscript.current() || null,
+      });
+      const updated = await json<ScenarioSnapshot>(`/api/runs/${current.id}`);
+      authoritative.current = updated;
+      setState(updated);
+      setDebrief(result);
+      setError("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Finish failed");
+    } finally {
+      setBusy(false);
+    }
+  }, []);
+  const retryDebrief = useCallback(async () => {
+    const current = authoritative.current;
+    if (!current) return;
+    setBusy(true);
+    try { setDebrief(await json<DebriefSnapshot>(`/api/debriefs/${current.id}/retry`, {})); }
+    catch (e) { setError(e instanceof Error ? e.message : "Evaluation retry failed"); }
+    finally { setBusy(false); }
+  }, []);
+  const requestTeachBack = useCallback(async () => {
+    const current = authoritative.current;
+    if (!current) return;
+    setBusy(true);
+    try {
+      setDebrief(await json<DebriefSnapshot>(`/api/debriefs/${current.id}/teach-back`, {}));
+      setConversation(await json<ConversationSnapshot>(`/api/conversations/${current.id}`));
+    } finally { setBusy(false); }
+  }, []);
   useEffect(() => {
     if (syncLost || !state?.clock.running) return;
     const timer = setInterval(
@@ -214,6 +256,15 @@ function Bedside() {
     );
     return () => clearInterval(timer);
   }, [syncLost, state?.clock.running, send]);
+  useEffect(() => {
+    if (!debrief || debrief.status !== "evaluating") return;
+    const timer = window.setInterval(() => {
+      void json<DebriefSnapshot>(`/api/debriefs/${debrief.runId}`)
+        .then((result) => setDebrief(result))
+        .catch(() => undefined);
+    }, 500);
+    return () => window.clearInterval(timer);
+  }, [debrief?.runId, debrief?.status]);
   useEffect(() => {
     if (muted || syncLost || !state?.clock.running || !state.sensors.ecg) return;
     const timer = setInterval(() => {
@@ -283,7 +334,7 @@ function Bedside() {
           </span>
           <button
             className="secondary"
-            disabled={!state || busy || syncLost}
+            disabled={!state || busy || syncLost || state.lifecycle === "ended"}
             onClick={() =>
               void send({ type: state?.clock.running ? "pause" : "resume" })
             }
@@ -313,7 +364,7 @@ function Bedside() {
           <button
             className="finish"
             disabled={!state || busy || syncLost || !state.handoffs.length || state.lifecycle === "ended"}
-            onClick={() => void send({ type: "finish" })}
+            onClick={() => void finish()}
           >
             Finish
           </button>
@@ -346,6 +397,19 @@ function Bedside() {
       )}
       {state && patient ? (
         <>
+          {debrief ? <Debrief
+            debrief={debrief}
+            conversation={conversation}
+            busy={busy}
+            retry={retryDebrief}
+            teachBack={requestTeachBack}
+            answerTeachBack={(text) => sendText(text, "text")}
+            correctTranscript={async (messageId, text) => {
+              await correctTranscript(messageId, text);
+              const current = authoritative.current;
+              if (current) setConversation(await json<ConversationSnapshot>(`/api/conversations/${current.id}`));
+            }}
+          /> : <>
           <div className="workspace">
             <Room
               selected={selected}
@@ -429,7 +493,7 @@ function Bedside() {
                   <Investigations patient={patient} state={state} busy={busy || syncLost} send={send} />
                 )}
                 {selected === "Clipboard" && (
-                  <Notes state={state} busy={busy || syncLost} send={send} />
+                  <Notes state={state} busy={busy || syncLost} send={send} onDraftChange={(content) => { noteDraft.current = content; }} />
                 )}
                 {selected === "Call station" && (
                   <CallStation state={state} busy={busy || syncLost} send={send} />
@@ -447,6 +511,7 @@ function Bedside() {
               sendText={sendText}
               correct={correctTranscript}
               checkpoint={requestReasoningCheckpoint}
+              registerFinishFlush={(flush) => { finishTranscript.current = flush; }}
             />
           )}
           <nav className="station-nav" aria-label="Bedside controls">
@@ -461,6 +526,7 @@ function Bedside() {
               </button>
             ))}
           </nav>
+          </>}
           <footer>
             <span>
               {state.clock.running

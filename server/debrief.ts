@@ -17,7 +17,7 @@ export function debriefRouter(debrief: DebriefService, store: ScenarioStore) {
     const parsed = FinishRunInputSchema.safeParse(request.body);
     if (!parsed.success) return void response.status(400).json({ error: "Invalid Finish payload." });
     try {
-      response.json(await debrief.finish(request.params.id, parsed.data));
+      response.status(202).json(await debrief.startFinish(request.params.id, parsed.data));
     } catch (error) {
       response.status(error instanceof Error && /not found/.test(error.message) ? 404 : 422).json({ error: error instanceof Error ? error.message : "Finish failed." });
     }
@@ -25,7 +25,7 @@ export function debriefRouter(debrief: DebriefService, store: ScenarioStore) {
 
   router.post("/:id/retry", async (request, response) => {
     try {
-      response.json(await debrief.retry(request.params.id));
+      response.status(202).json(await debrief.startRetry(request.params.id));
     } catch (error) {
       response.status(422).json({ error: error instanceof Error ? error.message : "Evaluation retry failed." });
     }

@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import type { ScenarioCommand, ScenarioSnapshot } from "../../shared/contracts/scenario.js";
 
-export function Notes({ state, busy, send }: {
+export function Notes({ state, busy, send, onDraftChange }: {
   state: ScenarioSnapshot;
   busy: boolean;
   send: (command: ScenarioCommand) => Promise<boolean>;
+  onDraftChange?: (content: string) => void;
 }) {
   const latest = state.notes.at(-1);
   const [content, setContent] = useState(latest?.content ?? "");
   useEffect(() => { if (latest) setContent(latest.content); }, [latest?.revision]);
+  useEffect(() => { onDraftChange?.(content); }, [content, onDraftChange]);
   return <div className="notes-panel">
     <h3>Assessment, rationale and plan</h3>
     <form onSubmit={(event) => { event.preventDefault(); if (content.trim()) void send({ type: "save_note", content: content.trim() }); }}>

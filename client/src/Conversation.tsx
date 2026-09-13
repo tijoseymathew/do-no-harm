@@ -12,6 +12,7 @@ interface Props {
   sendText: (text: string, source: "text" | "voice", interrupted?: boolean) => Promise<void>;
   correct: (messageId: string, text: string) => Promise<void>;
   checkpoint: () => Promise<void>;
+  registerFinishFlush?: (flush: () => string) => void;
 }
 
 type LiveStatus = "disconnected" | "connecting" | "connected" | "failed";
@@ -38,6 +39,7 @@ export function Conversation({
   sendText,
   correct,
   checkpoint,
+  registerFinishFlush,
 }: Props) {
   const [text, setText] = useState("");
   const [editing, setEditing] = useState<ConversationMessage | null>(null);
@@ -53,6 +55,15 @@ export function Conversation({
   const transcriptTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => disconnect(), []);
+  useEffect(() => {
+    registerFinishFlush?.(() => {
+      if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);
+      const complete = transcript.current.trim();
+      transcript.current = "";
+      setLiveCaption("");
+      return complete;
+    });
+  }, [registerFinishFlush]);
 
   function disconnect() {
     if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);

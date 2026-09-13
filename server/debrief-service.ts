@@ -28,9 +28,32 @@ export class DebriefService {
   }
 
   async finish(runId: string, input: FinishRunInput) {
+    const prepared = await this.prepareFinish(runId, input);
+    if (!prepared.created) return prepared.snapshot;
+    return this.serialize(runId, () => this.evaluate(prepared.snapshot, "finish"));
+  }
+
+  async startFinish(runId: string, input: FinishRunInput) {
+    const prepared = await this.prepareFinish(runId, input);
+    if (prepared.created) {
+      void this.serialize(runId, () => this.evaluate(prepared.snapshot, "finish")).catch(
+        async (error) => {
+          const current = this.debriefs.get(runId);
+          if (!current) return;
+          current.status = "unavailable";
+          current.evaluationMessage =
+            error instanceof Error ? `Evaluation unavailable: ${error.message}` : "Evaluation unavailable";
+          this.save(current);
+        },
+      );
+    }
+    return prepared.snapshot;
+  }
+
+  private async prepareFinish(runId: string, input: FinishRunInput) {
     return this.serialize(runId, async () => {
       const existing = this.debriefs.get(runId);
-      if (existing) return structuredClone(existing);
+      if (existing) return { snapshot: structuredClone(existing), created: false };
       let state = this.requireRun(runId);
       if (!state.handoffs.length) throw new Error("Record a handoff before finishing the run.");
 
@@ -63,11 +86,31 @@ export class DebriefService {
         "Generating grounded formative feedback…",
       );
       this.save(snapshot);
-      return this.evaluate(snapshot, "finish");
+      return { snapshot: structuredClone(snapshot), created: true };
     });
   }
 
   async retry(runId: string) {
+    const prepared = await this.prepareRetry(runId);
+    return this.serialize(runId, () => this.evaluate(prepared.snapshot, prepared.trigger));
+  }
+
+  async startRetry(runId: string) {
+    const prepared = await this.prepareRetry(runId);
+    void this.serialize(runId, () => this.evaluate(prepared.snapshot, prepared.trigger)).catch(
+      (error) => {
+        const current = this.debriefs.get(runId);
+        if (!current) return;
+        current.status = "unavailable";
+        current.evaluationMessage =
+          error instanceof Error ? `Evaluation unavailable: ${error.message}` : "Evaluation unavailable";
+        this.save(current);
+      },
+    );
+    return prepared.snapshot;
+  }
+
+  private async prepareRetry(runId: string) {
     return this.serialize(runId, async () => {
       const current = this.requireDebrief(runId);
       const substantive = (this.store.events(runId) ?? []).filter(
@@ -100,7 +143,7 @@ export class DebriefService {
           : "Retrying evaluation against the retained evidence cutoff…",
       );
       this.save(rebuilt);
-      return this.evaluate(rebuilt, trigger);
+      return { snapshot: structuredClone(rebuilt), trigger };
     });
   }
 
