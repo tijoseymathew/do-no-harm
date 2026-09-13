@@ -50,6 +50,8 @@ export const chestPainCaseV1 = CasePackSchema.parse({
     comorbidities: ["Hypertension", "Current tobacco use"],
   },
   opening: "I have a heavy pressure in the middle of my chest and I feel clammy.",
+  voiceBriefing:
+    "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
   observations: [
     {
       contractVersion: CONTRACT_VERSION,

@@ -1,6 +1,6 @@
 # DO NO HARM
 
-An interactive emergency-room simulation for medical students: assess a fictional patient, operate bedside equipment, choose medication doses, administer treatment, reassess, and receive a visual evidence-linked debrief.
+An interactive emergency-room simulation for medical students: the Live voice opens with an authored briefing (formative simulation, student role, patient identity, complaint, visible appearance, and the task to assess and manage), then the student assesses a fictional patient, operates bedside equipment, chooses medication doses, administers treatment, reassesses, and receives a visual evidence-linked debrief.
 
 Phase 01 provides the application skeleton, versioned case contracts, an unreviewed fictional chest-pain draft, and independently runnable real-provider probes.
 

@@ -184,6 +184,7 @@ export const CasePackSchema = z
       })
       .strict(),
     opening: z.string().min(1),
+    voiceBriefing: z.string().min(1),
     observations: z.array(ObservationSchema).min(1),
     equipment: z.array(EquipmentSchema).min(1),
     medicationRules: z.array(MedicationRuleSchema).min(1),
@@ -219,6 +220,7 @@ export function toStudentCase(casePack: CasePack) {
       currentMedications: casePack.patient.currentMedications,
     },
     opening: casePack.opening,
+    voiceBriefing: casePack.voiceBriefing,
     initialObservations: casePack.observations.filter(
       (observation) => observation.studentVisible && observation.observableBy === "initial",
     ),
