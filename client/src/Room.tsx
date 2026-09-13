@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import type { FixtureState } from "../../shared/contracts/fixture.js";
+import type { ScenarioSnapshot } from "../../shared/contracts/scenario.js";
 
 export const stations = [
   "Patient",
@@ -31,7 +31,7 @@ export function Room({
 }: {
   selected: Station;
   select: (s: Station) => void;
-  state: FixtureState;
+  state: ScenarioSnapshot;
   reduced: boolean;
   paused: boolean;
 }) {
@@ -264,7 +264,8 @@ export function Room({
       <div className="room-legend">
         Fixed camera · Select equipment or use bedside controls
         <br />
-        Suction unavailable · Oxygen and IV not connected
+        Suction and oxygen unavailable · IV{" "}
+        {state.devices.ivAccess.established ? "established" : "not connected"}
       </div>
     </div>
   );

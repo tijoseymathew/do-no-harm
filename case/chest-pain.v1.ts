@@ -5,6 +5,15 @@ const clinicalReview: ClinicalReview = {
   sourceTitle: "Resuscitation Council UK: The ABCDE Approach",
   sourceUrl: "https://www.resus.org.uk/library/abcde-approach",
   sourceRevision: "Published October 2015; reviewed May 2021; updated July 2024",
+  sourceApplicability: "clinical_source",
+  reviewStatus: "draft_unreviewed",
+};
+
+const developmentFixtureReview: ClinicalReview = {
+  sourceTitle: "DO NO HARM product specification: authored scenario rules",
+  sourcePath: "specs.md#3-authored-scenario-and-progression",
+  sourceRevision: "Updated 13 September 2026",
+  sourceApplicability: "local_development_fixture",
   reviewStatus: "draft_unreviewed",
 };
 
@@ -23,7 +32,7 @@ const equipment = [
 export const chestPainCaseV1 = CasePackSchema.parse({
   contractVersion: CONTRACT_VERSION,
   caseId: "adult_chest_pain",
-  caseVersion: "1.0.0-draft.1",
+  caseVersion: "1.0.0-draft.2",
   title: "Chest pain with evolving instability",
   educationalUse: "formative_simulation_only",
   clinicalReview,
@@ -140,10 +149,11 @@ export const chestPainCaseV1 = CasePackSchema.parse({
       name: "Aspirin",
       formulation: "300 mg dispersible tablet",
       concentration: "300 mg per tablet",
-      allowedUnits: ["mg"],
+      allowedUnits: ["mg", "g"],
       allowedRoutes: ["oral"],
       patientInformation: "Check identity, allergy history, contraindications and prior doses before preparing.",
       referenceDoseRule: "300 mg orally, crushed or chewed, as soon as possible for suspected ACS",
+      doseRule: { quantity: 300, unit: "mg" },
       contraindications: [
         "Known aspirin hypersensitivity",
         "Active major bleeding",
@@ -154,9 +164,9 @@ export const chestPainCaseV1 = CasePackSchema.parse({
       authorizationRule: "student_permitted",
       repeatIntervalMs: null,
       cumulativeLimit: { quantity: 300, unit: "mg" },
-      onsetMs: null,
+      onsetMs: 60000,
       durationMs: null,
-      effectRule: "No immediate change to heart rate, blood pressure, pain score, or oxygen saturation",
+      effectRule: "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation",
       reassessmentRequirement: "Continue ABCDE reassessment and seek urgent senior review",
       inappropriateAttemptRules: [
         { condition: "dose is not exactly 300 mg", outcome: "block", rationale: "Outside the single reviewed draft dose" },
@@ -166,9 +176,76 @@ export const chestPainCaseV1 = CasePackSchema.parse({
       clinicalReview,
     },
   ],
+  fluidRules: [
+    {
+      contractVersion: CONTRACT_VERSION,
+      id: "sodium_chloride_0_9",
+      name: "Sodium chloride 0.9% development fixture",
+      allowedVolumeUnits: ["mL", "L"],
+      allowedRateUnits: ["mL/h", "L/h"],
+      maximumVolumeMl: 500,
+      maximumRateMlPerHour: 1000,
+      requiredAccess: "iv",
+      authorizationRule: "student_permitted",
+      effectRule:
+        "Account for delivered volume only; this unreviewed development fixture has no physiological effect.",
+      clinicalReview: developmentFixtureReview,
+    },
+  ],
+  scenarioRules: {
+    baseline: {
+      heartRate: 104,
+      spo2: 96,
+      respiratoryRate: 20,
+      systolicBp: 146,
+      diastolicBp: 88,
+      painScore: 8,
+      presentation: "Alert, anxious, pale and clammy",
+    },
+    timelyCare: {
+      entersBeforeMs: 120000,
+      timeoutAfterMs: 180000,
+      entryCondition:
+        "An accepted aspirin administration occurs before delayed-care entry.",
+      exitCondition:
+        "The authored aspirin effect is recorded and senior review is acknowledged.",
+      timeoutBehavior:
+        "Close the branch as timed out without inventing a further clinical consequence.",
+    },
+    delayedCare: {
+      entersAtMs: 120000,
+      timesOutAtMs: 300000,
+      observations: {
+        heartRate: 118,
+        spo2: 93,
+        respiratoryRate: 24,
+        systolicBp: 112,
+        diastolicBp: 72,
+        painScore: 9,
+        presentation: "More distressed, pale and clammy",
+      },
+      entryCondition:
+        "Simulation reaches 120 seconds without an accepted aspirin administration.",
+      exitCondition:
+        "Aspirin is accepted and senior review is acknowledged.",
+      timeoutBehavior:
+        "Close the branch as timed out at 300 seconds and retain the last authored observations.",
+    },
+    inappropriateAttempt: {
+      timeoutAfterMs: 60000,
+      entryCondition:
+        "A syntactically valid medication command is blocked by an authored medication rule.",
+      exitCondition:
+        "A valid medication administration is accepted.",
+      timeoutBehavior:
+        "Return to arrival, or enter delayed care when its time condition has been reached.",
+    },
+    seniorAcknowledgementDelayMs: 15000,
+    clinicalReview: developmentFixtureReview,
+  },
   hiddenRubric: {
     contractVersion: CONTRACT_VERSION,
-    rubricVersion: "1.0.0-draft.1",
+    rubricVersion: "1.0.0-draft.2",
     criteria: [
       {
         id: "assessment",
@@ -212,6 +289,8 @@ export const chestPainCaseV1 = CasePackSchema.parse({
     "Reviewed oxygen-device settings and thresholds for this patient",
     "Reviewed IV-fluid availability, settings, contraindications, and effects",
     "Deterioration timing, observation changes, exit conditions, and timeout behavior",
+    "Aspirin's 60-second engine effect marker (which intentionally makes no vital-sign change)",
+    "Development IV-fluid limits and the decision to apply no physiological response",
     "Reviewer identity and signed review date for the complete case and hidden rubric",
   ],
 });

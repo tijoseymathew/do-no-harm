@@ -7,5 +7,5 @@
     "moduleResolution": "Bundler",
     "types": ["vite/client"]
   },
-  "include": ["client", "shared/contracts/common.ts", "shared/contracts/student.ts"]
+  "include": ["client", "shared/contracts/common.ts", "shared/contracts/student.ts", "shared/contracts/scenario.ts"]
 }

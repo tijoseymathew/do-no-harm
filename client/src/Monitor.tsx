@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { FixtureState } from "../../shared/contracts/fixture.js";
+import type { ScenarioSnapshot } from "../../shared/contracts/scenario.js";
 
 export function beatPeriodMs(hr: number) {
   return 60000 / hr;
@@ -84,7 +84,7 @@ function Trace({
       <div>
         {label}{" "}
         <span>
-          {hr === null ? "Not connected" : "4-second strip · fixture"}
+          {hr === null ? "Not connected" : "4-second strip · engine"}
         </span>
       </div>
       <canvas
@@ -99,7 +99,7 @@ export function Monitor({
   paused,
   reduced,
 }: {
-  state: FixtureState;
+  state: ScenarioSnapshot;
   paused: boolean;
   reduced: boolean;
 }) {
@@ -108,7 +108,7 @@ export function Monitor({
     <section className="monitor" aria-label="Bedside monitor summary">
       <div className="panel-heading">
         <h2>Bedside monitor</h2>
-        <span className="tag">FIXTURE</span>
+        <span className="tag">ENGINE</span>
       </div>
       <Trace
         label="ECG"
@@ -119,7 +119,7 @@ export function Monitor({
       />
       <Trace
         label="Pleth"
-        hr={state.sensors.spo2 ? state.pulseRate : null}
+        hr={state.sensors.spo2 ? state.physiology.heartRate : null}
         time={state.simulationTimeMs}
         paused={paused}
         reduced={reduced}
@@ -143,7 +143,7 @@ export function Monitor({
         <div>
           <span>RR · breaths/min</span>
           <strong>{m.rr}</strong>
-          <small>Fixture observation</small>
+          <small>Engine observation</small>
         </div>
       </div>
       <div className="bp">
@@ -161,7 +161,9 @@ export function Monitor({
         </span>
       </div>
       <p className="monitor-note">
-        ⓘ Fixture physiology · alarms and trends unavailable
+        {state.branch.kind === "delayed_care"
+          ? "⚠ Authored deterioration active · development fixture"
+          : "ⓘ Server physiology · clinical rules unreviewed"}
       </p>
     </section>
   );

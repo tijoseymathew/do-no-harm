@@ -4,7 +4,7 @@ import { chestPainCaseV1 } from "../case/index.js";
 import { CasePackSchema, toStudentCase } from "../shared/contracts/server.js";
 import { StudentCaseSchema } from "../shared/contracts/student.js";
 import { requireOpenAIKey, type ServerConfig } from "./config.js";
-import { fixtureRouter } from "./fixture.js";
+import { scenarioRouter } from "./scenario.js";
 
 interface LiveSessionCreator {
   create(input: {
@@ -19,6 +19,7 @@ interface LiveSessionCreator {
 
 export interface AppDependencies {
   createLiveClient?: (apiKey: string) => LiveSessionCreator;
+  runDirectory?: string;
 }
 
 function asyncRoute(handler: RequestHandler): RequestHandler {
@@ -32,7 +33,9 @@ export function createApp(config: ServerConfig, dependencies: AppDependencies = 
 
   app.disable("x-powered-by");
   app.use(express.json({ limit: "64kb" }));
-  app.use("/api/fixtures", fixtureRouter());
+  const runs = scenarioRouter(casePack, dependencies.runDirectory);
+  app.use("/api/runs", runs);
+  app.use("/api/fixtures", runs);
 
   app.get("/api/health", (_request, response) => {
     const configured = Boolean(config.openaiApiKey);

@@ -9,6 +9,9 @@ import { StudentMedicationSchema } from "./student.js";
 
 export const MedicationRuleSchema = StudentMedicationSchema.extend({
   referenceDoseRule: z.string().min(1),
+  doseRule: z
+    .object({ quantity: z.number().positive(), unit: z.string().min(1) })
+    .strict(),
   contraindications: z.array(z.string().min(1)),
   requiredObservations: z.array(z.string().min(1)),
   requiredAccess: z.array(z.string().min(1)),
@@ -29,6 +32,77 @@ export const MedicationRuleSchema = StudentMedicationSchema.extend({
   ),
   clinicalReview: ClinicalReviewSchema,
 }).strict();
+
+export const FluidRuleSchema = z
+  .object({
+    contractVersion: ContractVersionSchema,
+    id: z.string().regex(/^[a-z][a-z0-9_]*$/),
+    name: z.string().min(1),
+    allowedVolumeUnits: z.array(z.enum(["mL", "L"])).min(1),
+    allowedRateUnits: z.array(z.enum(["mL/h", "L/h"])).min(1),
+    maximumVolumeMl: z.number().positive(),
+    maximumRateMlPerHour: z.number().positive(),
+    requiredAccess: z.literal("iv"),
+    authorizationRule: z.enum(["student_permitted", "senior_required"]),
+    effectRule: z.string().min(1),
+    clinicalReview: ClinicalReviewSchema,
+  })
+  .strict();
+
+export const ScenarioRulesSchema = z
+  .object({
+    baseline: z
+      .object({
+        heartRate: z.number().positive(),
+        spo2: z.number().min(0).max(100),
+        respiratoryRate: z.number().positive(),
+        systolicBp: z.number().positive(),
+        diastolicBp: z.number().positive(),
+        painScore: z.number().min(0).max(10),
+        presentation: z.string().min(1),
+      })
+      .strict(),
+    delayedCare: z
+      .object({
+        entersAtMs: z.number().int().positive(),
+        timesOutAtMs: z.number().int().positive(),
+        observations: z
+          .object({
+            heartRate: z.number().positive(),
+            spo2: z.number().min(0).max(100),
+            respiratoryRate: z.number().positive(),
+            systolicBp: z.number().positive(),
+            diastolicBp: z.number().positive(),
+            painScore: z.number().min(0).max(10),
+            presentation: z.string().min(1),
+          })
+          .strict(),
+        entryCondition: z.string().min(1),
+        exitCondition: z.string().min(1),
+        timeoutBehavior: z.string().min(1),
+      })
+      .strict(),
+    timelyCare: z
+      .object({
+        entersBeforeMs: z.number().int().positive(),
+        timeoutAfterMs: z.number().int().positive(),
+        entryCondition: z.string().min(1),
+        exitCondition: z.string().min(1),
+        timeoutBehavior: z.string().min(1),
+      })
+      .strict(),
+    inappropriateAttempt: z
+      .object({
+        timeoutAfterMs: z.number().int().positive(),
+        entryCondition: z.string().min(1),
+        exitCondition: z.string().min(1),
+        timeoutBehavior: z.string().min(1),
+      })
+      .strict(),
+    seniorAcknowledgementDelayMs: z.number().int().nonnegative(),
+    clinicalReview: ClinicalReviewSchema,
+  })
+  .strict();
 
 export const RubricCriterionSchema = z
   .object({
@@ -113,12 +187,16 @@ export const CasePackSchema = z
     observations: z.array(ObservationSchema).min(1),
     equipment: z.array(EquipmentSchema).min(1),
     medicationRules: z.array(MedicationRuleSchema).min(1),
+    fluidRules: z.array(FluidRuleSchema).min(1),
+    scenarioRules: ScenarioRulesSchema,
     hiddenRubric: HiddenRubricSchema,
     unresolvedClinicalParameters: z.array(z.string().min(1)).min(1),
   })
   .strict();
 
 export type MedicationRule = z.infer<typeof MedicationRuleSchema>;
+export type FluidRule = z.infer<typeof FluidRuleSchema>;
+export type ScenarioRules = z.infer<typeof ScenarioRulesSchema>;
 export type HiddenRubric = z.infer<typeof HiddenRubricSchema>;
 export type ExaminerOutput = z.infer<typeof ExaminerOutputSchema>;
 export type CasePack = z.infer<typeof CasePackSchema>;

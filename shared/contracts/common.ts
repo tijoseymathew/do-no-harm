@@ -7,14 +7,26 @@ export const ContractVersionSchema = z.literal(CONTRACT_VERSION);
 export const ClinicalReviewSchema = z
   .object({
     sourceTitle: z.string().min(1),
-    sourceUrl: z.url(),
+    sourceUrl: z.url().optional(),
+    sourcePath: z.string().min(1).optional(),
     sourceRevision: z.string().min(1),
+    sourceApplicability: z.enum([
+      "clinical_source",
+      "context_only",
+      "local_development_fixture",
+    ]),
     reviewStatus: z.enum(["draft_unreviewed", "review_in_progress", "reviewed"]),
     reviewedBy: z.string().min(1).optional(),
     reviewedAt: z.iso.datetime().optional(),
   })
   .strict()
   .superRefine((value, context) => {
+    if (!value.sourceUrl && !value.sourcePath) {
+      context.addIssue({
+        code: "custom",
+        message: "Clinical review provenance requires a source URL or local path",
+      });
+    }
     if (value.reviewStatus === "reviewed" && (!value.reviewedBy || !value.reviewedAt)) {
       context.addIssue({
         code: "custom",
@@ -105,6 +117,13 @@ export const EventTypeSchema = z.enum([
   "handoff.recorded",
   "examiner.output_submitted",
   "presenter.intervention",
+  "command.rejected",
+  "branch.entered",
+  "branch.exited",
+  "treatment.effect_applied",
+  "fluid.started",
+  "fluid.stopped",
+  "fluid.completed",
 ]);
 
 export const MedicationEventPayloadSchema = z
