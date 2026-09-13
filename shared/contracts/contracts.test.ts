@@ -64,4 +64,19 @@ describe("versioned case contracts", () => {
     expect(serialized).not.toContain("referenceDoseRule");
     expect(serialized).not.toContain("expectedEvidence");
   });
+
+  it("authors a voice briefing that states run requirements without unelicited history or next actions", () => {
+    const briefing = chestPainCaseV1.voiceBriefing.toLowerCase();
+    expect(briefing).toContain("formative");
+    expect(briefing).toContain("medical student");
+    expect(briefing).toContain("morgan lee");
+    expect(briefing).toContain("58");
+    expect(briefing).toContain("chest pressure");
+    expect(briefing).toContain("assess and manage");
+    expect(briefing).not.toContain("45 minute");
+    expect(briefing).not.toContain("amlodipine");
+    expect(briefing).not.toContain("aspirin");
+    expect(briefing).not.toContain("abcde");
+    expect(toStudentCase(chestPainCaseV1).voiceBriefing).toBe(chestPainCaseV1.voiceBriefing);
+  });
 });
