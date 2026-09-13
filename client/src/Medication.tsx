@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { VoiceMedicationDraft } from "../../shared/contracts/conversation.js";
 import type { StudentCase } from "../../shared/contracts/student.js";
 import {
   ReviewableMedicationOrderSchema,
@@ -6,11 +7,13 @@ import {
   type ScenarioSnapshot,
 } from "../../shared/contracts/scenario.js";
 
-export function Medication({ patient, state, busy, send }: {
+export function Medication({ patient, state, draft, busy, send, clearDraft }: {
   patient: StudentCase;
   state: ScenarioSnapshot;
+  draft: VoiceMedicationDraft | null;
   busy: boolean;
   send: (command: ScenarioCommand) => Promise<boolean>;
+  clearDraft: () => Promise<void>;
 }) {
   const [dose, setDose] = useState("");
   const [route, setRoute] = useState("");
@@ -21,7 +24,19 @@ export function Medication({ patient, state, busy, send }: {
   const [localError, setLocalError] = useState("");
   const drug = patient.formulary[0]!;
   const active = state.treatments.preparedOrders.find(({ status }) => status === "prepared");
+  const activeIsComplete = Boolean(
+    active && active.order.dose !== null && active.order.unit && active.order.route,
+  );
   const last = state.receipts.at(-1);
+
+  useEffect(() => {
+    if (!draft) return;
+    setDose(draft.dose?.toString() ?? "");
+    setUnit(draft.unit ?? "");
+    setRoute(draft.route ?? "");
+    setAllergiesChecked(false);
+    setHistoryChecked(false);
+  }, [draft]);
 
   async function prepare(event: React.SubmitEvent) {
     event.preventDefault();
@@ -40,7 +55,19 @@ export function Medication({ patient, state, busy, send }: {
       allergyHistoryReviewed: true,
       administrationHistoryReviewed: true,
     }))) return;
-    if (await send({ type: "prepare_medication", order: parsed.data })) setLocalError("");
+    const prepared = await send(
+      active
+        ? {
+            type: "update_prepared_medication",
+            preparedOrderId: active.id,
+            order: parsed.data,
+          }
+        : { type: "prepare_medication", order: parsed.data },
+    );
+    if (prepared) {
+      setLocalError("");
+      if (draft) await clearDraft();
+    }
   }
 
   return (
@@ -64,7 +91,7 @@ export function Medication({ patient, state, busy, send }: {
         </div>
       )}
 
-      {active ? (
+      {active && activeIsComplete ? (
         <div className="review-order">
           <h3>Prepared — not administered</h3>
           <p><strong>{drug.name} · {active.order.dose} {active.order.unit} · {active.order.route}</strong><br />
@@ -81,17 +108,18 @@ export function Medication({ patient, state, busy, send }: {
         </div>
       ) : (
         <form onSubmit={prepare}>
+          {draft && <p className="draft-origin">{draft.source === "voice" ? "Voice" : "Text"}-created draft · visible review only · not administered</p>}
           <label>Drug / formulation
             <select aria-label="Drug / formulation" value={drug.id} onChange={() => undefined}>
               <option value={drug.id}>{drug.name} — {drug.formulation}</option>
             </select>
           </label>
           <div className="order-fields">
-            <label>Dose<input required type="number" min="0.01" max="10000" step="any" value={dose} onChange={(event) => setDose(event.target.value)} /></label>
-            <label>Unit<select aria-label="Unit" required value={unit} onChange={(event) => setUnit(event.target.value)}>
+            <label>{draft ? "Draft dose" : "Dose"}<input aria-label={draft ? "Draft dose" : "Dose"} required type="number" min="0.01" max="10000" step="any" value={dose} onChange={(event) => setDose(event.target.value)} /></label>
+            <label>{draft ? "Draft unit" : "Unit"}<select aria-label={draft ? "Draft unit" : "Unit"} required value={unit} onChange={(event) => setUnit(event.target.value)}>
               <option value="">Select</option>{drug.allowedUnits.map((value) => <option key={value}>{value}</option>)}
             </select></label>
-            <label>Route<select aria-label="Route" required value={route} onChange={(event) => setRoute(event.target.value)}>
+            <label>{draft ? "Draft route" : "Route"}<select aria-label={draft ? "Draft route" : "Route"} required value={route} onChange={(event) => setRoute(event.target.value)}>
               <option value="">Select</option>{drug.allowedRoutes.map((value) => <option key={value}>{value}</option>)}
             </select></label>
           </div>
@@ -99,7 +127,8 @@ export function Medication({ patient, state, busy, send }: {
             <label><input type="checkbox" checked={allergiesChecked} onChange={(event) => setAllergiesChecked(event.target.checked)} /> Allergy history reviewed</label>
             <label><input type="checkbox" checked={historyChecked} onChange={(event) => setHistoryChecked(event.target.checked)} /> Prior doses reviewed</label>
           </div>
-          <button disabled={busy} type="submit">Review and prepare medication</button>
+          <button disabled={busy} type="submit">{draft ? "Confirm draft parameters" : "Review and prepare medication"}</button>
+          {draft && <button disabled className="secondary" type="button">Administer</button>}
         </form>
       )}
 
