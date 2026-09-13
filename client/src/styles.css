@@ -808,6 +808,9 @@ textarea {
 .conversation-heading {
   justify-content: space-between;
 }
+.live-controls {
+  flex-wrap: wrap;
+}
 .conversation-heading .eyebrow,
 .conversation-heading h2 {
   margin: 0 0 3px;
