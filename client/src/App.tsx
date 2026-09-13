@@ -126,6 +126,31 @@ function Bedside() {
       active = false;
     };
   }, []);
+  const resetScenario = useCallback(async () => {
+    if (locked.current) return;
+    locked.current = true;
+    setBusy(true);
+    try {
+      const snapshot = await json<ScenarioSnapshot>("/api/runs", {});
+      const nextConversation = await json<ConversationSnapshot>(
+        `/api/conversations/${snapshot.id}`,
+      );
+      authoritative.current = snapshot;
+      noteDraft.current = "";
+      finishTranscript.current = () => "";
+      setState(snapshot);
+      setConversation(nextConversation);
+      setDebrief(undefined);
+      setSelected("Patient");
+      setSyncLost(false);
+      setError("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Scenario reset failed");
+    } finally {
+      locked.current = false;
+      setBusy(false);
+    }
+  }, []);
   useEffect(() => {
     const query = matchMedia("(prefers-reduced-motion: reduce)");
     const change = () => setReduced(query.matches);
@@ -381,6 +406,13 @@ function Bedside() {
             Advance scenario +30 s
           </button>
           <button
+            className="secondary"
+            disabled={!state || busy}
+            onClick={() => void resetScenario()}
+          >
+            Reset scenario
+          </button>
+          <button
             className="finish"
             disabled={!state || busy || syncLost || !state.handoffs.length || state.lifecycle === "ended"}
             onClick={() => void finish()}
@@ -523,6 +555,7 @@ function Bedside() {
           </div>
           {conversation && (
             <Conversation
+              key={state.id}
               runId={state.id}
               briefing={patient.voiceBriefing}
               conversation={conversation}

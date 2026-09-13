@@ -56,6 +56,26 @@ async function station(page: Page, name: string) {
     .click();
 }
 
+test("reset starts a fresh scenario and clears bedside state", async ({ page }) => {
+  await open(page);
+  const firstRun = await page
+    .getByRole("link", { name: "Export run JSON" })
+    .getAttribute("href");
+  await station(page, "Monitor");
+  await page.getByRole("button", { name: "Connect ECG leads" }).click();
+  await expect(page.getByLabel(/ECG: \d+ beats\/min/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Reset scenario" }).click();
+
+  await expect(page.getByRole("heading", { name: "Patient", exact: true })).toBeVisible();
+  const nextRun = await page
+    .getByRole("link", { name: "Export run JSON" })
+    .getAttribute("href");
+  expect(nextRun).not.toBe(firstRun);
+  await station(page, "Monitor");
+  await expect(page.getByLabel("ECG: not connected")).toBeVisible();
+});
+
 test("reports an empty API response without surfacing a JSON parse error", async ({ page }) => {
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
