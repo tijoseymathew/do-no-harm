@@ -201,12 +201,17 @@ export class ConversationTools {
     const cited = [
       ...wrapper.evidenceIds,
       ...output.criteria.flatMap(({ evidenceIds }) => evidenceIds),
+      ...(output.strengthEvidenceIds ?? []),
+      ...(output.priorityImprovementEvidenceIds ?? []),
     ];
     if (cited.some((id) => !knownIds.has(id)))
       throw new Error("Examiner output cites evidence outside the validated cutoff");
     if (
-      output.criteria
-        .flatMap(({ evidenceIds }) => evidenceIds)
+      [
+        ...output.criteria.flatMap(({ evidenceIds }) => evidenceIds),
+        ...(output.strengthEvidenceIds ?? []),
+        ...(output.priorityImprovementEvidenceIds ?? []),
+      ]
         .some((id) => !wrapper.evidenceIds.includes(id))
     )
       throw new Error("Examiner criterion citation was omitted from evidenceIds");

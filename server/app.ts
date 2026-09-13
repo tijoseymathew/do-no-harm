@@ -6,6 +6,8 @@ import { StudentCaseSchema } from "../shared/contracts/student.js";
 import { requireOpenAIKey, type ServerConfig } from "./config.js";
 import { conversationRouter } from "./conversation.js";
 import { ConversationService } from "./conversation-service.js";
+import { DebriefService } from "./debrief-service.js";
+import { debriefRouter } from "./debrief.js";
 import {
   DeterministicExaminerProvider,
   OpenAIExaminerProvider,
@@ -63,10 +65,12 @@ export function createApp(config: ServerConfig, dependencies: AppDependencies = 
     config.examinerModel,
     examinerProvider,
   );
+  const debrief = new DebriefService(casePack, store, conversation);
   const runs = scenarioRouter(casePack, dependencies.runDirectory, store);
   app.use("/api/runs", runs);
   app.use("/api/fixtures", runs);
   app.use("/api/conversations", conversationRouter(conversation, store));
+  app.use("/api/debriefs", debriefRouter(debrief, store));
 
   app.get("/api/health", (_request, response) => {
     const configured = Boolean(config.openaiApiKey);

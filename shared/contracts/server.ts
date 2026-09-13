@@ -173,7 +173,9 @@ export const ExaminerOutputSchema = z
     followUpQuestion: z.string().min(1).optional(),
     criteria: z.array(ExaminerCriterionOutputSchema),
     strength: z.string().min(1).optional(),
+    strengthEvidenceIds: z.array(z.string().min(1)).optional(),
     priorityImprovement: z.string().min(1).optional(),
+    priorityImprovementEvidenceIds: z.array(z.string().min(1)).optional(),
     nextPracticeObjective: z.string().min(1).optional(),
   })
   .strict()
@@ -183,7 +185,12 @@ export const ExaminerOutputSchema = z
     }
     if (
       value.kind === "feedback" &&
-      (!value.strength || !value.priorityImprovement || !value.nextPracticeObjective || value.criteria.length !== 6)
+      (!value.strength ||
+        !value.strengthEvidenceIds?.length ||
+        !value.priorityImprovement ||
+        !value.priorityImprovementEvidenceIds?.length ||
+        !value.nextPracticeObjective ||
+        value.criteria.length !== 6)
     ) {
       context.addIssue({ code: "custom", message: "Feedback requires all six criteria and summary fields" });
     }

@@ -12,6 +12,8 @@ import {
 interface StoredRun {
   engine: ScenarioEngine;
   queue: Promise<void>;
+  snapshots: Array<{ throughSequence: number; state: ScenarioSnapshot }>;
+  debrief: unknown | null;
 }
 
 export class ScenarioStore {
@@ -28,7 +30,12 @@ export class ScenarioStore {
 
   async create(): Promise<ScenarioSnapshot> {
     const engine = new ScenarioEngine(this.casePack);
-    this.runs.set(engine.state.id, { engine, queue: Promise.resolve() });
+    this.runs.set(engine.state.id, {
+      engine,
+      queue: Promise.resolve(),
+      snapshots: [{ throughSequence: engine.events.at(-1)!.sequence, state: engine.snapshot() }],
+      debrief: null,
+    });
     await this.append(engine.state.id, [
       { recordType: "case_snapshot", case: this.casePack },
       ...engine.eventLog().map((event) => ({ recordType: "event", event })),
@@ -43,6 +50,21 @@ export class ScenarioStore {
 
   events(id: string) {
     return this.runs.get(id)?.engine.eventLog() ?? null;
+  }
+
+  snapshots(id: string, throughSequence = Number.MAX_SAFE_INTEGER) {
+    return structuredClone(
+      this.runs
+        .get(id)
+        ?.snapshots.filter((snapshot) => snapshot.throughSequence <= throughSequence) ?? null,
+    );
+  }
+
+  setDebrief(id: string, debrief: unknown) {
+    const run = this.runs.get(id);
+    if (!run) return false;
+    run.debrief = structuredClone(debrief);
+    return true;
   }
 
   export(id: string) {
@@ -60,6 +82,7 @@ export class ScenarioStore {
       },
       state: engine.snapshot(),
       events: engine.eventLog(),
+      debrief: structuredClone(this.runs.get(id)?.debrief ?? null),
     };
   }
 
@@ -74,6 +97,11 @@ export class ScenarioStore {
         : result.events.map((event) => ({ recordType: "event", event }));
       if (!result.duplicate)
         records.push({ recordType: "state_snapshot", state: result.state });
+      if (!result.duplicate)
+        run.snapshots.push({
+          throughSequence: run.engine.events.at(-1)?.sequence ?? 0,
+          state: result.state,
+        });
       if (records.length) await this.append(id, records);
     });
     run.queue = operation.catch(() => undefined);
@@ -82,13 +110,28 @@ export class ScenarioStore {
   }
 
   async executeCurrent(id: string, command: ScenarioCommand): Promise<CommandResult | null> {
-    const state = this.get(id);
-    if (!state) return null;
-    return this.execute(id, {
-      revision: state.revision,
-      idempotencyKey: crypto.randomUUID(),
-      command,
+    const run = this.runs.get(id);
+    if (!run) return null;
+    let result: CommandResult | undefined;
+    const operation = run.queue.then(async () => {
+      result = run.engine.execute({
+        revision: run.engine.state.revision,
+        idempotencyKey: crypto.randomUUID(),
+        command,
+      });
+      if (!result.duplicate) {
+        const records: unknown[] = result.events.map((event) => ({ recordType: "event", event }));
+        records.push({ recordType: "state_snapshot", state: result.state });
+        run.snapshots.push({
+          throughSequence: run.engine.events.at(-1)?.sequence ?? 0,
+          state: result.state,
+        });
+        await this.append(id, records);
+      }
     });
+    run.queue = operation.catch(() => undefined);
+    await operation;
+    return result!;
   }
 
   async recordEvidence(

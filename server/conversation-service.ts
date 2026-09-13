@@ -188,12 +188,18 @@ export class ConversationService {
     runId: string,
     input: {
       kind: "assessment" | "treatment" | "handoff" | "reasoning" | "debrief";
+      evidenceCutoffSequence?: number;
     },
   ): Promise<CheckpointResult> {
     const managed = await this.ensure(runId);
     let result: CheckpointResult | undefined;
     const operation = managed.checkpointQueue.then(async () => {
-      result = await this.runCheckpoint(runId, managed, input.kind);
+      result = await this.runCheckpoint(
+        runId,
+        managed,
+        input.kind,
+        input.evidenceCutoffSequence,
+      );
     });
     managed.checkpointQueue = operation.catch(() => undefined);
     await operation;
@@ -204,6 +210,7 @@ export class ConversationService {
     runId: string,
     managed: ManagedConversation,
     kind: "assessment" | "treatment" | "handoff" | "reasoning" | "debrief",
+    requestedCutoff?: number,
   ): Promise<CheckpointResult> {
     if (
       ["handoff", "reasoning"].includes(kind) &&
@@ -228,8 +235,10 @@ export class ConversationService {
       kind,
     });
     const evidence = this.store.events(runId) ?? [];
-    const cutoff = evidence.at(-1)?.sequence ?? 0;
+    const latestAtStart = evidence.at(-1)?.sequence ?? 0;
+    const cutoff = requestedCutoff ?? latestAtStart;
     if (cutoff < 1) throw new Error("Run has no evidence");
+    if (cutoff > latestAtStart) throw new Error("Evidence cutoff is not available");
     managed.snapshot.examiner.status = "running";
     managed.snapshot.examiner.message = "Examiner is reviewing the current evidence checkpoint.";
     try {
@@ -247,7 +256,7 @@ export class ConversationService {
       });
       managed.examinerSessionId = providerResult.sessionId;
       const latestSequence = this.store.events(runId)?.at(-1)?.sequence ?? 0;
-      if (latestSequence !== cutoff) {
+      if (latestSequence !== latestAtStart) {
         managed.snapshot.examiner.status = "idle";
         managed.snapshot.examiner.message =
           "Evidence changed during review; stale examiner output was suppressed.";
@@ -277,34 +286,40 @@ export class ConversationService {
         {
           kind: providerResult.output.kind,
           evidenceCutoffSequence: cutoff,
-          followUpQuestion: providerResult.output.followUpQuestion ?? null,
+          output: providerResult.output,
           providerMode: this.examinerProvider.mode,
         },
       );
-      await this.recordMessage(
-        managed,
-        {
-          role: "examiner",
-          source: "text",
-          text: providerResult.output.followUpQuestion!,
-          assisted: false,
-          interrupted: false,
-          correctsMessageId: null,
-        },
-        outputEvent?.id,
-      );
+      if (providerResult.output.kind === "follow_up") {
+        await this.recordMessage(
+          managed,
+          {
+            role: "examiner",
+            source: "text",
+            text: providerResult.output.followUpQuestion!,
+            assisted: false,
+            interrupted: false,
+            correctsMessageId: null,
+          },
+          outputEvent?.id,
+        );
+      }
       managed.snapshot.examiner = {
         ...managed.snapshot.examiner,
         sessionId: null,
         status: "completed",
-        followUpDelivered: true,
+        followUpDelivered:
+          managed.snapshot.examiner.followUpDelivered || providerResult.output.kind === "follow_up",
         lastEvidenceCutoffSequence: cutoff,
-        message: "One grounded follow-up delivered.",
+        message:
+          providerResult.output.kind === "feedback"
+            ? "Grounded formative feedback generated."
+            : "One grounded follow-up delivered.",
       };
-      managed.awaitingAssistedAnswer = true;
+      if (providerResult.output.kind === "follow_up") managed.awaitingAssistedAnswer = true;
       return {
         status: "completed",
-        message: "One grounded follow-up delivered.",
+        message: managed.snapshot.examiner.message!,
         sessionId: managed.examinerSessionId,
         output: providerResult.output,
       };
@@ -319,6 +334,45 @@ export class ConversationService {
         output: null,
       };
     }
+  }
+
+  async flushPendingTranscript(runId: string, text: string | null | undefined, timeoutMs: number) {
+    const value = text?.trim();
+    if (!value) return { status: "empty" as const, timeoutMs };
+    let timer: NodeJS.Timeout | undefined;
+    const result = await Promise.race([
+      this.textTurn(runId, { text: value, source: "voice", interrupted: true }).then(
+        () => "flushed" as const,
+      ),
+      new Promise<"timed_out">((resolve) => {
+        timer = setTimeout(() => resolve("timed_out"), timeoutMs);
+      }),
+    ]);
+    if (timer) clearTimeout(timer);
+    return { status: result, timeoutMs };
+  }
+
+  async deliverTeachBack(runId: string, question: string) {
+    const managed = await this.ensure(runId);
+    const event = await this.store.recordEvidence(runId, "examiner", "teach_back.requested", {
+      question,
+      assisted: true,
+    });
+    await this.recordMessage(
+      managed,
+      {
+        role: "examiner",
+        source: "text",
+        text: question,
+        assisted: true,
+        interrupted: false,
+        correctsMessageId: null,
+      },
+      event?.id,
+      false,
+    );
+    managed.awaitingAssistedAnswer = true;
+    return structuredClone(managed.snapshot);
   }
 
   private async ensure(runId: string): Promise<ManagedConversation> {

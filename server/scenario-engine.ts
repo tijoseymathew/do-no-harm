@@ -512,7 +512,10 @@ export class ScenarioEngine {
         this.emit(
           "student",
           "session.ended",
-          { evidenceCutoffSequence: this.events.length + 1 },
+          {
+            evidenceCutoffSequence: this.events.length + 1,
+            cutoffName: "finish-v1",
+          },
           { idempotencyKey, stateVersion },
         );
         return null;

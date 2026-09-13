@@ -266,6 +266,31 @@ describe("conversation tool permissions", () => {
     ).toThrow();
     expect(store.get(run.id)?.receipts).toHaveLength(0);
   });
+
+  it("prevents publication of feedback with an invalid evidence reference", async () => {
+    const { store, run } = await setup();
+    const tools = new ConversationTools(chestPainCaseV1, store);
+    expect(() => tools.submitExaminerOutput(run.id, "examiner", {
+      output: {
+        contractVersion: CONTRACT_VERSION,
+        kind: "feedback",
+        evidenceCutoffSequence: 1,
+        criteria: chestPainCaseV1.hiddenRubric.criteria.map(({ id: criterion }) => ({
+          criterion,
+          rating: "insufficient_evidence",
+          reason: "No supporting evidence.",
+          evidenceIds: criterion === "assessment" ? ["invented-event"] : [],
+        })),
+        strength: "The run started.",
+        strengthEvidenceIds: [store.events(run.id)![0]!.id],
+        priorityImprovement: "Collect evidence.",
+        priorityImprovementEvidenceIds: [store.events(run.id)![0]!.id],
+        nextPracticeObjective: "Collect and document a focused assessment.",
+      },
+      evidenceIds: [store.events(run.id)![0]!.id, "invented-event"],
+    }, 1)).toThrow(/outside the validated cutoff/);
+    expect(store.events(run.id)?.some(({ type }) => type === "feedback.published")).toBe(false);
+  });
 });
 
 class CountingProvider implements ExaminerProvider {
