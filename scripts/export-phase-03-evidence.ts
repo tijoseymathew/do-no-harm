@@ -5,19 +5,38 @@ import type { ScenarioCommand } from "../shared/contracts/scenario.js";
 
 const outputDirectory = "docs/evidence/phase-03";
 
-function runPath(name: string, commands: ScenarioCommand[]) {
+type EvidenceCommand = ScenarioCommand | { type: "give_aspirin"; dose: number };
+
+function runPath(name: string, commands: EvidenceCommand[]) {
   let id = 0;
   const engine = new ScenarioEngine(chestPainCaseV1, {
     runId: `run_${name}`,
     createId: () => `${name}_${String(++id).padStart(4, "0")}`,
     now: () => new Date("2026-09-13T00:00:00.000Z"),
   });
-  commands.forEach((command, index) => {
-    engine.execute({
-      revision: engine.state.revision,
-      idempotencyKey: `${name}_command_${index + 1}`,
-      command,
-    });
+  let commandNumber = 0;
+  commands.forEach((command) => {
+    const execute = (scenarioCommand: ScenarioCommand) =>
+      engine.execute({
+        revision: engine.state.revision,
+        idempotencyKey: `${name}_command_${++commandNumber}`,
+        command: scenarioCommand,
+      });
+    if (command.type === "give_aspirin") {
+      execute({
+        type: "prepare_medication",
+        order: {
+          drugId: "aspirin_300mg_tablet",
+          dose: command.dose,
+          unit: "mg",
+          route: "oral",
+        },
+      });
+      execute({
+        type: "administer_prepared",
+        preparedOrderId: engine.state.treatments.preparedOrders.at(-1)!.id,
+      });
+    } else execute(command);
   });
   const state = engine.snapshot();
   return {
@@ -41,14 +60,9 @@ const checks: ScenarioCommand = {
   allergyHistoryReviewed: true,
   administrationHistoryReviewed: true,
 };
-const aspirin = (dose: number): ScenarioCommand => ({
-  type: "administer",
-  order: {
-    drugId: "aspirin_300mg_tablet",
-    dose,
-    unit: "mg",
-    route: "oral",
-  },
+const aspirin = (dose: number): EvidenceCommand => ({
+  type: "give_aspirin",
+  dose,
 });
 
 const branchEvidence = {
