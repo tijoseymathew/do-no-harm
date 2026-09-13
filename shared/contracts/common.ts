@@ -107,6 +107,35 @@ export const EventTypeSchema = z.enum([
   "presenter.intervention",
 ]);
 
+export const MedicationEventPayloadSchema = z
+  .object({
+    medicationId: z.string().min(1),
+    entered: z
+      .object({
+        quantity: z.number().nullable(),
+        unit: z.string().min(1).nullable(),
+        route: z.string().min(1).nullable(),
+      })
+      .strict(),
+    normalized: z
+      .object({ quantity: z.number().positive(), unit: z.string().min(1) })
+      .strict()
+      .nullable(),
+    validation: z
+      .object({ status: z.enum(["accepted", "rejected"]), reasons: z.array(z.string().min(1)) })
+      .strict(),
+    administrationStatus: z.enum([
+      "attempted",
+      "prepared",
+      "blocked",
+      "canceled",
+      "authorized",
+      "administered",
+      "stopped",
+    ]),
+  })
+  .strict();
+
 export const RunEventSchema = z
   .object({
     contractVersion: ContractVersionSchema,
@@ -123,9 +152,21 @@ export const RunEventSchema = z
     causedBy: z.string().min(1).optional(),
     idempotencyKey: z.string().min(1).optional(),
   })
-  .strict();
+  .strict()
+  .superRefine((value, context) => {
+    if (!value.type.startsWith("medication.")) return;
+    const result = MedicationEventPayloadSchema.safeParse(value.payload);
+    if (!result.success) {
+      context.addIssue({
+        code: "custom",
+        path: ["payload"],
+        message: "Medication events must preserve entered parameters, normalization, validation, and administration status",
+      });
+    }
+  });
 
 export type ClinicalReview = z.infer<typeof ClinicalReviewSchema>;
 export type Observation = z.infer<typeof ObservationSchema>;
 export type Equipment = z.infer<typeof EquipmentSchema>;
+export type MedicationEventPayload = z.infer<typeof MedicationEventPayloadSchema>;
 export type RunEvent = z.infer<typeof RunEventSchema>;

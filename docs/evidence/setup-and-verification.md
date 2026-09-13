@@ -7,7 +7,7 @@ No secret values are retained here. Provider checks below used the server enviro
 | Command or check | Actual result | Gate relevance |
 |---|---|---|
 | `npm ci` | Clean lockfile install of 154 packages; audit reported 0 vulnerabilities | V01 |
-| `npm run verify` | Type checks passed; 2 test files / 9 tests passed; server compiled; Vite built 3 browser files; client boundary scan passed | V01, V02, V03, V06 |
+| `npm run verify` | Type checks passed; 2 test files / 10 tests passed; server compiled; Vite built 3 browser files; client boundary scan passed | V01, V02, V03, V06 |
 | `npm start` plus `curl` of `/`, `/api/health`, and `/api/cases/current` | Built app served; health exposed booleans/models only; case response omitted rubric and hidden medication-rule fields | V01, V03 |
 | `npm run probe:examiner` | Real managed session called `get_visible_state`, consumed its result, and completed | V05 |
 | Browser microphone / interruption check | Not run in this non-interactive terminal environment | V04 blocked |

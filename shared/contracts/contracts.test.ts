@@ -35,6 +35,23 @@ describe("versioned case contracts", () => {
     expect(result.success).toBe(false);
   });
 
+  it("rejects medication events that omit required audit details", () => {
+    const result = RunEventSchema.safeParse({
+      contractVersion: CONTRACT_VERSION,
+      id: "event_2",
+      runId: "run_1",
+      sequence: 2,
+      wallTime: "2026-09-13T00:00:01.000Z",
+      simulationTime: 1000,
+      actor: "student",
+      type: "medication.attempted",
+      payload: { medicationId: "aspirin_300mg_tablet" },
+      stateVersion: 0,
+      caseVersion: chestPainCaseV1.caseVersion,
+    });
+    expect(result.success).toBe(false);
+  });
+
   it("rejects absent required case fields", () => {
     const { patient: _patient, ...withoutPatient } = chestPainCaseV1;
     expect(CasePackSchema.safeParse(withoutPatient).success).toBe(false);
