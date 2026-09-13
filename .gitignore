@@ -1,0 +1,19 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Local run evidence and diagnostics
+runs/
+*.log
+
+# Editor and OS files
+.DS_Store
+.idea/
