@@ -1,0 +1,164 @@
+[
+  {
+    "id": "opening",
+    "start": 0.2,
+    "end": 5.9,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "The first time you manage a deteriorating patient shouldn't be the first time you've practised."
+  },
+  {
+    "id": "overview",
+    "start": 6.1,
+    "end": 11.9,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "Do No Harm brings patient conversation, bedside equipment, and an evidence-based examiner into your browser."
+  },
+  {
+    "id": "learner-question",
+    "start": 12.2,
+    "end": 15.2,
+    "voice": "coral",
+    "role": "Learner",
+    "direction": "Young adult medical student, calm and attentive.",
+    "text": "Can you tell me about the chest pressure?"
+  },
+  {
+    "id": "patient-pressure",
+    "start": 15.4,
+    "end": 19.3,
+    "voice": "cedar",
+    "role": "Patient",
+    "direction": "Fictional 58-year-old patient, mildly anxious, subdued voice. No gasping or extra sounds.",
+    "text": "It's a heavy pressure in the middle of my chest."
+  },
+  {
+    "id": "learner-onset",
+    "start": 19.5,
+    "end": 21.4,
+    "voice": "coral",
+    "role": "Learner",
+    "direction": "Young adult medical student, calm and attentive.",
+    "text": "When did it start?"
+  },
+  {
+    "id": "patient-onset",
+    "start": 21.6,
+    "end": 25.8,
+    "voice": "cedar",
+    "role": "Patient",
+    "direction": "Fictional 58-year-old patient, mildly anxious, subdued voice.",
+    "text": "About forty-five minutes ago, while I was resting."
+  },
+  {
+    "id": "prepare",
+    "start": 26.2,
+    "end": 27.8,
+    "voice": "coral",
+    "role": "Learner",
+    "direction": "Young adult medical student, clear and calm.",
+    "text": "Prepare aspirin."
+  },
+  {
+    "id": "draft-ack",
+    "start": 28.1,
+    "end": 30.3,
+    "voice": "sage",
+    "role": "Nurse",
+    "direction": "Calm clinical facilitator, brisk and clear.",
+    "text": "Draft opened for review."
+  },
+  {
+    "id": "confirmation",
+    "start": 30.6,
+    "end": 35.8,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "Voice prepares the order. Administration still needs my confirmation."
+  },
+  {
+    "id": "handoff-claim",
+    "start": 36.2,
+    "end": 38.0,
+    "voice": "coral",
+    "role": "Learner",
+    "direction": "Young adult medical student, clear and calm.",
+    "text": "I gave aspirin."
+  },
+  {
+    "id": "examiner-question",
+    "start": 38.3,
+    "end": 44.1,
+    "voice": "ash",
+    "role": "Examiner",
+    "direction": "Neutral, measured examiner. This is a revoicing of an earlier real checkpoint question.",
+    "text": "How would you describe the documented status of aspirin in your handoff?"
+  },
+  {
+    "id": "learner-correction",
+    "start": 44.4,
+    "end": 48.7,
+    "voice": "coral",
+    "role": "Learner",
+    "direction": "Young adult medical student, thoughtful acknowledgment.",
+    "text": "I prepared it, but didn't administer it."
+  },
+  {
+    "id": "architecture",
+    "start": 49.2,
+    "end": 54.4,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "Astra reads recorded evidence through the Agents API, then submits a validated question."
+  },
+  {
+    "id": "branches",
+    "start": 54.7,
+    "end": 59.8,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "The scenario can develop along multiple paths, shaped by your decisions and timing."
+  },
+  {
+    "id": "evidence",
+    "start": 60.2,
+    "end": 67.6,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "Every run keeps the exact record of what you said and did. Here, aspirin was prepared, with no administration receipt."
+  },
+  {
+    "id": "evaluation",
+    "start": 68.0,
+    "end": 75.7,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "Open the preparation event, the note, and the handoff. The evidence stays inspectable while final debrief generation is being completed."
+  },
+  {
+    "id": "proof",
+    "start": 76.2,
+    "end": 84.6,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator.",
+    "text": "An earlier real integration verified one Astra session across two checkpoints. Practice, inspect your decisions, and return better prepared."
+  },
+  {
+    "id": "closing",
+    "start": 85.2,
+    "end": 89.8,
+    "voice": "marin",
+    "role": "Narrator",
+    "direction": "Warm, confident documentary narrator, clear memorable closing.",
+    "text": "Do No Harm. Practise the decision. Learn before it matters."
+  }
+]

@@ -1,0 +1,15 @@
+# Dependencies, caches and local environment
+node_modules/
+dist/
+.DS_Store
+.env
+.env.*
+
+# Captures, provider receipts, generated voices and exports stay local.
+sources/
+public/
+out/
+
+# Recreated by setup-assets.mjs and mix-live-audio.py.
+src/captions.json
+src/proof.json

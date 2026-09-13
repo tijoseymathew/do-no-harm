@@ -1,0 +1,12 @@
+@font-face {
+  font-family: Inter;
+  src: url("../public/Inter.woff2") format("woff2");
+  font-weight: 100 900;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #07151d;
+}
