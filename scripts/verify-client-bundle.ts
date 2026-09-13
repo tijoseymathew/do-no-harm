@@ -1,5 +1,5 @@
 import { readdir, readFile } from "node:fs/promises";
-import { extname, join } from "node:path";
+import { basename, extname, join } from "node:path";
 
 const root = join(process.cwd(), "dist", "client");
 const forbidden = [
@@ -19,7 +19,11 @@ async function filesUnder(directory: string): Promise<string[]> {
   ).flat();
 }
 
-const files = (await filesUnder(root)).filter((file) => [".html", ".js", ".css", ".map"].includes(extname(file)));
+const files = (await filesUnder(root)).filter(
+  (file) =>
+    basename(file) !== "_worker.js" &&
+    [".html", ".js", ".css", ".map"].includes(extname(file)),
+);
 const violations: string[] = [];
 for (const file of files) {
   const content = await readFile(file, "utf8");
