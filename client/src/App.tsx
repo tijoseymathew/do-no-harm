@@ -4,13 +4,23 @@ import {
   type StudentCase,
 } from "../../shared/contracts/student.js";
 import type {
-  FixtureCommand,
-  FixtureState,
-} from "../../shared/contracts/fixture.js";
+  ScenarioCommand,
+  ScenarioSnapshot,
+} from "../../shared/contracts/scenario.js";
 import { Room, stations, type Station } from "./Room.js";
 import { Monitor } from "./Monitor.js";
 import { Medication } from "./Medication.js";
 import { Probe } from "./Probe.js";
+
+class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly state?: ScenarioSnapshot,
+  ) {
+    super(message);
+  }
+}
 
 async function json<T>(url: string, body?: unknown): Promise<T> {
   const response = await fetch(url, {
@@ -24,7 +34,12 @@ async function json<T>(url: string, body?: unknown): Promise<T> {
         }),
   });
   const result = await response.json();
-  if (!response.ok) throw new Error(result.error ?? "Server unavailable");
+  if (!response.ok)
+    throw new ApiError(
+      result.error ?? "Server unavailable",
+      response.status,
+      result.state,
+    );
   return result as T;
 }
 export function App() {
@@ -33,16 +48,16 @@ export function App() {
 }
 function Bedside() {
   const [patient, setPatient] = useState<StudentCase>();
-  const [state, setState] = useState<FixtureState>();
+  const [state, setState] = useState<ScenarioSnapshot>();
   const [selected, setSelected] = useState<Station>("Patient");
-  const [paused, setPaused] = useState(false);
+  const [syncLost, setSyncLost] = useState(false);
   const [reduced, setReduced] = useState(
     () => matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const [muted, setMuted] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const authoritative = useRef<FixtureState>(undefined);
+  const authoritative = useRef<ScenarioSnapshot>(undefined);
   const locked = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const audio = useRef<AudioContext>(undefined);
@@ -56,7 +71,7 @@ function Bedside() {
       json<unknown>("/api/cases/current").then((value) =>
         StudentCaseSchema.parse(value),
       ),
-      json<FixtureState>("/api/fixtures", {}),
+      json<ScenarioSnapshot>("/api/runs", {}),
     ])
       .then(([p, s]) => {
         if (active) {
@@ -78,24 +93,35 @@ function Bedside() {
     query.addEventListener("change", change);
     return () => query.removeEventListener("change", change);
   }, []);
-  const send = useCallback(async (command: FixtureCommand) => {
+  const send = useCallback(async (command: ScenarioCommand) => {
     const s = authoritative.current;
     if (!s || locked.current) return false;
     locked.current = true;
     setBusy(true);
     try {
-      const updated = await json<FixtureState>(
-        `/api/fixtures/${s.id}/commands`,
-        { revision: s.revision, key: crypto.randomUUID(), command },
+      const updated = await json<ScenarioSnapshot>(
+        `/api/runs/${s.id}/commands`,
+        {
+          revision: s.revision,
+          idempotencyKey: crypto.randomUUID(),
+          command,
+        },
       );
       authoritative.current = updated;
       setState(updated);
       setError("");
+      setSyncLost(false);
       return true;
     } catch (e) {
-      setPaused(true);
+      if (e instanceof ApiError && e.status === 422 && e.state) {
+        authoritative.current = e.state;
+        setState(e.state);
+        setError(e.message);
+        return false;
+      }
+      setSyncLost(true);
       setError(
-        `${e instanceof Error ? e.message : "Connection lost"} Fixture paused. Refresh state before continuing.`,
+        `${e instanceof Error ? e.message : "Connection lost"} Simulation paused locally. Refresh state before continuing.`,
       );
       return false;
     } finally {
@@ -104,15 +130,15 @@ function Bedside() {
     }
   }, []);
   useEffect(() => {
-    if (paused || !state) return;
+    if (syncLost || !state?.clock.running) return;
     const timer = setInterval(
       () => void send({ type: "advance", seconds: 1 }),
       1000,
     );
     return () => clearInterval(timer);
-  }, [paused, Boolean(state), send]);
+  }, [syncLost, state?.clock.running, send]);
   useEffect(() => {
-    if (muted || paused || !state?.sensors.ecg) return;
+    if (muted || syncLost || !state?.clock.running || !state.sensors.ecg) return;
     const timer = setInterval(() => {
       const ctx = audio.current;
       if (!ctx) return;
@@ -125,9 +151,15 @@ function Bedside() {
       gain.connect(ctx.destination);
       tone.start();
       tone.stop(ctx.currentTime + 0.07);
-    }, 60000 / state.pulseRate);
+    }, 60000 / state.physiology.heartRate);
     return () => clearInterval(timer);
-  }, [muted, paused, state?.sensors.ecg, state?.pulseRate]);
+  }, [
+    muted,
+    syncLost,
+    state?.clock.running,
+    state?.sensors.ecg,
+    state?.physiology.heartRate,
+  ]);
   useEffect(
     () => () => {
       void audio.current?.close();
@@ -139,13 +171,14 @@ function Bedside() {
     locked.current = true;
     setBusy(true);
     try {
-      const s = await json<FixtureState>(`/api/fixtures/${state.id}`);
+      const s = await json<ScenarioSnapshot>(`/api/runs/${state.id}`);
       authoritative.current = s;
       setState(s);
       setError("");
+      setSyncLost(false);
     } catch {
       setError(
-        "Server unavailable. Fixture remains paused; try Refresh state again.",
+        "Server unavailable. Simulation remains paused locally; try Refresh state again.",
       );
     } finally {
       locked.current = false;
@@ -162,21 +195,23 @@ function Bedside() {
           </h1>
         </div>
         <div className="toolbar">
-          <span className="clock" aria-label="Fixture time">
-            {Math.floor((state?.simulationTimeMs ?? 0) / 60000)
+          <span className="clock" aria-label="Simulation time">
+            {Math.floor((state?.clock.simulationTimeMs ?? 0) / 60000)
               .toString()
               .padStart(2, "0")}
             :
-            {Math.floor(((state?.simulationTimeMs ?? 0) / 1000) % 60)
+            {Math.floor(((state?.clock.simulationTimeMs ?? 0) / 1000) % 60)
               .toString()
               .padStart(2, "0")}
           </span>
           <button
             className="secondary"
-            disabled={!state || !!error}
-            onClick={() => setPaused(!paused)}
+            disabled={!state || busy || syncLost}
+            onClick={() =>
+              void send({ type: state?.clock.running ? "pause" : "resume" })
+            }
           >
-            {paused ? "Resume" : "Pause"}
+            {state?.clock.running ? "Pause" : "Resume"}
           </button>
           <button
             className="secondary"
@@ -193,10 +228,10 @@ function Bedside() {
           </button>
           <button
             className="secondary"
-            disabled={!state || busy || !!error}
+            disabled={!state || busy || syncLost || !state.clock.running}
             onClick={() => void send({ type: "advance", seconds: 30 })}
           >
-            Advance fixture +30 s
+            Advance scenario +30 s
           </button>
           <label className="motion">
             <input
@@ -209,17 +244,16 @@ function Bedside() {
         </div>
       </header>
       <div className="fixture-banner">
-        FIXTURE-BACKED SERVER{" "}
+        DETERMINISTIC ENGINE · DEVELOPMENT RULES{" "}
         <span>
-          Interaction practice only · physiology is fixture-driven · clinical
-          content unreviewed
+          Server-authoritative state and effects · clinical content unreviewed
         </span>
         <a href="/probe">API probe ↗</a>
       </div>
       {error && (
         <div className="error" role="alert">
           {error}{" "}
-          {state && (
+          {state && syncLost && (
             <button onClick={() => void refresh()} disabled={busy}>
               Refresh state
             </button>
@@ -234,12 +268,12 @@ function Bedside() {
               select={select}
               state={state}
               reduced={reduced}
-              paused={paused || !!error}
+              paused={!state.clock.running || syncLost}
             />
             <aside>
               <Monitor
                 state={state}
-                paused={paused || !!error}
+                paused={!state.clock.running || syncLost}
                 reduced={reduced}
               />
               <section className="equipment" aria-label="Active equipment">
@@ -257,7 +291,7 @@ function Bedside() {
                       {patient.patient.weightKg} kg · fictional patient
                     </p>
                     <p>{patient.patient.presentingComplaint}</p>
-                    <p>Alert, anxious, pale and clammy.</p>
+                    <p>{state.physiology.presentation}.</p>
                     <p className="muted">
                       Focused assessment and conversation are unavailable in
                       this interaction slice.
@@ -281,7 +315,7 @@ function Bedside() {
                           className="secondary"
                           key={key}
                           aria-pressed={state.sensors[key]}
-                          disabled={busy || !!error}
+                          disabled={busy || syncLost}
                           onClick={() =>
                             void send({
                               type: "sensor",
@@ -296,7 +330,7 @@ function Bedside() {
                       ))}
                     </div>
                     <button
-                      disabled={!state.sensors.cuff || busy || !!error}
+                      disabled={!state.sensors.cuff || busy || syncLost}
                       onClick={() => void send({ type: "measure_bp" })}
                     >
                       {state.measurements.bp
@@ -313,7 +347,7 @@ function Bedside() {
                   <Medication
                     patient={patient}
                     state={state}
-                    busy={busy || !!error}
+                    busy={busy || syncLost}
                     send={send}
                   />
                 )}
@@ -321,11 +355,53 @@ function Bedside() {
                   <>
                     <h3>Oxygen and IV station</h3>
                     <p>
-                      Oxygen tubing: not connected. IV access: not established.
+                      IV access: {state.devices.ivAccess.established
+                        ? "established"
+                        : "not established"}
+                      .
+                    </p>
+                    {!state.devices.ivAccess.established && (
+                      <button
+                        disabled={busy || syncLost}
+                        onClick={() => void send({ type: "establish_iv" })}
+                      >
+                        Establish simulated IV access
+                      </button>
+                    )}
+                    {state.devices.ivAccess.established &&
+                      state.devices.fluidPump.status !== "running" && (
+                        <button
+                          disabled={busy || syncLost}
+                          onClick={() =>
+                            void send({
+                              type: "start_fluid",
+                              fluidId: "sodium_chloride_0_9",
+                              volume: 500,
+                              volumeUnit: "mL",
+                              rate: 500,
+                              rateUnit: "mL/h",
+                            })
+                          }
+                        >
+                          Start 500 mL at 500 mL/h
+                        </button>
+                      )}
+                    {state.devices.fluidPump.status === "running" && (
+                      <button
+                        disabled={busy || syncLost}
+                        onClick={() => void send({ type: "stop_fluid" })}
+                      >
+                        Stop fluid
+                      </button>
+                    )}
+                    <p>
+                      Fluid: {state.devices.fluidPump.status} ·{" "}
+                      {state.devices.fluidPump.deliveredVolumeMl.toFixed(1)} mL
+                      delivered
                     </p>
                     <p className="unavailable">
-                      Unavailable in Phase 02: oxygen settings, IV access and
-                      fluids. Suction is set dressing only.
+                      Oxygen settings remain unavailable. Suction is set
+                      dressing only.
                     </p>
                   </>
                 )}
@@ -361,9 +437,20 @@ function Bedside() {
                   <>
                     <h3>Senior call station</h3>
                     <p className="unavailable">
-                      Senior review, handoff and authorization unavailable in
-                      Phase 02.
+                      {state.senior.acknowledgedAtMs !== null
+                        ? "Senior review acknowledged."
+                        : state.senior.requestedAtMs !== null
+                          ? "Senior review requested; acknowledgment pending."
+                          : "Senior review has not been requested."}
                     </p>
+                    {state.senior.requestedAtMs === null && (
+                      <button
+                        disabled={busy || syncLost}
+                        onClick={() => void send({ type: "request_senior" })}
+                      >
+                        Request senior review
+                      </button>
+                    )}
                   </>
                 )}
               </section>
@@ -388,8 +475,11 @@ function Bedside() {
           </nav>
           <footer>
             <span>
-              {paused ? "Fixture paused" : "Fixture clock running"} ·
-              Medications do not alter physiology
+              {state.clock.running
+                ? "Simulation clock running"
+                : "Simulation paused"}
+              {" · server revision "}
+              {state.revision}
             </span>
           </footer>
         </>
@@ -397,7 +487,7 @@ function Bedside() {
         <p role="status">
           {error
             ? "Unable to load bedside. Reload to retry."
-            : "Loading fixture bedside…"}
+            : "Loading deterministic bedside…"}
         </p>
       )}
     </main>

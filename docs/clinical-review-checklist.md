@@ -1,8 +1,10 @@
 # Clinical content review checklist
 
-Case: `adult_chest_pain` version `1.0.0-draft.1`.
+Case: `adult_chest_pain` version `1.0.0-draft.2`.
 
 Status: **Draft, unreviewed. Not educationally validated.**
+
+Machine-readable rule inventory and current review results: [Phase 03 clinical-rule review record](evidence/phase-03/clinical-rule-review.json). Every listed rule is restricted to `development_fixture_only` until this checklist is signed.
 
 The fictional patient and schema are suitable for software integration only until an appropriately qualified reviewer completes this checklist for the whole case. Software tests do not constitute clinical review.
 
@@ -24,9 +26,11 @@ The fictional patient and schema are suitable for software integration only unti
 ## Treatments and progression
 
 - [ ] Review the complete aspirin rule: indication, 300 mg oral crushed/chewed example, contraindications, prerequisites, duplicate handling, and lack of an instant vital-sign effect.
+- [ ] Review the 60-second aspirin engine effect marker and confirm that it records the authored action without changing vital signs.
 - [ ] If nitrate or analgesia is added, review its dose, unit, formulation, route, contraindications, authorization, repeat interval, cumulative maximum, onset/duration, and response rule.
 - [ ] Review oxygen thresholds and every available device/setting for this patient.
 - [ ] Review IV access, fluid availability, volume/rate limits, contraindications, and effects.
+- [ ] Review or replace the sodium-chloride development fixture's 500 mL volume limit, 1,000 mL/h rate limit, and no-physiology-effect behavior.
 - [ ] Review timely, delayed, and inappropriate-attempt paths, including entry conditions, observation changes, effect delays, exits, and timeouts.
 - [ ] Confirm acceptable alternative action orders and escalation choices are not incorrectly penalized.
 - [ ] Confirm unsupported actions are blocked or labeled unavailable without invented consequences.

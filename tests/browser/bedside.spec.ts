@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { mkdir, copyFile, writeFile } from "node:fs/promises";
 import { PerspectiveCamera, Vector3 } from "three";
 
-const evidence = "docs/evidence/phase-02";
+const evidence = "docs/evidence/phase-03";
 
 test("3D equipment hotspots open the matching HTML panel", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -117,9 +117,13 @@ for (const viewport of [
     await page.getByRole("button", { name: "Measure BP", exact: true }).click();
     await expect(page.getByText(/^0 s ago/)).toBeVisible();
     await page
-      .getByRole("button", { name: "Advance fixture +30 s", exact: true })
+      .getByRole("button", { name: "Resume", exact: true })
       .click();
-    await expect(page.getByText(/^30 s ago/)).toBeVisible();
+    await page
+      .getByRole("button", { name: "Advance scenario +30 s", exact: true })
+      .click();
+    await page.getByRole("button", { name: "Pause", exact: true }).click();
+    await expect(page.getByText(/^3[01] s ago/)).toBeVisible();
     await page.getByRole("button", { name: "Repeat BP measurement" }).click();
     await expect(page.getByText(/^0 s ago/)).toBeVisible();
     for (const name of ["ECG leads", "SpO₂ probe", "BP cuff"])
@@ -180,7 +184,7 @@ for (const viewport of [
       dose: 300,
       unit: "mg",
       route: "oral",
-      mode: "fixture",
+      mode: "development_fixture",
       status: "administered",
     });
     await writeFile(
@@ -265,7 +269,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
   });
 }
 
-test("lost acknowledgment pauses the fixture and refresh recovers the accepted receipt", async ({
+test("lost acknowledgment pauses locally and refresh recovers the accepted receipt", async ({
   page,
 }) => {
   await open(page);
@@ -279,7 +283,7 @@ test("lost acknowledgment pauses the fixture and refresh recovers the accepted r
     await route.abort("failed");
   });
   await page.getByRole("button", { name: "Administer", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("Fixture paused");
+  await expect(page.getByRole("alert")).toContainText("Simulation paused locally");
   await page.unroute("**/commands");
   await page.getByRole("button", { name: "Refresh state" }).click();
   await expect(

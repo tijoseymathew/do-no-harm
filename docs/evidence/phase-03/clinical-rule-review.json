@@ -1,0 +1,37 @@
+{
+  "generatedBy": "npm run evidence:phase03",
+  "caseVersion": "1.0.0-draft.2",
+  "clinicalAcceptance": "blocked_pending_qualified_review",
+  "rules": [
+    {
+      "kind": "scenario_progression",
+      "id": "adult_chest_pain_progression",
+      "enabledScope": "development_fixture_only",
+      "sourceTitle": "DO NO HARM product specification: authored scenario rules",
+      "sourcePath": "specs.md#3-authored-scenario-and-progression",
+      "sourceRevision": "Updated 13 September 2026",
+      "sourceApplicability": "local_development_fixture",
+      "reviewStatus": "draft_unreviewed"
+    },
+    {
+      "kind": "medication",
+      "id": "aspirin_300mg_tablet",
+      "enabledScope": "development_fixture_only",
+      "sourceTitle": "Resuscitation Council UK: The ABCDE Approach",
+      "sourceUrl": "https://www.resus.org.uk/library/abcde-approach",
+      "sourceRevision": "Published October 2015; reviewed May 2021; updated July 2024",
+      "sourceApplicability": "clinical_source",
+      "reviewStatus": "draft_unreviewed"
+    },
+    {
+      "kind": "fluid",
+      "id": "sodium_chloride_0_9",
+      "enabledScope": "development_fixture_only",
+      "sourceTitle": "DO NO HARM product specification: authored scenario rules",
+      "sourcePath": "specs.md#3-authored-scenario-and-progression",
+      "sourceRevision": "Updated 13 September 2026",
+      "sourceApplicability": "local_development_fixture",
+      "reviewStatus": "draft_unreviewed"
+    }
+  ]
+}

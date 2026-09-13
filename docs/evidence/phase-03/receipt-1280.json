@@ -1,0 +1,15 @@
+{
+  "id": "a277e07c-0494-4213-8975-b09c15e54011",
+  "medicationId": "aspirin_300mg_tablet",
+  "dose": 300,
+  "unit": "mg",
+  "route": "oral",
+  "normalizedQuantity": 300,
+  "normalizedUnit": "mg",
+  "cumulativeQuantity": 300,
+  "simulationTimeMs": 30000,
+  "actor": "student",
+  "status": "administered",
+  "mode": "development_fixture",
+  "effectDueAtMs": 90000
+}

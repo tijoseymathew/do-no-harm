@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { FixtureState } from "../../shared/contracts/fixture.js";
+import type { ScenarioSnapshot } from "../../shared/contracts/scenario.js";
 
 const SWEEP_MS = 4000;
 
@@ -123,18 +123,18 @@ export function Monitor({
   paused,
   reduced,
 }: {
-  state: FixtureState;
+  state: ScenarioSnapshot;
   paused: boolean;
   reduced: boolean;
 }) {
   const m = state.measurements;
-  const plethRate = state.sensors.spo2 ? state.pulseRate : null;
+  const plethRate = state.sensors.spo2 ? state.physiology.heartRate : null;
   return (
     <section className="monitor" aria-label="Bedside monitor summary">
       <div className="monitor-bar">
         <h2>Bedside monitor</h2>
         <span className="monitor-alarms">ALARMS OFF</span>
-        <span className="tag">FIXTURE</span>
+        <span className="tag">ENGINE</span>
       </div>
       <div className="monitor-screen">
         <div className="channel" data-channel="ecg">
@@ -182,7 +182,7 @@ export function Monitor({
           <div className="tile" data-channel="resp">
             <span>RR · breaths/min</span>
             <strong>{m.rr}</strong>
-            <small>Counted · no resp sensor</small>
+            <small>Engine observation · no resp sensor</small>
           </div>
           <div className="tile" data-channel="nibp">
             <span>NIBP · mmHg</span>
@@ -200,7 +200,9 @@ export function Monitor({
         </div>
       </div>
       <p className="monitor-note">
-        ⓘ Fixture physiology · alarms and trends unavailable
+        {state.branch.kind === "delayed_care"
+          ? "⚠ Authored deterioration active · development fixture"
+          : "ⓘ Server physiology · clinical rules unreviewed"}
       </p>
     </section>
   );

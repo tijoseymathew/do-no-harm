@@ -1,0 +1,70 @@
+import { appendFile, mkdir } from "node:fs/promises";
+import path from "node:path";
+import type { CasePack } from "../shared/contracts/server.js";
+import type { ScenarioSnapshot } from "../shared/contracts/scenario.js";
+import {
+  ScenarioEngine,
+  type CommandEnvelope,
+  type CommandResult,
+} from "./scenario-engine.js";
+
+interface StoredRun {
+  engine: ScenarioEngine;
+  queue: Promise<void>;
+}
+
+export class ScenarioStore {
+  private readonly runs = new Map<string, StoredRun>();
+
+  constructor(
+    private readonly casePack: CasePack,
+    private readonly runDirectory = path.resolve("runs"),
+  ) {}
+
+  get size() {
+    return this.runs.size;
+  }
+
+  async create(): Promise<ScenarioSnapshot> {
+    const engine = new ScenarioEngine(this.casePack);
+    this.runs.set(engine.state.id, { engine, queue: Promise.resolve() });
+    await this.append(engine.state.id, [
+      { recordType: "case_snapshot", case: this.casePack },
+      ...engine.eventLog().map((event) => ({ recordType: "event", event })),
+      { recordType: "state_snapshot", state: engine.snapshot() },
+    ]);
+    return engine.snapshot();
+  }
+
+  get(id: string): ScenarioSnapshot | null {
+    return this.runs.get(id)?.engine.snapshot() ?? null;
+  }
+
+  events(id: string) {
+    return this.runs.get(id)?.engine.eventLog() ?? null;
+  }
+
+  async execute(id: string, envelope: CommandEnvelope): Promise<CommandResult | null> {
+    const run = this.runs.get(id);
+    if (!run) return null;
+    let result: CommandResult | undefined;
+    const operation = run.queue.then(async () => {
+      result = run.engine.execute(envelope);
+      const records: unknown[] = result.duplicate
+        ? []
+        : result.events.map((event) => ({ recordType: "event", event }));
+      if (!result.duplicate)
+        records.push({ recordType: "state_snapshot", state: result.state });
+      if (records.length) await this.append(id, records);
+    });
+    run.queue = operation.catch(() => undefined);
+    await operation;
+    return result!;
+  }
+
+  private async append(id: string, records: unknown[]) {
+    await mkdir(this.runDirectory, { recursive: true });
+    const body = records.map((record) => JSON.stringify(record)).join("\n") + "\n";
+    await appendFile(path.join(this.runDirectory, `${id}.jsonl`), body, "utf8");
+  }
+}

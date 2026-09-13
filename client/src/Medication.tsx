@@ -1,11 +1,11 @@
 import { useState } from "react";
 import type { StudentCase } from "../../shared/contracts/student.js";
 import {
-  OrderSchema,
-  type FixtureCommand,
-  type FixtureState,
-  type Order,
-} from "../../shared/contracts/fixture.js";
+  ReviewableMedicationOrderSchema,
+  type ReviewableMedicationOrder,
+  type ScenarioCommand,
+  type ScenarioSnapshot,
+} from "../../shared/contracts/scenario.js";
 
 export function Medication({
   patient,
@@ -14,19 +14,19 @@ export function Medication({
   send,
 }: {
   patient: StudentCase;
-  state: FixtureState;
+  state: ScenarioSnapshot;
   busy: boolean;
-  send: (command: FixtureCommand) => Promise<boolean>;
+  send: (command: ScenarioCommand) => Promise<boolean>;
 }) {
   const [dose, setDose] = useState("");
   const [route, setRoute] = useState("");
   const [unit, setUnit] = useState("");
-  const [review, setReview] = useState<Order>();
+  const [review, setReview] = useState<ReviewableMedicationOrder>();
   const [error, setError] = useState("");
   const drug = patient.formulary[0]!;
-  function prepare(event: React.SubmitEvent) {
+  async function prepare(event: React.SubmitEvent) {
     event.preventDefault();
-    const parsed = OrderSchema.safeParse({
+    const parsed = ReviewableMedicationOrderSchema.safeParse({
       drugId: drug.id,
       dose: dose.trim() ? Number(dose) : 0,
       unit,
@@ -36,6 +36,12 @@ export function Medication({
       setError("Enter a positive dose and select its unit and route.");
       return;
     }
+    const checksRecorded = await send({
+      type: "confirm_medication_checks",
+      allergyHistoryReviewed: true,
+      administrationHistoryReviewed: true,
+    });
+    if (!checksRecorded) return;
     setError("");
     setReview(parsed.data);
   }
@@ -65,12 +71,13 @@ export function Medication({
             Student · {(last.simulationTimeMs / 1000).toFixed(0)} s ·{" "}
             {last.status}
             <br />
-            Cumulative fixture dose: {last.dose} {last.unit}. Trolley updated.
+            Cumulative normalized dose: {last.cumulativeQuantity}{" "}
+            {last.normalizedUnit}. Trolley updated.
           </p>
           <small>Receipt {last.id}</small>
           <p>
-            Fixture receipt only. No clinical eligibility check or physiological
-            effect.
+            Server-validated development receipt. Clinical rules remain
+            unreviewed.
           </p>
         </div>
       ) : (
@@ -147,8 +154,8 @@ export function Medication({
               </p>
               <p>
                 Confirm identity, allergies, contraindications and prior doses.
-                Fixture validates format only; clinical eligibility and
-                authorization unavailable.
+                The server validates dose, units, route, cumulative exposure,
+                repeat timing, access, and authorization against the case rule.
               </p>
               <div className="actions">
                 <button

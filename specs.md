@@ -71,7 +71,7 @@ Use the [Resuscitation Council UK ABCDE approach](https://www.resus.org.uk/libra
 
 | Phase | Student experience | Engine behavior |
 |---|---|---|
-| Arrival | Patient reports chest pain; unconnected measurements display “not connected” | Establish baseline physiology and simulation clock; reveal only observable findings |
+| Arrival | Nurse/facilitator states the authored voice briefing (role, patient identity, complaint, visible appearance, task), then the patient may speak the opening line; unconnected measurements display “not connected” | Establish baseline physiology and simulation clock; reveal only observable findings; do not release unelicited history |
 | Initial assessment | Ask history, examine, attach sensors, measure BP, request ECG | Release authored findings and start acquisition timers |
 | Decision | Interpret ECG, check contraindications, prepare medication, choose supportive measures | Validate prerequisites and treatment parameters; record proposed and completed actions separately |
 | Timely care | Administer eligible treatment, reassess, request senior support | Apply only authored effects after their specified delays; acknowledge escalation |
@@ -126,7 +126,27 @@ Reject malformed input, missing units, unsupported routes, nonpositive quantitie
 
 ## 5. Conversation and examiner behavior
 
-GPT-Live-1 introduces the case, supports interruptions, voices authored patient answers, acknowledges completed actions, and delivers the examiner's follow-up/debrief. A role label identifies **Patient**, **Nurse**, or **Examiner**; one voice is sufficient initially. Patient answers contain only information the patient could know. Equipment findings come from the application state.
+GPT-Live-1 starts the conversation with the authored **voice briefing**, supports interruptions, voices authored patient answers, acknowledges completed actions, and delivers the examiner's follow-up/debrief. A role label identifies **Patient**, **Nurse**, or **Examiner**; one voice is sufficient initially. The first spoken turn is Nurse/facilitator. Patient answers contain only information the patient could know. Equipment findings come from the application state.
+
+The voice briefing is case-pack copy (`voiceBriefing`), not model-invented. It must mention the student-visible **requirements of this run** and nothing that belongs in history-taking or the hidden rubric:
+
+Must include:
+
+- That this is a formative emergency simulation and the learner is the medical student at the bedside
+- Patient identity, age, presenting complaint, and currently visible appearance
+- The task: assess and manage the patient, then ask what they want to do
+
+Must not include:
+
+- Unelicited history (onset, radiation, associated symptoms, medications, comorbidities, full allergy narrative)
+- Expected next actions, ABCDE as a script, drug names, doses, routes, or “get an ECG first”
+- Hidden diagnosis, rubric criteria, or grading language
+
+Chest-pain briefing (authoritative until the case pack is revised):
+
+> This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?
+
+After that stem, the student obtains the focused history by asking. The patient's opening line remains a first-person utterance, not a substitute for the briefing. The facilitator does not menu the next clinical step. Available equipment is in the room; the student chooses.
 
 The student can say “prepare aspirin” to open a draft medication panel. Missing or ambiguous dose/route information stays unfilled and requires clarification. Neither voice nor examiner tools can bypass the final administration control or change physiology directly.
 
@@ -229,7 +249,7 @@ Cut decorative props, ambient sound, elaborate patient animation, dictation, ext
 
 | Time | Audience sees |
 |---|---|
-| 0:00–0:20 | Emergency bay opens; distressed patient speaks; student starts assessment |
+| 0:00–0:20 | Emergency bay opens; Nurse speaks the authored briefing (simulation, student role, Morgan Lee, 58, chest pressure, pale and clammy, assess and manage); patient may then speak; student starts assessment |
 | 0:20–0:45 | Student connects monitoring, measures BP, and acquires/opens the ECG |
 | 0:45–1:20 | Student checks medication history, enters dose and route, reviews, and administers; receipt appears |
 | 1:20–1:45 | Student observes the authored trend, reassesses, and adjusts a relevant supportive treatment |

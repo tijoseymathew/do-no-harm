@@ -34,6 +34,7 @@ export const StudentCaseSchema = z
       })
       .strict(),
     opening: z.string().min(1),
+    voiceBriefing: z.string().min(1),
     initialObservations: z.array(ObservationSchema),
     equipment: z.array(EquipmentSchema),
     formulary: z.array(StudentMedicationSchema),
