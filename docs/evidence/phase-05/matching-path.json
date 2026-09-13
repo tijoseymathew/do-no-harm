@@ -1,0 +1,406 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-13T11:33:49.295Z",
+  "providerMode": "verification_fixture",
+  "checkpoint": {
+    "status": "completed",
+    "message": "One grounded follow-up delivered.",
+    "sessionId": "fixture-examiner-1",
+    "output": {
+      "contractVersion": "1.0.0",
+      "kind": "follow_up",
+      "evidenceCutoffSequence": 7,
+      "followUpQuestion": "What evidence informed your most important decision so far?",
+      "criteria": []
+    }
+  },
+  "conversation": {
+    "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+    "messages": [
+      {
+        "role": "nurse",
+        "source": "authored",
+        "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "assisted": false,
+        "interrupted": false,
+        "correctsMessageId": null,
+        "id": "20f9fd87-2d50-45d9-bd55-3e98365a1822",
+        "eventId": "657a99ef-9766-4b43-b9de-7f3a8dba8d04",
+        "supersededByMessageId": null
+      },
+      {
+        "role": "student",
+        "source": "text",
+        "text": "I prepared aspirin but have not administered it.",
+        "assisted": false,
+        "interrupted": false,
+        "correctsMessageId": null,
+        "id": "d3c6bd4d-c4f0-404a-ae26-221bccdfcf23",
+        "eventId": "9cf32ed8-32a6-4c00-b4f5-a0ad8cdeaa94",
+        "supersededByMessageId": null
+      },
+      {
+        "role": "nurse",
+        "source": "text",
+        "text": "There are no medication administration receipts. Prepared orders have not been administered.",
+        "assisted": false,
+        "interrupted": false,
+        "correctsMessageId": null,
+        "id": "25b6ccbc-f25c-4f9e-a7b3-7be66d5add43",
+        "eventId": "6a2776c0-0a48-4079-9db8-3849ad157887",
+        "supersededByMessageId": null
+      },
+      {
+        "role": "examiner",
+        "source": "text",
+        "text": "What evidence informed your most important decision so far?",
+        "assisted": false,
+        "interrupted": false,
+        "correctsMessageId": null,
+        "id": "22d0dd12-3a07-4bdd-a9d4-3eef7723a728",
+        "eventId": "eef55d1b-3e57-4a5b-ac65-6b96168c2d2b",
+        "supersededByMessageId": null
+      }
+    ],
+    "medicationDraft": null,
+    "live": {
+      "status": "disconnected",
+      "sessionId": null
+    },
+    "examiner": {
+      "mode": "verification_fixture",
+      "model": "gpt-6-astra",
+      "sessionId": null,
+      "status": "completed",
+      "followUpDelivered": true,
+      "lastEvidenceCutoffSequence": 7,
+      "message": "One grounded follow-up delivered."
+    }
+  },
+  "run": {
+    "exportVersion": "1.0.0",
+    "exportedAt": "2026-09-13T11:33:49.295Z",
+    "case": {
+      "id": "adult_chest_pain",
+      "version": "1.0.0-draft.2",
+      "title": "Chest pain with evolving instability",
+      "educationalUse": "formative_simulation_only",
+      "clinicalReviewStatus": "draft_unreviewed"
+    },
+    "state": {
+      "id": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+      "revision": 1,
+      "caseVersion": "1.0.0-draft.2",
+      "mode": "development_fixture",
+      "lifecycle": "handoff",
+      "clock": {
+        "simulationTimeMs": 0,
+        "running": true,
+        "timeScale": 1
+      },
+      "physiology": {
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88,
+        "painScore": 8,
+        "presentation": "Alert, anxious, pale and clammy"
+      },
+      "sensors": {
+        "ecg": false,
+        "spo2": false,
+        "cuff": false
+      },
+      "measurements": {
+        "hr": null,
+        "spo2": null,
+        "rr": 20,
+        "bp": null
+      },
+      "assessments": [],
+      "investigations": [
+        {
+          "id": "twelve_lead_ecg",
+          "label": "12-lead ECG",
+          "kind": "ecg",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "troponin_i",
+          "label": "Troponin I",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "full_blood_count",
+          "label": "Full blood count",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "capillary_glucose",
+          "label": "Capillary glucose",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        }
+      ],
+      "devices": {
+        "oxygen": {
+          "status": "off",
+          "deviceId": null,
+          "setting": 0,
+          "unit": null
+        },
+        "ivAccess": {
+          "established": false,
+          "patency": "not_assessed",
+          "lastInspectedAtMs": null
+        },
+        "fluidPump": {
+          "status": "idle",
+          "fluidId": null,
+          "prescribedVolumeMl": 0,
+          "rateMlPerHour": 0,
+          "deliveredVolumeMl": 0,
+          "startedAtMs": null
+        }
+      },
+      "treatments": {
+        "prerequisites": {
+          "allergyHistoryReviewed": false,
+          "administrationHistoryReviewed": false
+        },
+        "receipts": [],
+        "preparedOrders": [],
+        "cumulativeDoses": {},
+        "pendingEffects": [],
+        "appliedEffects": []
+      },
+      "senior": {
+        "requestedAtMs": null,
+        "acknowledgedAtMs": null
+      },
+      "authorizations": [],
+      "notes": [],
+      "handoffs": [
+        {
+          "content": "Aspirin is prepared but has not been administered. Urgent senior review requested.",
+          "recordedAtMs": 0,
+          "eventId": "9364b049-3694-4036-8c72-b1d239f9e6e7"
+        }
+      ],
+      "finishedAtMs": null,
+      "branch": {
+        "kind": "arrival",
+        "enteredAtMs": 0,
+        "status": "active",
+        "reason": "Active session at the authored baseline",
+        "timeoutAtMs": null
+      },
+      "branchHistory": [],
+      "lastCommandResult": {
+        "status": "accepted",
+        "message": "Handoff recorded separately from the senior request."
+      },
+      "simulationTimeMs": 0,
+      "receipts": []
+    },
+    "events": [
+      {
+        "contractVersion": "1.0.0",
+        "id": "a4abf4c3-456d-47ba-ac8e-54b5f168099d",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 1,
+        "wallTime": "2026-09-13T11:33:49.287Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "session.started",
+        "payload": {
+          "mode": "development_fixture",
+          "reviewStatus": "draft_unreviewed"
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "657a99ef-9766-4b43-b9de-7f3a8dba8d04",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 2,
+        "wallTime": "2026-09-13T11:33:49.291Z",
+        "simulationTime": 0,
+        "actor": "nurse",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "20f9fd87-2d50-45d9-bd55-3e98365a1822",
+          "role": "nurse",
+          "source": "authored",
+          "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "9cf32ed8-32a6-4c00-b4f5-a0ad8cdeaa94",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 3,
+        "wallTime": "2026-09-13T11:33:49.292Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "d3c6bd4d-c4f0-404a-ae26-221bccdfcf23",
+          "role": "student",
+          "source": "text",
+          "text": "I prepared aspirin but have not administered it.",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "6a2776c0-0a48-4079-9db8-3849ad157887",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 4,
+        "wallTime": "2026-09-13T11:33:49.292Z",
+        "simulationTime": 0,
+        "actor": "nurse",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "25b6ccbc-f25c-4f9e-a7b3-7be66d5add43",
+          "role": "nurse",
+          "source": "text",
+          "text": "There are no medication administration receipts. Prepared orders have not been administered.",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "9cf32ed8-32a6-4c00-b4f5-a0ad8cdeaa94"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "9364b049-3694-4036-8c72-b1d239f9e6e7",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 5,
+        "wallTime": "2026-09-13T11:33:49.293Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "handoff.recorded",
+        "payload": {
+          "content": "Aspirin is prepared but has not been administered. Urgent senior review requested."
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "0ea5fb2f-21bc-423c-bfb3-5f8995732252"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "5c8ae3ff-812e-45cf-8732-9cadfaabb248",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 6,
+        "wallTime": "2026-09-13T11:33:49.293Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "session.handoff_started",
+        "payload": {},
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "9364b049-3694-4036-8c72-b1d239f9e6e7",
+        "idempotencyKey": "0ea5fb2f-21bc-423c-bfb3-5f8995732252"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "5c03c7b0-e15b-472d-8a3b-aac977d905c5",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 7,
+        "wallTime": "2026-09-13T11:33:49.293Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "examiner.checkpoint_started",
+        "payload": {
+          "kind": "handoff"
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "da1f4aa9-1235-40b9-9dcf-c2933fcd2fc0",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 8,
+        "wallTime": "2026-09-13T11:33:49.295Z",
+        "simulationTime": 0,
+        "actor": "examiner",
+        "type": "examiner.output_submitted",
+        "payload": {
+          "kind": "follow_up",
+          "evidenceCutoffSequence": 7,
+          "followUpQuestion": "What evidence informed your most important decision so far?",
+          "providerMode": "verification_fixture"
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "eef55d1b-3e57-4a5b-ac65-6b96168c2d2b",
+        "runId": "44d2f059-fd7a-4fbb-a44e-5d7802ec7364",
+        "sequence": 9,
+        "wallTime": "2026-09-13T11:33:49.295Z",
+        "simulationTime": 0,
+        "actor": "examiner",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "22d0dd12-3a07-4bdd-a9d4-3eef7723a728",
+          "role": "examiner",
+          "source": "text",
+          "text": "What evidence informed your most important decision so far?",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "da1f4aa9-1235-40b9-9dcf-c2933fcd2fc0"
+      }
+    ]
+  }
+}

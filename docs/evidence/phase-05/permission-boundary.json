@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-13T11:33:49.298Z",
+  "attemptedUnsafeOperations": 2,
+  "deniedOperations": 2,
+  "denials": [
+    "examiner is not permitted to call prepare_action",
+    "Follow-up contains disallowed rubric or treatment instructions"
+  ],
+  "administrationReceipts": 0
+}

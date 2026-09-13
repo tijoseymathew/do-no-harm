@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "provider": "OpenAI Agents API",
+  "mode": "real",
+  "mocked": false,
+  "model": "gpt-6-astra",
+  "sessionId": "sess_…f8113",
+  "startedAt": "2026-09-13T11:35:07.945Z",
+  "completedAt": "2026-09-13T11:36:46.487Z",
+  "checkpointStatus": "completed",
+  "activeCareCheckpointStatus": "completed",
+  "sameSessionAcrossCheckpoints": true,
+  "continuedSessionCheck": "skipped",
+  "followUpQuestion": "How would you describe the documented status of aspirin in your handoff?",
+  "evidenceCutoffSequence": 8,
+  "eventTypes": [
+    "session.started",
+    "transcript.recorded",
+    "transcript.recorded",
+    "transcript.recorded",
+    "examiner.checkpoint_started",
+    "handoff.recorded",
+    "session.handoff_started",
+    "examiner.checkpoint_started",
+    "examiner.output_submitted",
+    "transcript.recorded"
+  ],
+  "examinerOutputEvents": 1,
+  "administrationReceipts": 0
+}

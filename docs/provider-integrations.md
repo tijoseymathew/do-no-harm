@@ -52,6 +52,16 @@ The key needs `api.agents.read`, `api.agents.write`, and `api.responses.write`, 
 
 Receipts contain no credential or hidden reasoning. They retain provider/mode labels, masked session and call identifiers, event types, application tool arguments/results, final output text, and timestamps.
 
+## Grounded bedside integration
+
+The complete bedside uses the same provider contracts behind application-owned boundaries. `POST /api/live/session` binds the returned Live session ID to one run and limits the untrusted WebRTC data channel to audio controls, authored commentary, transcript/status events, and graceful close. Live tool routes require that matching run/session binding and expose only `get_case_fact`, `get_visible_state`, and `prepare_action`; they cannot administer treatment. The first visible transcript entry and first requested spoken commentary are the case pack's exact `voiceBriefing`.
+
+Each voice/text medication request creates an authoritative prepared order with its origin and any missing dose, unit, or route left as `null`. Updating those fields still does not administer it. The normal medication checks and `administer_prepared` command remain the only path to a receipt and authored effect.
+
+The examiner receives only `get_evidence` and `submit_examiner_output`. The server fixes an evidence sequence cutoff, validates every submitted evidence ID and the single neutral question, rejects rubric/treatment instructions, serializes checkpoint turns, and suppresses output if evidence changes while a turn is running. Assessment/treatment checkpoints continue the managed session without interrupting the learner; handoff/reasoning may deliver at most one follow-up. A provider turn that returns plain text without the required output tool gets one serialized repair request on the same session; unvalidated text is never shown.
+
+Run `npm run evidence:phase05` for deterministic boundary exports and `npm run verify:phase05:real` for the sanitized real-session receipt. The latter proves that one managed Astra session continues from an active-care checkpoint to handoff; it requires the same Agents API permissions as the probe.
+
 ## Configuration and failure behavior
 
 `.env.example` is value-free. Blank optional settings use these defaults:

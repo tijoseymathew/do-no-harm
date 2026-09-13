@@ -20,7 +20,7 @@ export default defineConfig({
   },
   webServer: {
     command: "npm start",
-    env: { PORT: "3102" },
+    env: { PORT: "3102", OPENAI_API_KEY: "" },
     url: "http://127.0.0.1:3102/api/health",
     reuseExistingServer: false,
   },

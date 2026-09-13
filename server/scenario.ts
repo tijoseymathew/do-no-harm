@@ -3,9 +3,13 @@ import type { CasePack } from "../shared/contracts/server.js";
 import { CommandEnvelopeSchema } from "../shared/contracts/scenario.js";
 import { ScenarioStore } from "./scenario-store.js";
 
-export function scenarioRouter(casePack: CasePack, runDirectory?: string) {
+export function scenarioRouter(
+  casePack: CasePack,
+  runDirectory?: string,
+  existingStore?: ScenarioStore,
+) {
   const router = Router();
-  const store = new ScenarioStore(casePack, runDirectory);
+  const store = existingStore ?? new ScenarioStore(casePack, runDirectory);
 
   router.post("/", async (_request, response) => {
     if (store.size >= 1000) {

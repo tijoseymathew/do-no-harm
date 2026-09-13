@@ -7,6 +7,10 @@ import type {
   ScenarioCommand,
   ScenarioSnapshot,
 } from "../../shared/contracts/scenario.js";
+import type {
+  ConversationSnapshot,
+  ConversationTurnResult,
+} from "../../shared/contracts/conversation.js";
 import { Room, stations, type Station } from "./Room.js";
 import { Monitor } from "./Monitor.js";
 import { Medication } from "./Medication.js";
@@ -16,6 +20,7 @@ import { Investigations } from "./Investigations.js";
 import { OxygenIv } from "./OxygenIv.js";
 import { Notes } from "./Notes.js";
 import { CallStation } from "./CallStation.js";
+import { Conversation } from "./Conversation.js";
 
 class ApiError extends Error {
   constructor(
@@ -54,6 +59,7 @@ export function App() {
 function Bedside() {
   const [patient, setPatient] = useState<StudentCase>();
   const [state, setState] = useState<ScenarioSnapshot>();
+  const [conversation, setConversation] = useState<ConversationSnapshot>();
   const [selected, setSelected] = useState<Station>("Patient");
   const [syncLost, setSyncLost] = useState(false);
   const [reduced, setReduced] = useState(
@@ -76,13 +82,17 @@ function Bedside() {
       json<unknown>("/api/cases/current").then((value) =>
         StudentCaseSchema.parse(value),
       ),
-      json<ScenarioSnapshot>("/api/runs", {}),
+      json<ScenarioSnapshot>("/api/runs", {}).then(async (snapshot) => ({
+        snapshot,
+        conversation: await json<ConversationSnapshot>(`/api/conversations/${snapshot.id}`),
+      })),
     ])
-      .then(([p, s]) => {
+      .then(([p, result]) => {
         if (active) {
           setPatient(p);
-          setState(s);
-          authoritative.current = s;
+          setState(result.snapshot);
+          setConversation(result.conversation);
+          authoritative.current = result.snapshot;
         }
       })
       .catch((e) => {
@@ -114,6 +124,12 @@ function Bedside() {
       );
       authoritative.current = updated;
       setState(updated);
+      if (command.type === "record_handoff") {
+        const result = await json<{
+          conversation: ConversationSnapshot;
+        }>(`/api/conversations/${updated.id}/checkpoints`, { kind: "handoff" });
+        setConversation(result.conversation);
+      }
       setError("");
       setSyncLost(false);
       return true;
@@ -133,6 +149,62 @@ function Bedside() {
       locked.current = false;
       setBusy(false);
     }
+  }, []);
+  const sendText = useCallback(async (
+    text: string,
+    source: "text" | "voice",
+    interrupted = false,
+  ) => {
+    const current = authoritative.current;
+    if (!current) return;
+    setBusy(true);
+    try {
+      const result = await json<ConversationTurnResult & { state: ScenarioSnapshot }>(
+        `/api/conversations/${current.id}/turns`,
+        { text, source, interrupted },
+      );
+      authoritative.current = result.state;
+      setState(result.state);
+      setConversation(result.conversation);
+      if (result.focusStation) select(result.focusStation);
+      setError("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Conversation unavailable");
+    } finally {
+      setBusy(false);
+    }
+  }, [select]);
+  const correctTranscript = useCallback(async (messageId: string, text: string) => {
+    const current = authoritative.current;
+    if (!current) return;
+    const result = await json<ConversationSnapshot>(
+      `/api/conversations/${current.id}/corrections`,
+      { messageId, text },
+    );
+    setConversation(result);
+  }, []);
+  const requestReasoningCheckpoint = useCallback(async () => {
+    const current = authoritative.current;
+    if (!current) return;
+    setBusy(true);
+    try {
+      const result = await json<{ conversation: ConversationSnapshot }>(
+        `/api/conversations/${current.id}/checkpoints`,
+        { kind: "reasoning" },
+      );
+      setConversation(result.conversation);
+    } finally {
+      setBusy(false);
+    }
+  }, []);
+  const clearMedicationDraft = useCallback(async () => {
+    const current = authoritative.current;
+    if (!current) return;
+    const result = await json<ConversationSnapshot>(
+      `/api/conversations/${current.id}/draft/clear`,
+      {},
+    );
+    setConversation(result);
   }, []);
   useEffect(() => {
     if (syncLost || !state?.clock.running) return;
@@ -344,8 +416,10 @@ function Bedside() {
                   <Medication
                     patient={patient}
                     state={state}
+                    draft={conversation?.medicationDraft ?? null}
                     busy={busy || syncLost}
                     send={send}
+                    clearDraft={clearMedicationDraft}
                   />
                 )}
                 {selected === "Oxygen / IV" && (
@@ -364,11 +438,17 @@ function Bedside() {
               </section>
             </aside>
           </div>
-          <div className="captions" aria-label="Captions">
-            <span>PATIENT · AUTHORED TEXT</span>
-            <p>“{patient.opening}”</p>
-            <small>No live conversation connected</small>
-          </div>
+          {conversation && (
+            <Conversation
+              runId={state.id}
+              briefing={patient.voiceBriefing}
+              conversation={conversation}
+              busy={busy || syncLost}
+              sendText={sendText}
+              correct={correctTranscript}
+              checkpoint={requestReasoningCheckpoint}
+            />
+          )}
           <nav className="station-nav" aria-label="Bedside controls">
             {stations.map((station, index) => (
               <button

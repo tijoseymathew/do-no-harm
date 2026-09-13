@@ -1,6 +1,6 @@
 # Phase 04 — Complete assessment, treatment, and handoff workflow
 
-Status: Blocked — implementation and software verification pass; qualified clinical review and the Phase 01–03 dependency chain remain pending.
+Status: Blocked — implementation and software verification pass; qualified clinical review and Phase 03 completion remain pending.
 
 Dependencies: Phases 02 and 03.
 
@@ -45,7 +45,7 @@ Record verification commands or manual steps, actual results, and artifact locat
 - V04: Review creates a server-visible `prepared` order and cancellation/absence of the final action produces no receipt. The retained run attempts 600 mg, records a blocked status with no dose/effect, then prepares and administers the supported parameters to create exactly one receipt. Retry, double-click and lost-acknowledgment coverage remains green.
 - V06/V07: Authorization request/grant, senior request/acknowledgment, handoff content and performed treatment are distinct state and event records. Saved notes retain revision 1 and revision 2 verbatim. An unsupported CT coronary angiogram request returns an explicit case-limit message and creates no finding.
 - Results / artifact locations: [complete run export](../evidence/phase-04/complete-run.json), [1280×720 final state](../evidence/phase-04/complete-run-1280x720.png), [normal and blocked-flow recording](../evidence/phase-04/complete-and-blocked-flow-1280x720.webm), and [ECG/formulary content review record](../evidence/phase-04/content-review.json). The JSON export contains the visible final state and append-only event log without the hidden rubric or expected dose rule.
-- Remaining blockers: A qualified reviewer must complete [`docs/clinical-review-checklist.md`](../clinical-review-checklist.md), approve or replace the development 12-lead ECG pattern/report, name the local protocol and resolve the investigation, oxygen, IV-fluid, aspirin and overall case-coherence parameters. Until then the server and UI correctly label runs `development_fixture` / clinically unreviewed, the two review-dependent implementation items remain unchecked, and the phase cannot be marked Complete. Phase 01's human-observed live voice gate remains pending, which leaves Phases 02 and 03 formally blocked and therefore also blocks this dependency chain. The Vite build reports the known Three.js-containing client chunk warning (~889 kB uncompressed), without failing build or browser checks.
+- Remaining blockers: A qualified reviewer must complete [`docs/clinical-review-checklist.md`](../clinical-review-checklist.md), approve or replace the development 12-lead ECG pattern/report, name the local protocol and resolve the investigation, oxygen, IV-fluid, aspirin and overall case-coherence parameters. Until then the server and UI correctly label runs `development_fixture` / clinically unreviewed, the two review-dependent implementation items remain unchecked, and Phase 03 and this phase cannot be marked Complete. Phase 01's Live audio gate and Phase 02 are complete. The Vite build reports the known Three.js-containing client chunk warning (~889 kB uncompressed), without failing build or browser checks.
 
 ## Workflow boundary and handoff
 

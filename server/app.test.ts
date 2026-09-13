@@ -40,4 +40,43 @@ describe("application API boundary", () => {
     await request(app).post("/api/live/session").set("Origin", "http://127.0.0.1:5173").send({}).expect(400);
     expect(create).not.toHaveBeenCalled();
   });
+
+  it("binds permitted Live tools to the provider session and run", async () => {
+    const create = vi.fn().mockResolvedValue({
+      session: { id: "live-session-one" },
+      transport: { type: "webrtc", sdp: "answer" },
+    });
+    const configured = loadConfig({ OPENAI_API_KEY: "test-only-placeholder" });
+    const app = createApp(configured, {
+      createLiveClient: () => ({ create }),
+    });
+    const run = await request(app).post("/api/runs").send({}).expect(201);
+
+    await request(app)
+      .post("/api/live/session")
+      .set("Origin", "http://127.0.0.1:5173")
+      .send({ runId: run.body.id, sdp: "offer" })
+      .expect(201);
+    expect(create.mock.calls[0]![0].session.instructions).toContain(
+      "delegate fact, visible-state, and draft-action requests",
+    );
+
+    const fact = await request(app)
+      .post(`/api/conversations/${run.body.id}/live/tools/get_case_fact`)
+      .set("x-live-session-id", "live-session-one")
+      .send({ key: "symptom_onset" })
+      .expect(200);
+    expect(fact.body.value).toContain("45 minutes");
+
+    await request(app)
+      .post(`/api/conversations/${run.body.id}/live/tools/submit_examiner_output`)
+      .set("x-live-session-id", "live-session-one")
+      .send({})
+      .expect(403);
+    await request(app)
+      .post(`/api/conversations/${run.body.id}/live/tools/get_visible_state`)
+      .set("x-live-session-id", "different-session")
+      .send({})
+      .expect(403);
+  });
 });
