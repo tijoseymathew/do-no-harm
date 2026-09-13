@@ -1,6 +1,6 @@
 {
   "exportVersion": "1.0.0",
-  "exportedAt": "2026-09-13T10:20:43.829Z",
+  "exportedAt": "2026-09-13T12:26:00.281Z",
   "case": {
     "id": "adult_chest_pain",
     "version": "1.0.0-draft.2",
@@ -9,7 +9,7 @@
     "clinicalReviewStatus": "draft_unreviewed"
   },
   "state": {
-    "id": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
+    "id": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
     "revision": 46,
     "caseVersion": "1.0.0-draft.2",
     "mode": "development_fixture",
@@ -177,7 +177,7 @@
       },
       "receipts": [
         {
-          "id": "3ef2690b-b2a1-42f2-a130-c43c7864bf60",
+          "id": "bf9db187-6060-45de-a566-c1df54ccaa8b",
           "medicationId": "aspirin_300mg_tablet",
           "dose": 300,
           "unit": "mg",
@@ -194,26 +194,28 @@
       ],
       "preparedOrders": [
         {
-          "id": "73ce44ec-7baf-48fc-8f37-6b04c1e24d59",
+          "id": "388a6e59-854a-4f47-a47c-b7338cfb2e39",
           "order": {
             "drugId": "aspirin_300mg_tablet",
             "dose": 600,
             "unit": "mg",
             "route": "oral"
           },
+          "source": "ui",
           "preparedAtMs": 30000,
           "status": "blocked",
           "statusAtMs": 30000,
           "message": "Dose must normalize to 300 mg. Cumulative dose would exceed 300 mg."
         },
         {
-          "id": "7e84d5f8-0174-42dc-b165-00c7b4652b37",
+          "id": "7b46e1da-7ed9-44e5-867e-205089711221",
           "order": {
             "drugId": "aspirin_300mg_tablet",
             "dose": 300,
             "unit": "mg",
             "route": "oral"
           },
+          "source": "ui",
           "preparedAtMs": 30000,
           "status": "administered",
           "statusAtMs": 30000,
@@ -232,7 +234,7 @@
           "medicationId": "aspirin_300mg_tablet",
           "appliedAtMs": 90000,
           "rule": "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation",
-          "causedBy": "3ef2690b-b2a1-42f2-a130-c43c7864bf60"
+          "causedBy": "bf9db187-6060-45de-a566-c1df54ccaa8b"
         }
       ]
     },
@@ -242,7 +244,7 @@
     },
     "authorizations": [
       {
-        "id": "d123b9ab-0f80-44c7-9619-107d7e76d989",
+        "id": "d3fc7039-2d77-4313-8d6b-0cf056ec9a2b",
         "actionKind": "fluid",
         "itemId": "sodium_chloride_0_9",
         "status": "authorized",
@@ -255,20 +257,20 @@
         "revision": 1,
         "content": "Assessment: chest pain. Plan: monitor, ECG, treatment and urgent senior review.",
         "savedAtMs": 90000,
-        "eventId": "20bb9fe4-aff7-42bb-ba1e-dafe5cd30bce"
+        "eventId": "21bdf88b-e3a2-46cc-af90-00def3649e1a"
       },
       {
         "revision": 2,
         "content": "Revised: reassessed after aspirin; continue monitored care and transfer responsibility.",
         "savedAtMs": 90000,
-        "eventId": "159bc6d0-ff43-4608-9508-ef2677fed0e0"
+        "eventId": "cce66b49-b352-4679-a910-e06afb00f608"
       }
     ],
     "handoffs": [
       {
         "content": "Situation: Morgan Lee with chest pain. Background: hypertension. Assessment: ECG acquired and aspirin administered. Recommendation: urgent senior ECG review and monitored care.",
         "recordedAtMs": 90000,
-        "eventId": "365bb5ac-a012-453b-8630-b31aaac88330"
+        "eventId": "a789f3cb-0103-408e-b845-3f49222488e5"
       }
     ],
     "finishedAtMs": 90000,
@@ -306,7 +308,7 @@
     "simulationTimeMs": 90000,
     "receipts": [
       {
-        "id": "3ef2690b-b2a1-42f2-a130-c43c7864bf60",
+        "id": "bf9db187-6060-45de-a566-c1df54ccaa8b",
         "medicationId": "aspirin_300mg_tablet",
         "dose": 300,
         "unit": "mg",
@@ -325,10 +327,10 @@
   "events": [
     {
       "contractVersion": "1.0.0",
-      "id": "83cece53-9047-4833-941f-3142a37776a2",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
+      "id": "396e954e-de8e-4ddf-89ac-c2c59a72ae14",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
       "sequence": 1,
-      "wallTime": "2026-09-13T10:20:39.746Z",
+      "wallTime": "2026-09-13T12:25:54.729Z",
       "simulationTime": 0,
       "actor": "system",
       "type": "session.started",
@@ -341,24 +343,44 @@
     },
     {
       "contractVersion": "1.0.0",
-      "id": "1b505331-481b-481c-bdbe-27389f3bba68",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
+      "id": "3b81ea8b-403d-45ef-a1bf-a0cb66cc9697",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
       "sequence": 2,
-      "wallTime": "2026-09-13T10:20:39.880Z",
+      "wallTime": "2026-09-13T12:25:54.741Z",
+      "simulationTime": 0,
+      "actor": "nurse",
+      "type": "transcript.recorded",
+      "payload": {
+        "messageId": "c9c1df5a-5abc-4048-abda-06291e0e9b39",
+        "role": "nurse",
+        "source": "authored",
+        "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "assisted": false,
+        "interrupted": false
+      },
+      "stateVersion": 0,
+      "caseVersion": "1.0.0-draft.2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "1d42c0a3-c414-49de-8886-96b6ee4eff13",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 3,
+      "wallTime": "2026-09-13T12:25:54.862Z",
       "simulationTime": 0,
       "actor": "presenter",
       "type": "session.paused",
       "payload": {},
       "stateVersion": 1,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "606ae51f-ee69-4c2c-9ac4-d6aef1d1707c"
+      "idempotencyKey": "d0653466-3669-45eb-bfdb-316904b61dc9"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "0b6caa12-7d0b-4b0f-b565-6323b24a781d",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 3,
-      "wallTime": "2026-09-13T10:20:39.978Z",
+      "id": "64be921d-245e-411f-8099-2fe80bae6810",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 4,
+      "wallTime": "2026-09-13T12:25:54.960Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.requested",
@@ -367,14 +389,14 @@
       },
       "stateVersion": 2,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "55cafb91-4781-45d2-8690-928bd5150abe"
+      "idempotencyKey": "28054bc3-83cc-4979-aeeb-9d650a1aec8d"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "26795c1e-fbf4-4ab7-88e9-29c148cf84b4",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 4,
-      "wallTime": "2026-09-13T10:20:39.978Z",
+      "id": "a4885ae3-91ae-42c6-b716-35f040aec51a",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 5,
+      "wallTime": "2026-09-13T12:25:54.960Z",
       "simulationTime": 0,
       "actor": "patient",
       "type": "assessment.performed",
@@ -386,15 +408,15 @@
       },
       "stateVersion": 2,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "0b6caa12-7d0b-4b0f-b565-6323b24a781d",
-      "idempotencyKey": "55cafb91-4781-45d2-8690-928bd5150abe"
+      "causedBy": "64be921d-245e-411f-8099-2fe80bae6810",
+      "idempotencyKey": "28054bc3-83cc-4979-aeeb-9d650a1aec8d"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "7b53aa43-e8cc-4145-8844-c98e6a2176b2",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 5,
-      "wallTime": "2026-09-13T10:20:40.028Z",
+      "id": "0f811a92-44b2-4042-afb5-764c325b086e",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 6,
+      "wallTime": "2026-09-13T12:25:55.011Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.requested",
@@ -403,14 +425,14 @@
       },
       "stateVersion": 3,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "0c64d72b-a99c-4d5b-8e7f-7c9d7e87b3e8"
+      "idempotencyKey": "410e46b9-5eb9-4233-9793-13211da11dbc"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "74809b3b-2d4b-4a75-93ff-835f1fbfd663",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 6,
-      "wallTime": "2026-09-13T10:20:40.028Z",
+      "id": "a661e002-1630-4728-8710-02956115de3e",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 7,
+      "wallTime": "2026-09-13T12:25:55.011Z",
       "simulationTime": 0,
       "actor": "patient",
       "type": "assessment.performed",
@@ -422,15 +444,15 @@
       },
       "stateVersion": 3,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "7b53aa43-e8cc-4145-8844-c98e6a2176b2",
-      "idempotencyKey": "0c64d72b-a99c-4d5b-8e7f-7c9d7e87b3e8"
+      "causedBy": "0f811a92-44b2-4042-afb5-764c325b086e",
+      "idempotencyKey": "410e46b9-5eb9-4233-9793-13211da11dbc"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "d966b9b4-0bfc-48eb-97b7-837401a4eaf9",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 7,
-      "wallTime": "2026-09-13T10:20:40.063Z",
+      "id": "4a4c26cd-5da8-4013-94e0-9a2804b1fb9e",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 8,
+      "wallTime": "2026-09-13T12:25:55.203Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.requested",
@@ -439,14 +461,14 @@
       },
       "stateVersion": 4,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "317eccfa-47b9-4d9d-9569-eeaf899c4286"
+      "idempotencyKey": "b244c5f4-396b-4a24-b8b9-c573dce180a0"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "891bddf8-60e1-4a6b-900f-c88341227f1d",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 8,
-      "wallTime": "2026-09-13T10:20:40.063Z",
+      "id": "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 9,
+      "wallTime": "2026-09-13T12:25:55.203Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.performed",
@@ -458,15 +480,15 @@
       },
       "stateVersion": 4,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "d966b9b4-0bfc-48eb-97b7-837401a4eaf9",
-      "idempotencyKey": "317eccfa-47b9-4d9d-9569-eeaf899c4286"
+      "causedBy": "4a4c26cd-5da8-4013-94e0-9a2804b1fb9e",
+      "idempotencyKey": "b244c5f4-396b-4a24-b8b9-c573dce180a0"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "faa6a24c-622a-468a-9ce4-2f4a9c027399",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 9,
-      "wallTime": "2026-09-13T10:20:40.110Z",
+      "id": "461b2332-d712-44b3-9db5-9116c75c6876",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 10,
+      "wallTime": "2026-09-13T12:25:55.245Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.requested",
@@ -475,14 +497,14 @@
       },
       "stateVersion": 5,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "8febef82-dd93-4050-a149-4abd4416546a"
+      "idempotencyKey": "fcb281c5-c09c-4509-a239-726e480f5e4f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "ebc22bbb-1b2d-4716-9726-033499ee222d",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 10,
-      "wallTime": "2026-09-13T10:20:40.110Z",
+      "id": "a4d63566-4cf0-4c20-a3bb-f5300e752075",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 11,
+      "wallTime": "2026-09-13T12:25:55.245Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "assessment.performed",
@@ -494,15 +516,15 @@
       },
       "stateVersion": 5,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "faa6a24c-622a-468a-9ce4-2f4a9c027399",
-      "idempotencyKey": "8febef82-dd93-4050-a149-4abd4416546a"
+      "causedBy": "461b2332-d712-44b3-9db5-9116c75c6876",
+      "idempotencyKey": "fcb281c5-c09c-4509-a239-726e480f5e4f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "4e965c33-7852-4a2f-a5ad-9e5c9731e13b",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 11,
-      "wallTime": "2026-09-13T10:20:40.210Z",
+      "id": "60a0ef44-973a-4b8e-959e-8dfd8c15d758",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 12,
+      "wallTime": "2026-09-13T12:25:55.342Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "equipment.connected",
@@ -512,14 +534,14 @@
       },
       "stateVersion": 6,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "8f7354c0-e7a1-4c29-9633-066228802238"
+      "idempotencyKey": "4e5a3bc5-5acd-47b6-bdf3-5a82a20dbd98"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "d92f2960-5c1e-4b9a-a4de-d6c711b48de4",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 12,
-      "wallTime": "2026-09-13T10:20:40.245Z",
+      "id": "e1b886e8-900b-4a7a-88cf-cd3d468f4624",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 13,
+      "wallTime": "2026-09-13T12:25:55.378Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "equipment.connected",
@@ -529,14 +551,14 @@
       },
       "stateVersion": 7,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "2850120a-4929-4927-9481-e516baf538c9"
+      "idempotencyKey": "131d284c-034e-43fd-8865-56bbaeac719a"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "c6ee9d8c-5469-407a-ba3d-fda372dd855f",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 13,
-      "wallTime": "2026-09-13T10:20:40.298Z",
+      "id": "4f0c930a-4a61-4141-afce-df9255c11ede",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 14,
+      "wallTime": "2026-09-13T12:25:55.429Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "equipment.connected",
@@ -546,14 +568,14 @@
       },
       "stateVersion": 8,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "7089321c-fd02-48b9-8f6b-899d665983e3"
+      "idempotencyKey": "b89cbc77-9d7d-40cd-b5b0-edbddb123dc2"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "531952b0-b70b-45cf-96e5-466024eb26a6",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 14,
-      "wallTime": "2026-09-13T10:20:40.368Z",
+      "id": "5b71bdac-0581-4c76-ab5b-e19891b95d83",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 15,
+      "wallTime": "2026-09-13T12:25:55.482Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "observation.published",
@@ -566,14 +588,14 @@
       },
       "stateVersion": 9,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "67b967d9-9b33-44d6-8ff1-09c9b1195066"
+      "idempotencyKey": "aec46ef8-b0a4-4a32-93a6-7c3e51e89a41"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "587fbdfc-71e0-4c83-9dba-b914c8d3e91c",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 15,
-      "wallTime": "2026-09-13T10:20:40.465Z",
+      "id": "bd3b47c0-d31e-4e30-984f-a8a5e3f2fbeb",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 16,
+      "wallTime": "2026-09-13T12:25:55.577Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "investigation.requested",
@@ -583,14 +605,14 @@
       },
       "stateVersion": 10,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "95ce4ca0-8920-4f16-a626-70094d714352"
+      "idempotencyKey": "d1b6a37a-7903-44fd-9c41-d356635cc934"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "7b26be10-aa74-43db-a323-69d6ec13bb86",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 16,
-      "wallTime": "2026-09-13T10:20:40.512Z",
+      "id": "3db2ac67-a5b4-4251-a590-9e8f23da2800",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 17,
+      "wallTime": "2026-09-13T12:25:55.787Z",
       "simulationTime": 0,
       "actor": "student",
       "type": "investigation.collected",
@@ -600,14 +622,14 @@
       },
       "stateVersion": 11,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "c2e75985-c2d8-41f3-9095-509c39c3a2de"
+      "idempotencyKey": "377ab664-9a6a-47f8-82af-730ec2e8182e"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2a35da84-6d3b-4d79-9a05-7196a4dfd197",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 17,
-      "wallTime": "2026-09-13T10:20:40.580Z",
+      "id": "f06a9f55-83b5-42dc-9182-60dfb242fe0a",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 18,
+      "wallTime": "2026-09-13T12:25:55.848Z",
       "simulationTime": 0,
       "actor": "system",
       "type": "command.rejected",
@@ -617,28 +639,28 @@
       },
       "stateVersion": 12,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "b762360d-c0ff-4b99-8e46-6811c3cfec60"
+      "idempotencyKey": "adf00ec7-4873-4e56-8f02-ee700905d273"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "24eaa146-253b-4e5f-9243-87d8b0a70041",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 18,
-      "wallTime": "2026-09-13T10:20:40.664Z",
+      "id": "85c8b76f-3ffb-4d6b-9cf9-21cad2e1a741",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 19,
+      "wallTime": "2026-09-13T12:25:55.909Z",
       "simulationTime": 0,
       "actor": "presenter",
       "type": "session.resumed",
       "payload": {},
       "stateVersion": 13,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "77bbd7a4-aeed-4175-924a-2e95686ad1dc"
+      "idempotencyKey": "c71cefe0-837f-44b8-83a4-0413e9983891"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "e7828bc9-384f-4c88-a68a-54646b354f30",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 19,
-      "wallTime": "2026-09-13T10:20:40.711Z",
+      "id": "72cd7cc3-d5df-4c2f-9730-3b85a6f85974",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 20,
+      "wallTime": "2026-09-13T12:25:55.959Z",
       "simulationTime": 0,
       "actor": "presenter",
       "type": "presenter.intervention",
@@ -649,14 +671,14 @@
       },
       "stateVersion": 14,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "faa28793-9b52-4b76-b4a6-9f21afb757d5"
+      "idempotencyKey": "e0e6429a-12e8-4146-8aec-970f10b7bab7"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "efe4b5c7-b83b-48b0-8f4f-e1f9e1925889",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 20,
-      "wallTime": "2026-09-13T10:20:40.711Z",
+      "id": "33d0d105-f65c-4505-8f15-5d1daa064a77",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 21,
+      "wallTime": "2026-09-13T12:25:55.960Z",
       "simulationTime": 15000,
       "actor": "engine",
       "type": "investigation.available",
@@ -665,28 +687,28 @@
       },
       "stateVersion": 14,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "7b26be10-aa74-43db-a323-69d6ec13bb86"
+      "causedBy": "3db2ac67-a5b4-4251-a590-9e8f23da2800"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "dc4cf646-4001-4f41-94de-6a40332aa2b1",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 21,
-      "wallTime": "2026-09-13T10:20:40.750Z",
+      "id": "2b389e68-8d1b-45bb-8434-9f536f443ed1",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 22,
+      "wallTime": "2026-09-13T12:25:55.993Z",
       "simulationTime": 30000,
       "actor": "presenter",
       "type": "session.paused",
       "payload": {},
       "stateVersion": 15,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "b5f427b0-83f4-40b3-8691-803051c633bd"
+      "idempotencyKey": "0ff8dcfa-b907-4a1a-92ae-c2ff0a02eed3"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "09f0fa3c-efa6-4ea9-a538-84de1a34b900",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 22,
-      "wallTime": "2026-09-13T10:20:40.794Z",
+      "id": "447cf1e6-8091-4671-8cb4-e2d7c793012d",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 23,
+      "wallTime": "2026-09-13T12:25:56.031Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "investigation.displayed",
@@ -696,14 +718,14 @@
       },
       "stateVersion": 16,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "67d16c8f-a978-4e9b-a14f-dd3864be6e40"
+      "idempotencyKey": "337b5052-cab0-446e-94da-bc27cbfad0b5"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "a112cd98-69db-49c3-9628-3c0ea1f23a32",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 23,
-      "wallTime": "2026-09-13T10:20:40.835Z",
+      "id": "61a9b166-7411-464b-8efe-bad42cebb067",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 24,
+      "wallTime": "2026-09-13T12:25:56.078Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "investigation.displayed",
@@ -713,14 +735,14 @@
       },
       "stateVersion": 17,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "be219815-a252-4cf0-9e7b-41082823016a"
+      "idempotencyKey": "e6141570-d8a5-494b-a7b6-0c7bd39bc760"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "df172745-a718-4dc3-936a-fdf949bb2899",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 24,
-      "wallTime": "2026-09-13T10:20:40.927Z",
+      "id": "6d0fc958-2b84-4bc7-bb9b-608e3a5d173d",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 25,
+      "wallTime": "2026-09-13T12:25:56.193Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "investigation.interpreted",
@@ -730,14 +752,14 @@
       },
       "stateVersion": 18,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "0b401b8c-3620-45d9-bc74-88228e706d18"
+      "idempotencyKey": "912ebee6-2cb3-4ee1-8e27-7c71b65f364c"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "189b2510-2a38-4ff0-8e00-083dcea08dc7",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 25,
-      "wallTime": "2026-09-13T10:20:40.980Z",
+      "id": "4056dc05-5351-499a-ab2c-2b5dec0e07b7",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 26,
+      "wallTime": "2026-09-13T12:25:56.263Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "case.item_unavailable",
@@ -748,14 +770,14 @@
       },
       "stateVersion": 19,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "ddbfab6b-6250-417c-a523-849409a0e798"
+      "idempotencyKey": "9e9390dd-de19-456d-92f1-7a0c8d81b035"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2e86813f-f26b-4f3d-99c8-a46237ba33a3",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 26,
-      "wallTime": "2026-09-13T10:20:41.864Z",
+      "id": "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 27,
+      "wallTime": "2026-09-13T12:25:57.079Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "assessment.performed",
@@ -766,14 +788,14 @@
       },
       "stateVersion": 20,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "d5706ec8-ef57-4654-946e-0451fa3315cf"
+      "idempotencyKey": "16fa7a92-c6cd-4277-b51a-d1b63cb226e9"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "73ce44ec-7baf-48fc-8f37-6b04c1e24d59",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 27,
-      "wallTime": "2026-09-13T10:20:41.873Z",
+      "id": "388a6e59-854a-4f47-a47c-b7338cfb2e39",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 28,
+      "wallTime": "2026-09-13T12:25:57.097Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "medication.prepared",
@@ -793,14 +815,14 @@
       },
       "stateVersion": 21,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "d4ca4881-46e2-4b78-a52d-c71d508884a7"
+      "idempotencyKey": "b33ee5c1-191a-496b-ac5a-0d934a63f8bb"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "c8e962cf-1bfe-488c-8afe-98425ca28456",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 28,
-      "wallTime": "2026-09-13T10:20:41.946Z",
+      "id": "a2703a8b-9be1-44f9-bf1d-846be2e60982",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 29,
+      "wallTime": "2026-09-13T12:25:57.193Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "medication.attempted",
@@ -826,14 +848,14 @@
       },
       "stateVersion": 22,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "b74ab59b-7a3b-4299-a6b2-96bd4409565a"
+      "idempotencyKey": "5b495275-80eb-4d7d-ba64-2f878c22fa5c"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "20b8483e-b5d3-4e5c-bd27-c71408f2d737",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 29,
-      "wallTime": "2026-09-13T10:20:41.946Z",
+      "id": "079f8549-601b-4c56-b534-94b38907202f",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 30,
+      "wallTime": "2026-09-13T12:25:57.193Z",
       "simulationTime": 30000,
       "actor": "system",
       "type": "medication.blocked",
@@ -859,15 +881,15 @@
       },
       "stateVersion": 22,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "c8e962cf-1bfe-488c-8afe-98425ca28456",
-      "idempotencyKey": "b74ab59b-7a3b-4299-a6b2-96bd4409565a"
+      "causedBy": "a2703a8b-9be1-44f9-bf1d-846be2e60982",
+      "idempotencyKey": "5b495275-80eb-4d7d-ba64-2f878c22fa5c"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "7211389a-c2b7-4e11-bc6b-83926177d7b7",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 30,
-      "wallTime": "2026-09-13T10:20:41.946Z",
+      "id": "7ba57229-b195-4318-bdfa-91e415567a25",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 31,
+      "wallTime": "2026-09-13T12:25:57.194Z",
       "simulationTime": 30000,
       "actor": "engine",
       "type": "branch.exited",
@@ -881,10 +903,10 @@
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2f58066d-25f2-4b9e-8c26-7c91c1556954",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 31,
-      "wallTime": "2026-09-13T10:20:41.946Z",
+      "id": "85b88edf-2abc-48ca-9f1e-287f2e629fdc",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 32,
+      "wallTime": "2026-09-13T12:25:57.194Z",
       "simulationTime": 30000,
       "actor": "engine",
       "type": "branch.entered",
@@ -895,14 +917,14 @@
       },
       "stateVersion": 22,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "c8e962cf-1bfe-488c-8afe-98425ca28456"
+      "causedBy": "a2703a8b-9be1-44f9-bf1d-846be2e60982"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "cf2c09ff-d2f3-4459-a157-cbcfc05571ec",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 32,
-      "wallTime": "2026-09-13T10:20:42.035Z",
+      "id": "2c2c224b-2066-41fd-9efb-3d06577cdf36",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 33,
+      "wallTime": "2026-09-13T12:25:57.301Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "assessment.performed",
@@ -913,14 +935,14 @@
       },
       "stateVersion": 23,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "a4e8c9d9-4fc1-446d-b44b-b3cf29aee1cf"
+      "idempotencyKey": "45fe187b-fc3d-4c35-b37f-1d61b7fcd64f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "7e84d5f8-0174-42dc-b165-00c7b4652b37",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 33,
-      "wallTime": "2026-09-13T10:20:42.041Z",
+      "id": "7b46e1da-7ed9-44e5-867e-205089711221",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 34,
+      "wallTime": "2026-09-13T12:25:57.308Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "medication.prepared",
@@ -940,14 +962,14 @@
       },
       "stateVersion": 24,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "34e7e960-ec27-40de-af61-82498df29166"
+      "idempotencyKey": "222f0cd5-f85d-4264-9f91-95578ab3e99f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "ecf274d0-83af-43bc-bb3f-be75a2e706e0",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 34,
-      "wallTime": "2026-09-13T10:20:42.078Z",
+      "id": "f8c85166-e406-453c-88b7-d8d94f3d10c2",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 35,
+      "wallTime": "2026-09-13T12:25:57.378Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "medication.attempted",
@@ -970,14 +992,14 @@
       },
       "stateVersion": 25,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "b07ab770-b309-40d5-bcdc-8432d374f1f5"
+      "idempotencyKey": "3a45f782-cfa1-4439-9fb7-ea16d6f5b429"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "3ef2690b-b2a1-42f2-a130-c43c7864bf60",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 35,
-      "wallTime": "2026-09-13T10:20:42.078Z",
+      "id": "bf9db187-6060-45de-a566-c1df54ccaa8b",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 36,
+      "wallTime": "2026-09-13T12:25:57.378Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "medication.administered",
@@ -1000,15 +1022,15 @@
       },
       "stateVersion": 25,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "ecf274d0-83af-43bc-bb3f-be75a2e706e0",
-      "idempotencyKey": "b07ab770-b309-40d5-bcdc-8432d374f1f5"
+      "causedBy": "f8c85166-e406-453c-88b7-d8d94f3d10c2",
+      "idempotencyKey": "3a45f782-cfa1-4439-9fb7-ea16d6f5b429"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "6d009438-58ad-4b64-b166-6c6e78da3fb9",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 36,
-      "wallTime": "2026-09-13T10:20:42.079Z",
+      "id": "5e474c21-6e64-4cce-98f6-6db4811d8e74",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 37,
+      "wallTime": "2026-09-13T12:25:57.378Z",
       "simulationTime": 30000,
       "actor": "engine",
       "type": "branch.exited",
@@ -1022,10 +1044,10 @@
     },
     {
       "contractVersion": "1.0.0",
-      "id": "b94c6a0e-05d0-4604-b681-90dd691ad3a8",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 37,
-      "wallTime": "2026-09-13T10:20:42.079Z",
+      "id": "643a3188-f428-47b7-a267-478ccf56648d",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 38,
+      "wallTime": "2026-09-13T12:25:57.378Z",
       "simulationTime": 30000,
       "actor": "engine",
       "type": "branch.entered",
@@ -1036,14 +1058,14 @@
       },
       "stateVersion": 25,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "3ef2690b-b2a1-42f2-a130-c43c7864bf60"
+      "causedBy": "bf9db187-6060-45de-a566-c1df54ccaa8b"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "f47dae8e-a92a-416f-852f-ea7e1320337e",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 38,
-      "wallTime": "2026-09-13T10:20:42.297Z",
+      "id": "6e97a0cd-1d62-4412-8db0-ac30a91b7944",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 39,
+      "wallTime": "2026-09-13T12:25:57.511Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "equipment.setting_changed",
@@ -1057,14 +1079,14 @@
       },
       "stateVersion": 26,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "937dceeb-4646-46b4-b871-8dfb7f4ba6d6"
+      "idempotencyKey": "2e6a56b4-bb07-452d-8834-e200ed8b6e6c"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "d0516cb1-6a22-4801-81cd-b6402341a431",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 39,
-      "wallTime": "2026-09-13T10:20:42.363Z",
+      "id": "b0ce7a06-8a00-4e03-9a69-d43e66f93d15",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 40,
+      "wallTime": "2026-09-13T12:25:57.578Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "equipment.setting_changed",
@@ -1078,14 +1100,14 @@
       },
       "stateVersion": 27,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "a2ccbc7a-0764-453e-a6e8-a648a35155ae"
+      "idempotencyKey": "fb82c88e-1887-43eb-acbb-bd40f0e532aa"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "7369249a-5da0-476f-b1b7-8bbcda2bb048",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 40,
-      "wallTime": "2026-09-13T10:20:42.412Z",
+      "id": "1d9f5cc0-a78a-4f5e-ac00-3ddb4674fbfc",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 41,
+      "wallTime": "2026-09-13T12:25:57.628Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "equipment.setting_changed",
@@ -1101,14 +1123,14 @@
       },
       "stateVersion": 28,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "387a8ffe-c72e-498f-a998-7972dba263c7"
+      "idempotencyKey": "978d829c-a60c-4ab2-a50e-bb0173f066ac"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "776692f5-941c-45fe-a22c-46000ed1bfc9",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 41,
-      "wallTime": "2026-09-13T10:20:42.544Z",
+      "id": "0bcd3344-5f4b-4cf8-854a-2b62b85085c3",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 42,
+      "wallTime": "2026-09-13T12:25:57.679Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "equipment.connected",
@@ -1118,14 +1140,14 @@
       },
       "stateVersion": 29,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "5a2a9685-325e-4f83-ac11-3132569ad019"
+      "idempotencyKey": "cbc4833c-7fcd-44fd-acd8-b28c5d277351"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "6062fa34-fb0c-411b-a116-9be3a928a3d6",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 42,
-      "wallTime": "2026-09-13T10:20:42.595Z",
+      "id": "e8e562b9-7c27-4e57-8f1a-200e85551ed5",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 43,
+      "wallTime": "2026-09-13T12:25:57.730Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "assessment.performed",
@@ -1135,14 +1157,14 @@
       },
       "stateVersion": 30,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "da2ccbfc-8eea-4964-aef9-ff91d4ffafee"
+      "idempotencyKey": "8c529bc3-68cb-43fa-bce3-62d6967ec05e"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "d123b9ab-0f80-44c7-9619-107d7e76d989",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 43,
-      "wallTime": "2026-09-13T10:20:42.643Z",
+      "id": "d3fc7039-2d77-4313-8d6b-0cf056ec9a2b",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 44,
+      "wallTime": "2026-09-13T12:25:57.862Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "authorization.requested",
@@ -1152,14 +1174,14 @@
       },
       "stateVersion": 31,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "fe00d010-300c-414b-a6ad-b595912b5a01"
+      "idempotencyKey": "a180c308-abbd-450b-8af4-7237b47347d2"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "f01e37e7-15f5-4169-875a-005f664baaa9",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 44,
-      "wallTime": "2026-09-13T10:20:42.726Z",
+      "id": "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 45,
+      "wallTime": "2026-09-13T12:25:57.961Z",
       "simulationTime": 30000,
       "actor": "student",
       "type": "senior.requested",
@@ -1168,28 +1190,28 @@
       },
       "stateVersion": 32,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "e6d07435-33d1-4415-b2fe-9c70897554ee"
+      "idempotencyKey": "14433a4c-c010-4929-95e6-49512b8e47a4"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "3c4babff-dee1-4fe0-ad5a-bdcc87627992",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 45,
-      "wallTime": "2026-09-13T10:20:42.761Z",
+      "id": "fab8cacb-f7fa-46bf-a6ed-72bae2c8c344",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 46,
+      "wallTime": "2026-09-13T12:25:58.011Z",
       "simulationTime": 30000,
       "actor": "presenter",
       "type": "session.resumed",
       "payload": {},
       "stateVersion": 33,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "51974431-7bfe-42a0-86f0-470e6ee0f17f"
+      "idempotencyKey": "649d81e4-73c9-41f8-87cc-a3306e9e13f3"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "02fdc90a-7d17-4cfa-93ce-960a55eb55da",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 46,
-      "wallTime": "2026-09-13T10:20:42.794Z",
+      "id": "89604329-73c0-443a-a120-edd907c44c51",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 47,
+      "wallTime": "2026-09-13T12:25:58.060Z",
       "simulationTime": 30000,
       "actor": "presenter",
       "type": "presenter.intervention",
@@ -1200,14 +1222,14 @@
       },
       "stateVersion": 34,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "2ccef4fa-ffbe-40bc-8fe8-7e38aa6dad74"
+      "idempotencyKey": "a8029b30-6512-4ac3-b3d7-d59d62e33cbb"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "b044712e-93d1-464f-a10f-5a6a0e27896e",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 47,
-      "wallTime": "2026-09-13T10:20:42.794Z",
+      "id": "aede8e91-259b-4ec9-bacd-eeb2683667d5",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 48,
+      "wallTime": "2026-09-13T12:25:58.060Z",
       "simulationTime": 45000,
       "actor": "nurse",
       "type": "senior.acknowledged",
@@ -1216,14 +1238,14 @@
       },
       "stateVersion": 34,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "f01e37e7-15f5-4169-875a-005f664baaa9"
+      "causedBy": "1a43bf7f-36ff-409f-bd01-c51cfa52e94f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "25b6f906-cfd3-44e6-8f10-1e7a1afd1e3f",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 48,
-      "wallTime": "2026-09-13T10:20:42.794Z",
+      "id": "c06ffb57-3758-43b8-bbd5-2a306320656d",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 49,
+      "wallTime": "2026-09-13T12:25:58.060Z",
       "simulationTime": 45000,
       "actor": "nurse",
       "type": "authorization.granted",
@@ -1233,28 +1255,28 @@
       },
       "stateVersion": 34,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "d123b9ab-0f80-44c7-9619-107d7e76d989"
+      "causedBy": "d3fc7039-2d77-4313-8d6b-0cf056ec9a2b"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "9c0b13bc-a884-44c7-a160-f654b4b75c53",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 49,
-      "wallTime": "2026-09-13T10:20:42.825Z",
+      "id": "57575034-e349-43a5-bf00-8c22aef97f30",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 50,
+      "wallTime": "2026-09-13T12:25:58.093Z",
       "simulationTime": 60000,
       "actor": "presenter",
       "type": "session.paused",
       "payload": {},
       "stateVersion": 35,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "808d9e27-ae84-477a-af1c-36e95bac8324"
+      "idempotencyKey": "c2135c46-6347-4ccf-803c-59d7cd8df998"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "35dfc698-cae6-4a59-b019-f35811807ba1",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 50,
-      "wallTime": "2026-09-13T10:20:42.962Z",
+      "id": "09191bed-d35b-4356-867c-ad7f396b31f6",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 51,
+      "wallTime": "2026-09-13T12:25:58.223Z",
       "simulationTime": 60000,
       "actor": "student",
       "type": "fluid.started",
@@ -1265,28 +1287,28 @@
       },
       "stateVersion": 36,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "2f7fdb1e-ad31-4075-a543-122d9917e747"
+      "idempotencyKey": "25d92eab-a978-464a-8304-baf37b66470d"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2590c4b9-b4af-4080-b8b3-91ea1ec72cd5",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 51,
-      "wallTime": "2026-09-13T10:20:42.994Z",
+      "id": "5d3d5652-bbd7-4f83-b1b5-ce255735fee8",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 52,
+      "wallTime": "2026-09-13T12:25:58.267Z",
       "simulationTime": 60000,
       "actor": "presenter",
       "type": "session.resumed",
       "payload": {},
       "stateVersion": 37,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "e940a8e2-502a-44a8-a43a-0a1cfa92c151"
+      "idempotencyKey": "09649e43-efae-4ec9-8b37-6bb088732a12"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "9384dceb-6095-44b1-80f4-d934d18a66b9",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 52,
-      "wallTime": "2026-09-13T10:20:43.044Z",
+      "id": "62ee7950-3f1c-46b3-9cd5-6e3d1277701a",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 53,
+      "wallTime": "2026-09-13T12:25:58.313Z",
       "simulationTime": 60000,
       "actor": "presenter",
       "type": "presenter.intervention",
@@ -1297,14 +1319,14 @@
       },
       "stateVersion": 38,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "08892875-b4e6-44c4-996d-ceeee1a1eb9c"
+      "idempotencyKey": "4929e399-6f0c-4eeb-a5b1-f66d5ecab97b"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "1c82e66a-3dab-4e4e-a609-19875afda073",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 53,
-      "wallTime": "2026-09-13T10:20:43.044Z",
+      "id": "f307bede-fa18-46dc-9766-b982908baa79",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 54,
+      "wallTime": "2026-09-13T12:25:58.313Z",
       "simulationTime": 90000,
       "actor": "engine",
       "type": "treatment.effect_applied",
@@ -1314,14 +1336,14 @@
       },
       "stateVersion": 38,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "3ef2690b-b2a1-42f2-a130-c43c7864bf60"
+      "causedBy": "bf9db187-6060-45de-a566-c1df54ccaa8b"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "12356e67-8047-435e-a5ad-71da8c68daee",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 54,
-      "wallTime": "2026-09-13T10:20:43.044Z",
+      "id": "df7e3dd4-f463-4c77-99ff-44c9114faf06",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 55,
+      "wallTime": "2026-09-13T12:25:58.313Z",
       "simulationTime": 90000,
       "actor": "engine",
       "type": "branch.exited",
@@ -1335,24 +1357,24 @@
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2971b8e9-9d3b-4489-8ae1-b035955dc0e7",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 55,
-      "wallTime": "2026-09-13T10:20:43.078Z",
+      "id": "5fcd22b0-3f3c-45e5-b455-2e76446756a7",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 56,
+      "wallTime": "2026-09-13T12:25:58.359Z",
       "simulationTime": 90000,
       "actor": "presenter",
       "type": "session.paused",
       "payload": {},
       "stateVersion": 39,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "94a720e1-d518-43cc-b8fc-d21fd8fe07d3"
+      "idempotencyKey": "179130d4-8ce8-4157-833d-c8d85b5a29c3"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "2bc2cb56-d5b4-4427-b855-2d6e025a1d1d",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 56,
-      "wallTime": "2026-09-13T10:20:43.127Z",
+      "id": "73616fcc-4bd1-4fc0-8771-2e13d2b99cb4",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 57,
+      "wallTime": "2026-09-13T12:25:58.411Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "fluid.stopped",
@@ -1361,30 +1383,30 @@
       },
       "stateVersion": 40,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "b4afcb75-0c33-42f7-a670-3be13b74ad6c"
+      "idempotencyKey": "44cc30c8-6e16-4e79-9915-7b650c5f6ac4"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "c9f66c0e-3985-4ef6-8a7b-e1664c62e9db",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 57,
-      "wallTime": "2026-09-13T10:20:43.244Z",
-      "simulationTime": 90000,
-      "actor": "student",
-      "type": "assessment.requested",
-      "payload": {
-        "findingId": "pain_score"
-      },
-      "stateVersion": 41,
-      "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "0c36c8b7-62a7-4505-90b5-86f9853bf04c"
-    },
-    {
-      "contractVersion": "1.0.0",
-      "id": "710c2b54-0ea5-47a4-b049-4561910cf707",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
+      "id": "fe3538c9-4909-47cb-a084-e7280a75b2e1",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
       "sequence": 58,
-      "wallTime": "2026-09-13T10:20:43.244Z",
+      "wallTime": "2026-09-13T12:25:58.513Z",
+      "simulationTime": 90000,
+      "actor": "student",
+      "type": "assessment.requested",
+      "payload": {
+        "findingId": "pain_score"
+      },
+      "stateVersion": 41,
+      "caseVersion": "1.0.0-draft.2",
+      "idempotencyKey": "dc24fd3b-214c-4da5-9c48-89fa60c33fa2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "a0055d0e-3c6f-4b36-9d53-5c4fbc248630",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 59,
+      "wallTime": "2026-09-13T12:25:58.513Z",
       "simulationTime": 90000,
       "actor": "patient",
       "type": "assessment.performed",
@@ -1396,15 +1418,15 @@
       },
       "stateVersion": 41,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "c9f66c0e-3985-4ef6-8a7b-e1664c62e9db",
-      "idempotencyKey": "0c36c8b7-62a7-4505-90b5-86f9853bf04c"
+      "causedBy": "fe3538c9-4909-47cb-a084-e7280a75b2e1",
+      "idempotencyKey": "dc24fd3b-214c-4da5-9c48-89fa60c33fa2"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "ad081e90-2aaf-455b-8aac-d2bf8a738ffb",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 59,
-      "wallTime": "2026-09-13T10:20:43.294Z",
+      "id": "f732679a-a9bd-4f95-9341-3e752ef1bfaf",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 60,
+      "wallTime": "2026-09-13T12:25:58.560Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "assessment.requested",
@@ -1413,14 +1435,14 @@
       },
       "stateVersion": 42,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "775c794f-74cd-4d58-9ad5-2835206bdd89"
+      "idempotencyKey": "7c510bf2-852f-472e-97c8-a999cc10a4a2"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "9ff03b81-32fa-4bd2-8830-8352dec31456",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 60,
-      "wallTime": "2026-09-13T10:20:43.295Z",
+      "id": "db7479b8-2c2d-405c-bd97-c463d8bb4f1f",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 61,
+      "wallTime": "2026-09-13T12:25:58.560Z",
       "simulationTime": 90000,
       "actor": "patient",
       "type": "assessment.performed",
@@ -1432,15 +1454,15 @@
       },
       "stateVersion": 42,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "ad081e90-2aaf-455b-8aac-d2bf8a738ffb",
-      "idempotencyKey": "775c794f-74cd-4d58-9ad5-2835206bdd89"
+      "causedBy": "f732679a-a9bd-4f95-9341-3e752ef1bfaf",
+      "idempotencyKey": "7c510bf2-852f-472e-97c8-a999cc10a4a2"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "20bb9fe4-aff7-42bb-ba1e-dafe5cd30bce",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 61,
-      "wallTime": "2026-09-13T10:20:43.495Z",
+      "id": "21bdf88b-e3a2-46cc-af90-00def3649e1a",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 62,
+      "wallTime": "2026-09-13T12:25:58.782Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "note.saved",
@@ -1450,14 +1472,14 @@
       },
       "stateVersion": 43,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "76baad57-08de-4321-91b8-a2608dde1463"
+      "idempotencyKey": "859390a6-6069-493a-ab8e-decee780f53f"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "159bc6d0-ff43-4608-9508-ef2677fed0e0",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 62,
-      "wallTime": "2026-09-13T10:20:43.545Z",
+      "id": "cce66b49-b352-4679-a910-e06afb00f608",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 63,
+      "wallTime": "2026-09-13T12:25:58.845Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "note.saved",
@@ -1467,14 +1489,14 @@
       },
       "stateVersion": 44,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "4103ec1e-4046-4574-a121-1aab66a5e088"
+      "idempotencyKey": "6a749117-af58-46fe-ab42-1d09ff3b7c30"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "365bb5ac-a012-453b-8630-b31aaac88330",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 63,
-      "wallTime": "2026-09-13T10:20:43.645Z",
+      "id": "a789f3cb-0103-408e-b845-3f49222488e5",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 64,
+      "wallTime": "2026-09-13T12:25:59.052Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "handoff.recorded",
@@ -1483,38 +1505,1021 @@
       },
       "stateVersion": 45,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "cca8824c-6ec7-4945-878c-aec98fc1bf47"
+      "idempotencyKey": "63aad1f2-79ae-4f45-8bcf-08641f098ee5"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "1caaefb9-517d-42d1-9de9-cd2387c4393c",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 64,
-      "wallTime": "2026-09-13T10:20:43.645Z",
+      "id": "47392475-1d58-41c2-9e2a-8af5297acc49",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 65,
+      "wallTime": "2026-09-13T12:25:59.052Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "session.handoff_started",
       "payload": {},
       "stateVersion": 45,
       "caseVersion": "1.0.0-draft.2",
-      "causedBy": "365bb5ac-a012-453b-8630-b31aaac88330",
-      "idempotencyKey": "cca8824c-6ec7-4945-878c-aec98fc1bf47"
+      "causedBy": "a789f3cb-0103-408e-b845-3f49222488e5",
+      "idempotencyKey": "63aad1f2-79ae-4f45-8bcf-08641f098ee5"
     },
     {
       "contractVersion": "1.0.0",
-      "id": "f9d2ea2f-0596-4e93-892a-408c4af0db58",
-      "runId": "bf0b513f-a432-4e4c-b6ef-16a655e74c00",
-      "sequence": 65,
-      "wallTime": "2026-09-13T10:20:43.709Z",
+      "id": "f8c6923d-40e1-49b2-9d8b-ca59ff3426e2",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 66,
+      "wallTime": "2026-09-13T12:25:59.057Z",
+      "simulationTime": 90000,
+      "actor": "system",
+      "type": "examiner.checkpoint_started",
+      "payload": {
+        "kind": "handoff"
+      },
+      "stateVersion": 45,
+      "caseVersion": "1.0.0-draft.2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "7d4d0c6d-8366-41e0-b542-2034ca6662d7",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 67,
+      "wallTime": "2026-09-13T12:25:59.060Z",
+      "simulationTime": 90000,
+      "actor": "examiner",
+      "type": "examiner.output_submitted",
+      "payload": {
+        "kind": "follow_up",
+        "evidenceCutoffSequence": 66,
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "follow_up",
+          "evidenceCutoffSequence": 66,
+          "followUpQuestion": "What evidence informed your most important decision so far?",
+          "criteria": []
+        },
+        "providerMode": "verification_fixture"
+      },
+      "stateVersion": 45,
+      "caseVersion": "1.0.0-draft.2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "807e5a25-5353-4ecb-b40d-3707dea0a0dd",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 68,
+      "wallTime": "2026-09-13T12:25:59.060Z",
+      "simulationTime": 90000,
+      "actor": "examiner",
+      "type": "transcript.recorded",
+      "payload": {
+        "messageId": "eb201357-edf8-4d1d-83b5-649c5fec64d4",
+        "role": "examiner",
+        "source": "text",
+        "text": "What evidence informed your most important decision so far?",
+        "assisted": false,
+        "interrupted": false
+      },
+      "stateVersion": 45,
+      "caseVersion": "1.0.0-draft.2",
+      "causedBy": "7d4d0c6d-8366-41e0-b542-2034ca6662d7"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "03cdf021-2c2f-4858-ac6d-b22386f68ff2",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 69,
+      "wallTime": "2026-09-13T12:25:59.111Z",
       "simulationTime": 90000,
       "actor": "student",
       "type": "session.ended",
       "payload": {
-        "evidenceCutoffSequence": 65
+        "evidenceCutoffSequence": 69,
+        "cutoffName": "finish-v1"
       },
       "stateVersion": 46,
       "caseVersion": "1.0.0-draft.2",
-      "idempotencyKey": "24481082-e1df-4cec-9b30-8e9bca7913ea"
+      "idempotencyKey": "61aa245e-3a0c-4c27-99df-8ccfb40927bf"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "fc9eb3cb-896b-42b1-921d-3bdf95319d88",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 70,
+      "wallTime": "2026-09-13T12:25:59.122Z",
+      "simulationTime": 90000,
+      "actor": "system",
+      "type": "examiner.checkpoint_started",
+      "payload": {
+        "kind": "debrief"
+      },
+      "stateVersion": 46,
+      "caseVersion": "1.0.0-draft.2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "80ffc60f-3b54-48d3-b3a9-4129b6ee05e1",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 71,
+      "wallTime": "2026-09-13T12:25:59.125Z",
+      "simulationTime": 90000,
+      "actor": "examiner",
+      "type": "examiner.output_submitted",
+      "payload": {
+        "kind": "feedback",
+        "evidenceCutoffSequence": 69,
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "feedback",
+          "evidenceCutoffSequence": 69,
+          "criteria": [
+            {
+              "criterion": "assessment",
+              "rating": "demonstrated",
+              "reason": "The evidence shows multiple focused findings or observations were obtained.",
+              "evidenceIds": [
+                "a4885ae3-91ae-42c6-b716-35f040aec51a",
+                "a661e002-1630-4728-8710-02956115de3e",
+                "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+                "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+              ]
+            },
+            {
+              "criterion": "interpretation",
+              "rating": "demonstrated",
+              "reason": "A student-authored investigation interpretation was recorded.",
+              "evidenceIds": [
+                "6d0fc958-2b84-4bc7-bb9b-608e3a5d173d"
+              ]
+            },
+            {
+              "criterion": "intervention_selection_dosing",
+              "rating": "demonstrated",
+              "reason": "A validated medication administration receipt records the selected dose and route.",
+              "evidenceIds": [
+                "bf9db187-6060-45de-a566-c1df54ccaa8b"
+              ]
+            },
+            {
+              "criterion": "reassessment",
+              "rating": "demonstrated",
+              "reason": "A finding or observation was repeated after the recorded intervention.",
+              "evidenceIds": [
+                "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+                "2c2c224b-2066-41fd-9efb-3d06577cdf36"
+              ]
+            },
+            {
+              "criterion": "escalation",
+              "rating": "demonstrated",
+              "reason": "The run records a request for senior review.",
+              "evidenceIds": [
+                "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+                "aede8e91-259b-4ec9-bacd-eeb2683667d5"
+              ]
+            },
+            {
+              "criterion": "communication_documentation",
+              "rating": "demonstrated",
+              "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+              "evidenceIds": [
+                "cce66b49-b352-4679-a910-e06afb00f608",
+                "a789f3cb-0103-408e-b845-3f49222488e5"
+              ]
+            }
+          ],
+          "strength": "Your strongest documented area was assessment.",
+          "strengthEvidenceIds": [
+            "a4885ae3-91ae-42c6-b716-35f040aec51a",
+            "a661e002-1630-4728-8710-02956115de3e",
+            "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+            "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+          ],
+          "priorityImprovement": "Prioritize assessment in the next run.",
+          "priorityImprovementEvidenceIds": [
+            "a4885ae3-91ae-42c6-b716-35f040aec51a",
+            "a661e002-1630-4728-8710-02956115de3e",
+            "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+            "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+          ],
+          "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+        },
+        "providerMode": "verification_fixture"
+      },
+      "stateVersion": 46,
+      "caseVersion": "1.0.0-draft.2"
+    },
+    {
+      "contractVersion": "1.0.0",
+      "id": "e261da61-2726-4d9a-80a4-ccd1e29a414b",
+      "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+      "sequence": 72,
+      "wallTime": "2026-09-13T12:25:59.126Z",
+      "simulationTime": 90000,
+      "actor": "system",
+      "type": "feedback.published",
+      "payload": {
+        "revision": 1,
+        "cutoffName": "finish-v1",
+        "evidenceCutoffSequence": 69,
+        "trigger": "finish"
+      },
+      "stateVersion": 46,
+      "caseVersion": "1.0.0-draft.2"
     }
-  ]
+  ],
+  "debrief": {
+    "contractVersion": "1.0.0",
+    "runId": "488235ff-9240-46d6-8a92-54d5c7e5eb80",
+    "formative": true,
+    "status": "ready",
+    "evaluationMessage": null,
+    "cutoffName": "finish-v1",
+    "evidenceCutoffSequence": 69,
+    "transcriptDrain": {
+      "status": "empty",
+      "timeoutMs": 750
+    },
+    "trend": [
+      {
+        "simulationTimeMs": 0,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 30000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 60000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 90000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      }
+    ],
+    "markers": [
+      {
+        "eventId": "a4885ae3-91ae-42c6-b716-35f040aec51a",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Onset and timing"
+      },
+      {
+        "eventId": "a661e002-1630-4728-8710-02956115de3e",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Assess airway"
+      },
+      {
+        "eventId": "a4d63566-4cf0-4c20-a3bb-f5300e752075",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Inspect breathing"
+      },
+      {
+        "eventId": "5b71bdac-0581-4c76-ab5b-e19891b95d83",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Observation: blood_pressure"
+      },
+      {
+        "eventId": "447cf1e6-8091-4671-8cb4-e2d7c793012d",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "Investigation artwork opened"
+      },
+      {
+        "eventId": "61a9b166-7411-464b-8efe-bad42cebb067",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "Investigation report opened"
+      },
+      {
+        "eventId": "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "2c2c224b-2066-41fd-9efb-3d06577cdf36",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "bf9db187-6060-45de-a566-c1df54ccaa8b",
+        "simulationTimeMs": 30000,
+        "kind": "treatment",
+        "label": "aspirin_300mg_tablet administered 300 mg oral"
+      },
+      {
+        "eventId": "6e97a0cd-1d62-4412-8db0-ac30a91b7944",
+        "simulationTimeMs": 30000,
+        "kind": "treatment",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "b0ce7a06-8a00-4e03-9a69-d43e66f93d15",
+        "simulationTimeMs": 30000,
+        "kind": "treatment",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "1d9f5cc0-a78a-4f5e-ac00-3ddb4674fbfc",
+        "simulationTimeMs": 30000,
+        "kind": "treatment",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "e8e562b9-7c27-4e57-8f1a-200e85551ed5",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "iv_patency"
+      },
+      {
+        "eventId": "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+        "simulationTimeMs": 30000,
+        "kind": "escalation",
+        "label": "Senior contacted"
+      },
+      {
+        "eventId": "09191bed-d35b-4356-867c-ad7f396b31f6",
+        "simulationTimeMs": 60000,
+        "kind": "treatment",
+        "label": "fluid started"
+      },
+      {
+        "eventId": "73616fcc-4bd1-4fc0-8771-2e13d2b99cb4",
+        "simulationTimeMs": 90000,
+        "kind": "treatment",
+        "label": "fluid stopped"
+      },
+      {
+        "eventId": "a0055d0e-3c6f-4b36-9d53-5c4fbc248630",
+        "simulationTimeMs": 90000,
+        "kind": "assessment",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "db7479b8-2c2d-405c-bd97-c463d8bb4f1f",
+        "simulationTimeMs": 90000,
+        "kind": "assessment",
+        "label": "Pain score"
+      }
+    ],
+    "actions": [
+      {
+        "eventId": "a4885ae3-91ae-42c6-b716-35f040aec51a",
+        "sequence": 5,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Onset and timing"
+      },
+      {
+        "eventId": "a661e002-1630-4728-8710-02956115de3e",
+        "sequence": 7,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+        "sequence": 9,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Assess airway"
+      },
+      {
+        "eventId": "a4d63566-4cf0-4c20-a3bb-f5300e752075",
+        "sequence": 11,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Inspect breathing"
+      },
+      {
+        "eventId": "f06a9f55-83b5-42dc-9182-60dfb242fe0a",
+        "sequence": 18,
+        "simulationTimeMs": 0,
+        "status": "blocked",
+        "label": "command rejected"
+      },
+      {
+        "eventId": "6d0fc958-2b84-4bc7-bb9b-608e3a5d173d",
+        "sequence": 25,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "Investigation interpretation"
+      },
+      {
+        "eventId": "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+        "sequence": 27,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "388a6e59-854a-4f47-a47c-b7338cfb2e39",
+        "sequence": 28,
+        "simulationTimeMs": 30000,
+        "status": "prepared",
+        "label": "aspirin_300mg_tablet prepared"
+      },
+      {
+        "eventId": "a2703a8b-9be1-44f9-bf1d-846be2e60982",
+        "sequence": 29,
+        "simulationTimeMs": 30000,
+        "status": "attempted",
+        "label": "aspirin_300mg_tablet attempted"
+      },
+      {
+        "eventId": "079f8549-601b-4c56-b534-94b38907202f",
+        "sequence": 30,
+        "simulationTimeMs": 30000,
+        "status": "blocked",
+        "label": "aspirin_300mg_tablet blocked"
+      },
+      {
+        "eventId": "2c2c224b-2066-41fd-9efb-3d06577cdf36",
+        "sequence": 33,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "7b46e1da-7ed9-44e5-867e-205089711221",
+        "sequence": 34,
+        "simulationTimeMs": 30000,
+        "status": "prepared",
+        "label": "aspirin_300mg_tablet prepared"
+      },
+      {
+        "eventId": "f8c85166-e406-453c-88b7-d8d94f3d10c2",
+        "sequence": 35,
+        "simulationTimeMs": 30000,
+        "status": "attempted",
+        "label": "aspirin_300mg_tablet attempted"
+      },
+      {
+        "eventId": "bf9db187-6060-45de-a566-c1df54ccaa8b",
+        "sequence": 36,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "aspirin_300mg_tablet administered"
+      },
+      {
+        "eventId": "6e97a0cd-1d62-4412-8db0-ac30a91b7944",
+        "sequence": 39,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "b0ce7a06-8a00-4e03-9a69-d43e66f93d15",
+        "sequence": 40,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "1d9f5cc0-a78a-4f5e-ac00-3ddb4674fbfc",
+        "sequence": 41,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "equipment setting_changed"
+      },
+      {
+        "eventId": "e8e562b9-7c27-4e57-8f1a-200e85551ed5",
+        "sequence": 43,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "iv_patency"
+      },
+      {
+        "eventId": "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+        "sequence": 45,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "Senior review requested"
+      },
+      {
+        "eventId": "aede8e91-259b-4ec9-bacd-eeb2683667d5",
+        "sequence": 48,
+        "simulationTimeMs": 45000,
+        "status": "completed",
+        "label": "Senior review acknowledged"
+      },
+      {
+        "eventId": "09191bed-d35b-4356-867c-ad7f396b31f6",
+        "sequence": 51,
+        "simulationTimeMs": 60000,
+        "status": "completed",
+        "label": "fluid started"
+      },
+      {
+        "eventId": "73616fcc-4bd1-4fc0-8771-2e13d2b99cb4",
+        "sequence": 57,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "fluid stopped"
+      },
+      {
+        "eventId": "a0055d0e-3c6f-4b36-9d53-5c4fbc248630",
+        "sequence": 59,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "db7479b8-2c2d-405c-bd97-c463d8bb4f1f",
+        "sequence": 61,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "21bdf88b-e3a2-46cc-af90-00def3649e1a",
+        "sequence": 62,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Note revision 1"
+      },
+      {
+        "eventId": "cce66b49-b352-4679-a910-e06afb00f608",
+        "sequence": 63,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Note revision 2"
+      },
+      {
+        "eventId": "a789f3cb-0103-408e-b845-3f49222488e5",
+        "sequence": 64,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Structured handoff recorded"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "3b81ea8b-403d-45ef-a1bf-a0cb66cc9697",
+        "sequence": 2,
+        "simulationTimeMs": 0,
+        "kind": "transcript_segment",
+        "title": "nurse transcript segment",
+        "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "detail": "{\n  \"messageId\": \"c9c1df5a-5abc-4048-abda-06291e0e9b39\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a4885ae3-91ae-42c6-b716-35f040aec51a",
+        "sequence": 5,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Onset and timing",
+        "summary": "The pressure began suddenly while resting about 45 minutes before arrival.",
+        "detail": "{\n  \"findingId\": \"symptom_onset\",\n  \"label\": \"Onset and timing\",\n  \"value\": \"The pressure began suddenly while resting about 45 minutes before arrival.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a661e002-1630-4728-8710-02956115de3e",
+        "sequence": 7,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "8",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+        "sequence": 9,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Assess airway",
+        "summary": "Airway patent; patient is speaking in complete sentences.",
+        "detail": "{\n  \"findingId\": \"airway_assessment\",\n  \"label\": \"Assess airway\",\n  \"value\": \"Airway patent; patient is speaking in complete sentences.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a4d63566-4cf0-4c20-a3bb-f5300e752075",
+        "sequence": 11,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Inspect breathing",
+        "summary": "Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.",
+        "detail": "{\n  \"findingId\": \"breathing_assessment\",\n  \"label\": \"Inspect breathing\",\n  \"value\": \"Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "5b71bdac-0581-4c76-ab5b-e19891b95d83",
+        "sequence": 15,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Observation: blood_pressure",
+        "summary": "146/88",
+        "detail": "{\n  \"observation\": \"blood_pressure\",\n  \"systolic\": 146,\n  \"diastolic\": 88,\n  \"value\": \"146/88\",\n  \"measuredAtMs\": 0\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "f06a9f55-83b5-42dc-9182-60dfb242fe0a",
+        "sequence": 18,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "command rejected",
+        "summary": "command rejected",
+        "detail": "{\n  \"commandType\": \"display_investigation\",\n  \"reason\": \"12-lead ECG is not yet available.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "447cf1e6-8091-4671-8cb4-e2d7c793012d",
+        "sequence": 23,
+        "simulationTimeMs": 30000,
+        "kind": "investigation",
+        "title": "Investigation artwork opened",
+        "summary": "Investigation artwork opened",
+        "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"view\": \"artwork\"\n  },\n  \"result\": \"Calibrated twelve-lead development tracing available.\",\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; needs senior ECG review.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "61a9b166-7411-464b-8efe-bad42cebb067",
+        "sequence": 24,
+        "simulationTimeMs": 30000,
+        "kind": "investigation",
+        "title": "Investigation report opened",
+        "summary": "Investigation report opened",
+        "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"view\": \"report\"\n  },\n  \"result\": \"Calibrated twelve-lead development tracing available.\",\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; needs senior ECG review.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "6d0fc958-2b84-4bc7-bb9b-608e3a5d173d",
+        "sequence": 25,
+        "simulationTimeMs": 30000,
+        "kind": "investigation",
+        "title": "Investigation interpretation",
+        "summary": "Sinus tachycardia; needs senior ECG review.",
+        "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"interpretation\": \"Sinus tachycardia; needs senior ECG review.\"\n  },\n  \"result\": \"Calibrated twelve-lead development tracing available.\",\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; needs senior ECG review.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+        "sequence": 27,
+        "simulationTimeMs": 30000,
+        "kind": "finding",
+        "title": "medication_prerequisites",
+        "summary": "medication_prerequisites",
+        "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "388a6e59-854a-4f47-a47c-b7338cfb2e39",
+        "sequence": 28,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet prepared",
+        "summary": "aspirin_300mg_tablet prepared",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a2703a8b-9be1-44f9-bf1d-846be2e60982",
+        "sequence": 29,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet attempted",
+        "summary": "aspirin_300mg_tablet attempted",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "079f8549-601b-4c56-b534-94b38907202f",
+        "sequence": 30,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet blocked",
+        "summary": "aspirin_300mg_tablet blocked",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"blocked\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "2c2c224b-2066-41fd-9efb-3d06577cdf36",
+        "sequence": 33,
+        "simulationTimeMs": 30000,
+        "kind": "finding",
+        "title": "medication_prerequisites",
+        "summary": "medication_prerequisites",
+        "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "7b46e1da-7ed9-44e5-867e-205089711221",
+        "sequence": 34,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet prepared",
+        "summary": "aspirin_300mg_tablet prepared",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "f8c85166-e406-453c-88b7-d8d94f3d10c2",
+        "sequence": 35,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet attempted",
+        "summary": "aspirin_300mg_tablet attempted",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "bf9db187-6060-45de-a566-c1df54ccaa8b",
+        "sequence": 36,
+        "simulationTimeMs": 30000,
+        "kind": "medication_receipt",
+        "title": "aspirin_300mg_tablet administered",
+        "summary": "aspirin_300mg_tablet administered",
+        "detail": "{\n  \"id\": \"bf9db187-6060-45de-a566-c1df54ccaa8b\",\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"dose\": 300,\n  \"unit\": \"mg\",\n  \"route\": \"oral\",\n  \"normalizedQuantity\": 300,\n  \"normalizedUnit\": \"mg\",\n  \"cumulativeQuantity\": 300,\n  \"simulationTimeMs\": 30000,\n  \"actor\": \"student\",\n  \"status\": \"administered\",\n  \"mode\": \"development_fixture\",\n  \"effectDueAtMs\": 90000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "6e97a0cd-1d62-4412-8db0-ac30a91b7944",
+        "sequence": 39,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "equipment setting_changed",
+        "summary": "equipment setting_changed",
+        "detail": "{\n  \"equipment\": \"oxygen\",\n  \"operation\": \"applied\",\n  \"deviceId\": \"nasal_cannula\",\n  \"setting\": 2,\n  \"unit\": \"L/min\",\n  \"effectRule\": \"Record device and flow only; this unreviewed fixture has no physiological effect.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "b0ce7a06-8a00-4e03-9a69-d43e66f93d15",
+        "sequence": 40,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "equipment setting_changed",
+        "summary": "equipment setting_changed",
+        "detail": "{\n  \"equipment\": \"oxygen\",\n  \"operation\": \"adjusted\",\n  \"deviceId\": \"nasal_cannula\",\n  \"setting\": 4,\n  \"unit\": \"L/min\",\n  \"effectRule\": \"Record device and flow only; this unreviewed fixture has no physiological effect.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "1d9f5cc0-a78a-4f5e-ac00-3ddb4674fbfc",
+        "sequence": 41,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "equipment setting_changed",
+        "summary": "equipment setting_changed",
+        "detail": "{\n  \"equipment\": \"oxygen\",\n  \"operation\": \"stopped\",\n  \"previous\": {\n    \"status\": \"running\",\n    \"deviceId\": \"nasal_cannula\",\n    \"setting\": 4,\n    \"unit\": \"L/min\"\n  }\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "e8e562b9-7c27-4e57-8f1a-200e85551ed5",
+        "sequence": 43,
+        "simulationTimeMs": 30000,
+        "kind": "finding",
+        "title": "iv_patency",
+        "summary": "iv_patency",
+        "detail": "{\n  \"assessment\": \"iv_patency\",\n  \"finding\": \"Line flushes and is patent.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+        "sequence": 45,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "Senior review requested",
+        "summary": "Senior review requested",
+        "detail": "{\n  \"acknowledgementDueAtMs\": 45000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "aede8e91-259b-4ec9-bacd-eeb2683667d5",
+        "sequence": 48,
+        "simulationTimeMs": 45000,
+        "kind": "action",
+        "title": "Senior review acknowledged",
+        "summary": "Senior review acknowledged",
+        "detail": "{\n  \"disposition\": \"Senior review acknowledged; continue monitored care.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "09191bed-d35b-4356-867c-ad7f396b31f6",
+        "sequence": 51,
+        "simulationTimeMs": 60000,
+        "kind": "action",
+        "title": "fluid started",
+        "summary": "fluid started",
+        "detail": "{\n  \"fluidId\": \"sodium_chloride_0_9\",\n  \"volumeMl\": 100,\n  \"rateMlPerHour\": 600\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "73616fcc-4bd1-4fc0-8771-2e13d2b99cb4",
+        "sequence": 57,
+        "simulationTimeMs": 90000,
+        "kind": "action",
+        "title": "fluid stopped",
+        "summary": "fluid stopped",
+        "detail": "{\n  \"deliveredVolumeMl\": 5\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a0055d0e-3c6f-4b36-9d53-5c4fbc248630",
+        "sequence": 59,
+        "simulationTimeMs": 90000,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "8",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "db7479b8-2c2d-405c-bd97-c463d8bb4f1f",
+        "sequence": 61,
+        "simulationTimeMs": 90000,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "8",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "21bdf88b-e3a2-46cc-af90-00def3649e1a",
+        "sequence": 62,
+        "simulationTimeMs": 90000,
+        "kind": "note_revision",
+        "title": "Note revision 1",
+        "summary": "Assessment: chest pain. Plan: monitor, ECG, treatment and urgent senior review.",
+        "detail": "{\n  \"revision\": 1,\n  \"content\": \"Assessment: chest pain. Plan: monitor, ECG, treatment and urgent senior review.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "cce66b49-b352-4679-a910-e06afb00f608",
+        "sequence": 63,
+        "simulationTimeMs": 90000,
+        "kind": "note_revision",
+        "title": "Note revision 2",
+        "summary": "Revised: reassessed after aspirin; continue monitored care and transfer responsibility.",
+        "detail": "{\n  \"revision\": 2,\n  \"content\": \"Revised: reassessed after aspirin; continue monitored care and transfer responsibility.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "a789f3cb-0103-408e-b845-3f49222488e5",
+        "sequence": 64,
+        "simulationTimeMs": 90000,
+        "kind": "action",
+        "title": "Structured handoff recorded",
+        "summary": "Situation: Morgan Lee with chest pain. Background: hypertension. Assessment: ECG acquired and aspirin administered. Recommendation: urgent senior ECG review and monitored care.",
+        "detail": "{\n  \"content\": \"Situation: Morgan Lee with chest pain. Background: hypertension. Assessment: ECG acquired and aspirin administered. Recommendation: urgent senior ECG review and monitored care.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "807e5a25-5353-4ecb-b40d-3707dea0a0dd",
+        "sequence": 68,
+        "simulationTimeMs": 90000,
+        "kind": "transcript_segment",
+        "title": "examiner transcript segment",
+        "summary": "What evidence informed your most important decision so far?",
+        "detail": "{\n  \"messageId\": \"eb201357-edf8-4d1d-83b5-649c5fec64d4\",\n  \"role\": \"examiner\",\n  \"source\": \"text\",\n  \"text\": \"What evidence informed your most important decision so far?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+        "superseded": false,
+        "assisted": false
+      }
+    ],
+    "feedbackRevisions": [
+      {
+        "revision": 1,
+        "label": "Feedback revision 1 · finish-v1",
+        "cutoffName": "finish-v1",
+        "evidenceCutoffSequence": 69,
+        "createdAt": "2026-09-13T12:25:59.126Z",
+        "trigger": "finish",
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "feedback",
+          "evidenceCutoffSequence": 69,
+          "criteria": [
+            {
+              "criterion": "assessment",
+              "rating": "demonstrated",
+              "reason": "The evidence shows multiple focused findings or observations were obtained.",
+              "evidenceIds": [
+                "a4885ae3-91ae-42c6-b716-35f040aec51a",
+                "a661e002-1630-4728-8710-02956115de3e",
+                "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+                "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+              ]
+            },
+            {
+              "criterion": "interpretation",
+              "rating": "demonstrated",
+              "reason": "A student-authored investigation interpretation was recorded.",
+              "evidenceIds": [
+                "6d0fc958-2b84-4bc7-bb9b-608e3a5d173d"
+              ]
+            },
+            {
+              "criterion": "intervention_selection_dosing",
+              "rating": "demonstrated",
+              "reason": "A validated medication administration receipt records the selected dose and route.",
+              "evidenceIds": [
+                "bf9db187-6060-45de-a566-c1df54ccaa8b"
+              ]
+            },
+            {
+              "criterion": "reassessment",
+              "rating": "demonstrated",
+              "reason": "A finding or observation was repeated after the recorded intervention.",
+              "evidenceIds": [
+                "bc02ab8a-7d21-49ba-98d4-cc2e362502fc",
+                "2c2c224b-2066-41fd-9efb-3d06577cdf36"
+              ]
+            },
+            {
+              "criterion": "escalation",
+              "rating": "demonstrated",
+              "reason": "The run records a request for senior review.",
+              "evidenceIds": [
+                "1a43bf7f-36ff-409f-bd01-c51cfa52e94f",
+                "aede8e91-259b-4ec9-bacd-eeb2683667d5"
+              ]
+            },
+            {
+              "criterion": "communication_documentation",
+              "rating": "demonstrated",
+              "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+              "evidenceIds": [
+                "cce66b49-b352-4679-a910-e06afb00f608",
+                "a789f3cb-0103-408e-b845-3f49222488e5"
+              ]
+            }
+          ],
+          "strength": "Your strongest documented area was assessment.",
+          "strengthEvidenceIds": [
+            "a4885ae3-91ae-42c6-b716-35f040aec51a",
+            "a661e002-1630-4728-8710-02956115de3e",
+            "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+            "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+          ],
+          "priorityImprovement": "Prioritize assessment in the next run.",
+          "priorityImprovementEvidenceIds": [
+            "a4885ae3-91ae-42c6-b716-35f040aec51a",
+            "a661e002-1630-4728-8710-02956115de3e",
+            "9fc4aa3b-ccce-40dd-b55d-d69e4c3aeb1b",
+            "a4d63566-4cf0-4c20-a3bb-f5300e752075"
+          ],
+          "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+        }
+      }
+    ],
+    "activeFeedbackRevision": 1,
+    "teachBack": null
+  }
 }

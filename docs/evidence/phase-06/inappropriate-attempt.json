@@ -1,0 +1,1340 @@
+{
+  "generatedAt": "2026-09-13T12:25:37.481Z",
+  "debrief": {
+    "contractVersion": "1.0.0",
+    "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+    "formative": true,
+    "status": "ready",
+    "evaluationMessage": null,
+    "cutoffName": "finish-v1",
+    "evidenceCutoffSequence": 18,
+    "transcriptDrain": {
+      "status": "empty",
+      "timeoutMs": 750
+    },
+    "trend": [
+      {
+        "simulationTimeMs": 0,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      }
+    ],
+    "markers": [
+      {
+        "eventId": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+        "simulationTimeMs": 0,
+        "kind": "treatment",
+        "label": "aspirin_300mg_tablet administered 300 mg oral"
+      }
+    ],
+    "actions": [
+      {
+        "eventId": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+        "sequence": 3,
+        "simulationTimeMs": 0,
+        "status": "prepared",
+        "label": "aspirin_300mg_tablet prepared"
+      },
+      {
+        "eventId": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+        "sequence": 4,
+        "simulationTimeMs": 0,
+        "status": "attempted",
+        "label": "aspirin_300mg_tablet attempted"
+      },
+      {
+        "eventId": "5b81f657-c442-4945-94a7-74d089a8b37a",
+        "sequence": 5,
+        "simulationTimeMs": 0,
+        "status": "blocked",
+        "label": "aspirin_300mg_tablet blocked"
+      },
+      {
+        "eventId": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+        "sequence": 8,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+        "sequence": 9,
+        "simulationTimeMs": 0,
+        "status": "prepared",
+        "label": "aspirin_300mg_tablet prepared"
+      },
+      {
+        "eventId": "cd19f33e-6658-4246-a318-962ba645f36a",
+        "sequence": 10,
+        "simulationTimeMs": 0,
+        "status": "attempted",
+        "label": "aspirin_300mg_tablet attempted"
+      },
+      {
+        "eventId": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+        "sequence": 11,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "aspirin_300mg_tablet administered"
+      },
+      {
+        "eventId": "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+        "sequence": 14,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Note revision 1"
+      },
+      {
+        "eventId": "8f420062-1a70-4e30-ad43-59cc48258044",
+        "sequence": 15,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Structured handoff recorded"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "5823b798-3576-473a-a6f1-859051a37bd1",
+        "sequence": 2,
+        "simulationTimeMs": 0,
+        "kind": "transcript_segment",
+        "title": "nurse transcript segment",
+        "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "detail": "{\n  \"messageId\": \"96ca627d-8022-4295-a85e-30c6573cad2c\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+        "sequence": 3,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet prepared",
+        "summary": "aspirin_300mg_tablet prepared",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+        "sequence": 4,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet attempted",
+        "summary": "aspirin_300mg_tablet attempted",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Review the allergy history first.\",\n      \"Review the medication administration history first.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "5b81f657-c442-4945-94a7-74d089a8b37a",
+        "sequence": 5,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet blocked",
+        "summary": "aspirin_300mg_tablet blocked",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Review the allergy history first.\",\n      \"Review the medication administration history first.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"blocked\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+        "sequence": 8,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "medication_prerequisites",
+        "summary": "medication_prerequisites",
+        "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+        "sequence": 9,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet prepared",
+        "summary": "aspirin_300mg_tablet prepared",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "cd19f33e-6658-4246-a318-962ba645f36a",
+        "sequence": 10,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet attempted",
+        "summary": "aspirin_300mg_tablet attempted",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+        "sequence": 11,
+        "simulationTimeMs": 0,
+        "kind": "medication_receipt",
+        "title": "aspirin_300mg_tablet administered",
+        "summary": "aspirin_300mg_tablet administered",
+        "detail": "{\n  \"id\": \"d2f7e861-7945-40d4-b2a7-6eb60fc84754\",\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"dose\": 300,\n  \"unit\": \"mg\",\n  \"route\": \"oral\",\n  \"normalizedQuantity\": 300,\n  \"normalizedUnit\": \"mg\",\n  \"cumulativeQuantity\": 300,\n  \"simulationTimeMs\": 0,\n  \"actor\": \"student\",\n  \"status\": \"administered\",\n  \"mode\": \"development_fixture\",\n  \"effectDueAtMs\": 60000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+        "sequence": 14,
+        "simulationTimeMs": 0,
+        "kind": "note_revision",
+        "title": "Note revision 1",
+        "summary": "inappropriate-attempt: assessment, actions, rationale, and senior plan documented.",
+        "detail": "{\n  \"revision\": 1,\n  \"content\": \"inappropriate-attempt: assessment, actions, rationale, and senior plan documented.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "8f420062-1a70-4e30-ad43-59cc48258044",
+        "sequence": 15,
+        "simulationTimeMs": 0,
+        "kind": "action",
+        "title": "Structured handoff recorded",
+        "summary": "inappropriate-attempt: findings and actual treatment status handed to senior review.",
+        "detail": "{\n  \"content\": \"inappropriate-attempt: findings and actual treatment status handed to senior review.\"\n}",
+        "superseded": false,
+        "assisted": false
+      }
+    ],
+    "feedbackRevisions": [
+      {
+        "revision": 1,
+        "label": "Feedback revision 1 · finish-v1",
+        "cutoffName": "finish-v1",
+        "evidenceCutoffSequence": 18,
+        "createdAt": "2026-09-13T12:25:37.481Z",
+        "trigger": "finish",
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "feedback",
+          "evidenceCutoffSequence": 18,
+          "criteria": [
+            {
+              "criterion": "assessment",
+              "rating": "needs_work",
+              "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+              "evidenceIds": [
+                "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+              ]
+            },
+            {
+              "criterion": "interpretation",
+              "rating": "insufficient_evidence",
+              "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+              "evidenceIds": []
+            },
+            {
+              "criterion": "intervention_selection_dosing",
+              "rating": "demonstrated",
+              "reason": "A validated medication administration receipt records the selected dose and route.",
+              "evidenceIds": [
+                "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+              ]
+            },
+            {
+              "criterion": "reassessment",
+              "rating": "demonstrated",
+              "reason": "A finding or observation was repeated after the recorded intervention.",
+              "evidenceIds": [
+                "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+              ]
+            },
+            {
+              "criterion": "escalation",
+              "rating": "needs_work",
+              "reason": "A handoff was recorded without a separate senior escalation request.",
+              "evidenceIds": [
+                "8f420062-1a70-4e30-ad43-59cc48258044"
+              ]
+            },
+            {
+              "criterion": "communication_documentation",
+              "rating": "demonstrated",
+              "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+              "evidenceIds": [
+                "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+                "8f420062-1a70-4e30-ad43-59cc48258044"
+              ]
+            }
+          ],
+          "strength": "Your strongest documented area was intervention selection dosing.",
+          "strengthEvidenceIds": [
+            "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+          ],
+          "priorityImprovement": "Prioritize assessment in the next run.",
+          "priorityImprovementEvidenceIds": [
+            "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+          ],
+          "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+        }
+      }
+    ],
+    "activeFeedbackRevision": 1,
+    "teachBack": null
+  },
+  "run": {
+    "exportVersion": "1.0.0",
+    "exportedAt": "2026-09-13T12:25:37.481Z",
+    "case": {
+      "id": "adult_chest_pain",
+      "version": "1.0.0-draft.2",
+      "title": "Chest pain with evolving instability",
+      "educationalUse": "formative_simulation_only",
+      "clinicalReviewStatus": "draft_unreviewed"
+    },
+    "state": {
+      "id": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+      "revision": 9,
+      "caseVersion": "1.0.0-draft.2",
+      "mode": "development_fixture",
+      "lifecycle": "ended",
+      "clock": {
+        "simulationTimeMs": 0,
+        "running": false,
+        "timeScale": 1
+      },
+      "physiology": {
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88,
+        "painScore": 8,
+        "presentation": "Alert, anxious, pale and clammy"
+      },
+      "sensors": {
+        "ecg": false,
+        "spo2": false,
+        "cuff": false
+      },
+      "measurements": {
+        "hr": null,
+        "spo2": null,
+        "rr": 20,
+        "bp": null
+      },
+      "assessments": [],
+      "investigations": [
+        {
+          "id": "twelve_lead_ecg",
+          "label": "12-lead ECG",
+          "kind": "ecg",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "troponin_i",
+          "label": "Troponin I",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "full_blood_count",
+          "label": "Full blood count",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "capillary_glucose",
+          "label": "Capillary glucose",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        }
+      ],
+      "devices": {
+        "oxygen": {
+          "status": "off",
+          "deviceId": null,
+          "setting": 0,
+          "unit": null
+        },
+        "ivAccess": {
+          "established": false,
+          "patency": "not_assessed",
+          "lastInspectedAtMs": null
+        },
+        "fluidPump": {
+          "status": "idle",
+          "fluidId": null,
+          "prescribedVolumeMl": 0,
+          "rateMlPerHour": 0,
+          "deliveredVolumeMl": 0,
+          "startedAtMs": null
+        }
+      },
+      "treatments": {
+        "prerequisites": {
+          "allergyHistoryReviewed": true,
+          "administrationHistoryReviewed": true
+        },
+        "receipts": [
+          {
+            "id": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+            "medicationId": "aspirin_300mg_tablet",
+            "dose": 300,
+            "unit": "mg",
+            "route": "oral",
+            "normalizedQuantity": 300,
+            "normalizedUnit": "mg",
+            "cumulativeQuantity": 300,
+            "simulationTimeMs": 0,
+            "actor": "student",
+            "status": "administered",
+            "mode": "development_fixture",
+            "effectDueAtMs": 60000
+          }
+        ],
+        "preparedOrders": [
+          {
+            "id": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+            "order": {
+              "drugId": "aspirin_300mg_tablet",
+              "dose": 600,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "source": "ui",
+            "preparedAtMs": 0,
+            "status": "blocked",
+            "statusAtMs": 0,
+            "message": "Dose must normalize to 300 mg. Review the allergy history first. Review the medication administration history first. Cumulative dose would exceed 300 mg."
+          },
+          {
+            "id": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+            "order": {
+              "drugId": "aspirin_300mg_tablet",
+              "dose": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "source": "ui",
+            "preparedAtMs": 0,
+            "status": "administered",
+            "statusAtMs": 0,
+            "message": "Administration accepted."
+          }
+        ],
+        "cumulativeDoses": {
+          "aspirin_300mg_tablet": {
+            "quantity": 300,
+            "unit": "mg"
+          }
+        },
+        "pendingEffects": [
+          {
+            "id": "270ace32-da78-498a-aea0-e0fa43189d57",
+            "medicationId": "aspirin_300mg_tablet",
+            "dueAtMs": 60000,
+            "causedBy": "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+          }
+        ],
+        "appliedEffects": []
+      },
+      "senior": {
+        "requestedAtMs": null,
+        "acknowledgedAtMs": null
+      },
+      "authorizations": [],
+      "notes": [
+        {
+          "revision": 1,
+          "content": "inappropriate-attempt: assessment, actions, rationale, and senior plan documented.",
+          "savedAtMs": 0,
+          "eventId": "46383f9b-d91e-48cd-95f2-610e2abd49fb"
+        }
+      ],
+      "handoffs": [
+        {
+          "content": "inappropriate-attempt: findings and actual treatment status handed to senior review.",
+          "recordedAtMs": 0,
+          "eventId": "8f420062-1a70-4e30-ad43-59cc48258044"
+        }
+      ],
+      "finishedAtMs": 0,
+      "branch": {
+        "kind": "timely_care",
+        "enteredAtMs": 0,
+        "status": "active",
+        "reason": "Authored timely-care conditions met",
+        "timeoutAtMs": 180000
+      },
+      "branchHistory": [
+        {
+          "kind": "arrival",
+          "enteredAtMs": 0,
+          "exitedAtMs": 0,
+          "outcome": "blocked medication attempt"
+        },
+        {
+          "kind": "inappropriate_attempt",
+          "enteredAtMs": 0,
+          "exitedAtMs": 0,
+          "outcome": "corrected administration accepted"
+        }
+      ],
+      "lastCommandResult": {
+        "status": "accepted",
+        "message": "Run finished and evidence frozen."
+      },
+      "simulationTimeMs": 0,
+      "receipts": [
+        {
+          "id": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+          "medicationId": "aspirin_300mg_tablet",
+          "dose": 300,
+          "unit": "mg",
+          "route": "oral",
+          "normalizedQuantity": 300,
+          "normalizedUnit": "mg",
+          "cumulativeQuantity": 300,
+          "simulationTimeMs": 0,
+          "actor": "student",
+          "status": "administered",
+          "mode": "development_fixture",
+          "effectDueAtMs": 60000
+        }
+      ]
+    },
+    "events": [
+      {
+        "contractVersion": "1.0.0",
+        "id": "240a4d39-f705-4222-b55f-d004ba469dde",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 1,
+        "wallTime": "2026-09-13T12:25:37.468Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "session.started",
+        "payload": {
+          "mode": "development_fixture",
+          "reviewStatus": "draft_unreviewed"
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "5823b798-3576-473a-a6f1-859051a37bd1",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 2,
+        "wallTime": "2026-09-13T12:25:37.469Z",
+        "simulationTime": 0,
+        "actor": "nurse",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "96ca627d-8022-4295-a85e-30c6573cad2c",
+          "role": "nurse",
+          "source": "authored",
+          "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 3,
+        "wallTime": "2026-09-13T12:25:37.470Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "medication.prepared",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 600,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": null,
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "prepared"
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "e9dd4df0-6330-46e9-93c5-bf7388b89ce7"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 4,
+        "wallTime": "2026-09-13T12:25:37.471Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "medication.attempted",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 600,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 600,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "rejected",
+            "reasons": [
+              "Dose must normalize to 300 mg.",
+              "Review the allergy history first.",
+              "Review the medication administration history first.",
+              "Cumulative dose would exceed 300 mg."
+            ]
+          },
+          "administrationStatus": "attempted"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "0746d77d-763d-4673-96fa-8de04d6fa6c8"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "5b81f657-c442-4945-94a7-74d089a8b37a",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 5,
+        "wallTime": "2026-09-13T12:25:37.471Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "medication.blocked",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 600,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 600,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "rejected",
+            "reasons": [
+              "Dose must normalize to 300 mg.",
+              "Review the allergy history first.",
+              "Review the medication administration history first.",
+              "Cumulative dose would exceed 300 mg."
+            ]
+          },
+          "administrationStatus": "blocked"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+        "idempotencyKey": "0746d77d-763d-4673-96fa-8de04d6fa6c8"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ee20f439-b7f7-41b9-a791-a82c7cbd7cdf",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 6,
+        "wallTime": "2026-09-13T12:25:37.471Z",
+        "simulationTime": 0,
+        "actor": "engine",
+        "type": "branch.exited",
+        "payload": {
+          "kind": "arrival",
+          "outcome": "blocked medication attempt",
+          "status": "completed"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "2419b04b-ed9f-44fe-a04d-0a9692524789",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 7,
+        "wallTime": "2026-09-13T12:25:37.471Z",
+        "simulationTime": 0,
+        "actor": "engine",
+        "type": "branch.entered",
+        "payload": {
+          "kind": "inappropriate_attempt",
+          "reason": "Dose must normalize to 300 mg. Review the allergy history first. Review the medication administration history first. Cumulative dose would exceed 300 mg.",
+          "timeoutAtMs": 60000
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 8,
+        "wallTime": "2026-09-13T12:25:37.472Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.performed",
+        "payload": {
+          "assessment": "medication_prerequisites",
+          "allergyHistoryReviewed": true,
+          "administrationHistoryReviewed": true
+        },
+        "stateVersion": 3,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "37d91ec0-46af-480e-b10e-148aba8b3b3d"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 9,
+        "wallTime": "2026-09-13T12:25:37.473Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "medication.prepared",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": null,
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "prepared"
+        },
+        "stateVersion": 4,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "9ac71ea4-cb17-4a1f-ba17-c735696ee597"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "cd19f33e-6658-4246-a318-962ba645f36a",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 10,
+        "wallTime": "2026-09-13T12:25:37.475Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "medication.attempted",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 300,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "attempted"
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "5878cfe4-1cba-4d16-8feb-c59d3af81c9f"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 11,
+        "wallTime": "2026-09-13T12:25:37.475Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "medication.administered",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 300,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "administered"
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "cd19f33e-6658-4246-a318-962ba645f36a",
+        "idempotencyKey": "5878cfe4-1cba-4d16-8feb-c59d3af81c9f"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "22d88d36-2c89-48d3-ace5-d0d80869ea91",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 12,
+        "wallTime": "2026-09-13T12:25:37.475Z",
+        "simulationTime": 0,
+        "actor": "engine",
+        "type": "branch.exited",
+        "payload": {
+          "kind": "inappropriate_attempt",
+          "outcome": "corrected administration accepted",
+          "status": "completed"
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ab7bb055-3a90-46aa-b91d-4ff1370ebe6e",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 13,
+        "wallTime": "2026-09-13T12:25:37.475Z",
+        "simulationTime": 0,
+        "actor": "engine",
+        "type": "branch.entered",
+        "payload": {
+          "kind": "timely_care",
+          "reason": "Authored timely-care conditions met",
+          "timeoutAtMs": 180000
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 14,
+        "wallTime": "2026-09-13T12:25:37.476Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "note.saved",
+        "payload": {
+          "revision": 1,
+          "content": "inappropriate-attempt: assessment, actions, rationale, and senior plan documented."
+        },
+        "stateVersion": 6,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "5ac706a9-ddaf-4d76-ac82-bacd413513d0"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "8f420062-1a70-4e30-ad43-59cc48258044",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 15,
+        "wallTime": "2026-09-13T12:25:37.477Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "handoff.recorded",
+        "payload": {
+          "content": "inappropriate-attempt: findings and actual treatment status handed to senior review."
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "95803e7a-4092-4717-ae49-0ae806faec43"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "265cdff4-6a04-4ca6-ba76-215ccf100f53",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 16,
+        "wallTime": "2026-09-13T12:25:37.477Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "session.handoff_started",
+        "payload": {},
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "8f420062-1a70-4e30-ad43-59cc48258044",
+        "idempotencyKey": "95803e7a-4092-4717-ae49-0ae806faec43"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "1c0ec37f-251c-4c4f-936b-0cc004e8eb68",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 17,
+        "wallTime": "2026-09-13T12:25:37.478Z",
+        "simulationTime": 0,
+        "actor": "presenter",
+        "type": "session.paused",
+        "payload": {},
+        "stateVersion": 8,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "710821a2-2e7b-4dd8-98d5-e2a3baa1fc7c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "0ba56f92-6692-4572-a306-86e2da851a9d",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 18,
+        "wallTime": "2026-09-13T12:25:37.478Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "session.ended",
+        "payload": {
+          "evidenceCutoffSequence": 18,
+          "cutoffName": "finish-v1"
+        },
+        "stateVersion": 9,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "81a56c6d-8e4c-4fa0-a170-131ed3fea550"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b78cb1c0-1686-41dc-83c2-40754daaa6da",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 19,
+        "wallTime": "2026-09-13T12:25:37.479Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "examiner.checkpoint_started",
+        "payload": {
+          "kind": "debrief"
+        },
+        "stateVersion": 9,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "61019327-aa89-4e56-8acb-cf21da00de3f",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 20,
+        "wallTime": "2026-09-13T12:25:37.480Z",
+        "simulationTime": 0,
+        "actor": "examiner",
+        "type": "examiner.output_submitted",
+        "payload": {
+          "kind": "feedback",
+          "evidenceCutoffSequence": 18,
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 18,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "needs_work",
+                "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+                "evidenceIds": [
+                  "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "insufficient_evidence",
+                "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "demonstrated",
+                "reason": "A validated medication administration receipt records the selected dose and route.",
+                "evidenceIds": [
+                  "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+                ]
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "demonstrated",
+                "reason": "A finding or observation was repeated after the recorded intervention.",
+                "evidenceIds": [
+                  "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+                ]
+              },
+              {
+                "criterion": "escalation",
+                "rating": "needs_work",
+                "reason": "A handoff was recorded without a separate senior escalation request.",
+                "evidenceIds": [
+                  "8f420062-1a70-4e30-ad43-59cc48258044"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+                  "8f420062-1a70-4e30-ad43-59cc48258044"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was intervention selection dosing.",
+            "strengthEvidenceIds": [
+              "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          },
+          "providerMode": "verification_fixture"
+        },
+        "stateVersion": 9,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "bcec2c20-9305-495f-8ec3-84eb77756026",
+        "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+        "sequence": 21,
+        "wallTime": "2026-09-13T12:25:37.481Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "feedback.published",
+        "payload": {
+          "revision": 1,
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 18,
+          "trigger": "finish"
+        },
+        "stateVersion": 9,
+        "caseVersion": "1.0.0-draft.2"
+      }
+    ],
+    "debrief": {
+      "contractVersion": "1.0.0",
+      "runId": "ed62abed-d8c9-4bad-b66f-a0d89ecfdb94",
+      "formative": true,
+      "status": "ready",
+      "evaluationMessage": null,
+      "cutoffName": "finish-v1",
+      "evidenceCutoffSequence": 18,
+      "transcriptDrain": {
+        "status": "empty",
+        "timeoutMs": 750
+      },
+      "trend": [
+        {
+          "simulationTimeMs": 0,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        }
+      ],
+      "markers": [
+        {
+          "eventId": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+          "simulationTimeMs": 0,
+          "kind": "assessment",
+          "label": "medication_prerequisites"
+        },
+        {
+          "eventId": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+          "simulationTimeMs": 0,
+          "kind": "treatment",
+          "label": "aspirin_300mg_tablet administered 300 mg oral"
+        }
+      ],
+      "actions": [
+        {
+          "eventId": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+          "sequence": 3,
+          "simulationTimeMs": 0,
+          "status": "prepared",
+          "label": "aspirin_300mg_tablet prepared"
+        },
+        {
+          "eventId": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+          "sequence": 4,
+          "simulationTimeMs": 0,
+          "status": "attempted",
+          "label": "aspirin_300mg_tablet attempted"
+        },
+        {
+          "eventId": "5b81f657-c442-4945-94a7-74d089a8b37a",
+          "sequence": 5,
+          "simulationTimeMs": 0,
+          "status": "blocked",
+          "label": "aspirin_300mg_tablet blocked"
+        },
+        {
+          "eventId": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+          "sequence": 8,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "medication_prerequisites"
+        },
+        {
+          "eventId": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+          "sequence": 9,
+          "simulationTimeMs": 0,
+          "status": "prepared",
+          "label": "aspirin_300mg_tablet prepared"
+        },
+        {
+          "eventId": "cd19f33e-6658-4246-a318-962ba645f36a",
+          "sequence": 10,
+          "simulationTimeMs": 0,
+          "status": "attempted",
+          "label": "aspirin_300mg_tablet attempted"
+        },
+        {
+          "eventId": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+          "sequence": 11,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "aspirin_300mg_tablet administered"
+        },
+        {
+          "eventId": "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+          "sequence": 14,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Note revision 1"
+        },
+        {
+          "eventId": "8f420062-1a70-4e30-ad43-59cc48258044",
+          "sequence": 15,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Structured handoff recorded"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "5823b798-3576-473a-a6f1-859051a37bd1",
+          "sequence": 2,
+          "simulationTimeMs": 0,
+          "kind": "transcript_segment",
+          "title": "nurse transcript segment",
+          "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "detail": "{\n  \"messageId\": \"96ca627d-8022-4295-a85e-30c6573cad2c\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ada2c6ea-ad0d-4bf6-a08e-38292bb82e6d",
+          "sequence": 3,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet prepared",
+          "summary": "aspirin_300mg_tablet prepared",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ecd0849b-55c3-4ccd-8926-dbda5aba1b4c",
+          "sequence": 4,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet attempted",
+          "summary": "aspirin_300mg_tablet attempted",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Review the allergy history first.\",\n      \"Review the medication administration history first.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "5b81f657-c442-4945-94a7-74d089a8b37a",
+          "sequence": 5,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet blocked",
+          "summary": "aspirin_300mg_tablet blocked",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 600,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"rejected\",\n    \"reasons\": [\n      \"Dose must normalize to 300 mg.\",\n      \"Review the allergy history first.\",\n      \"Review the medication administration history first.\",\n      \"Cumulative dose would exceed 300 mg.\"\n    ]\n  },\n  \"administrationStatus\": \"blocked\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "add94ea5-50a4-46ae-8754-e50df97fcd9f",
+          "sequence": 8,
+          "simulationTimeMs": 0,
+          "kind": "finding",
+          "title": "medication_prerequisites",
+          "summary": "medication_prerequisites",
+          "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ac0d17c5-e0ab-413e-8088-422d3a8e4799",
+          "sequence": 9,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet prepared",
+          "summary": "aspirin_300mg_tablet prepared",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "cd19f33e-6658-4246-a318-962ba645f36a",
+          "sequence": 10,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet attempted",
+          "summary": "aspirin_300mg_tablet attempted",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "d2f7e861-7945-40d4-b2a7-6eb60fc84754",
+          "sequence": 11,
+          "simulationTimeMs": 0,
+          "kind": "medication_receipt",
+          "title": "aspirin_300mg_tablet administered",
+          "summary": "aspirin_300mg_tablet administered",
+          "detail": "{\n  \"id\": \"d2f7e861-7945-40d4-b2a7-6eb60fc84754\",\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"dose\": 300,\n  \"unit\": \"mg\",\n  \"route\": \"oral\",\n  \"normalizedQuantity\": 300,\n  \"normalizedUnit\": \"mg\",\n  \"cumulativeQuantity\": 300,\n  \"simulationTimeMs\": 0,\n  \"actor\": \"student\",\n  \"status\": \"administered\",\n  \"mode\": \"development_fixture\",\n  \"effectDueAtMs\": 60000\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+          "sequence": 14,
+          "simulationTimeMs": 0,
+          "kind": "note_revision",
+          "title": "Note revision 1",
+          "summary": "inappropriate-attempt: assessment, actions, rationale, and senior plan documented.",
+          "detail": "{\n  \"revision\": 1,\n  \"content\": \"inappropriate-attempt: assessment, actions, rationale, and senior plan documented.\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "8f420062-1a70-4e30-ad43-59cc48258044",
+          "sequence": 15,
+          "simulationTimeMs": 0,
+          "kind": "action",
+          "title": "Structured handoff recorded",
+          "summary": "inappropriate-attempt: findings and actual treatment status handed to senior review.",
+          "detail": "{\n  \"content\": \"inappropriate-attempt: findings and actual treatment status handed to senior review.\"\n}",
+          "superseded": false,
+          "assisted": false
+        }
+      ],
+      "feedbackRevisions": [
+        {
+          "revision": 1,
+          "label": "Feedback revision 1 · finish-v1",
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 18,
+          "createdAt": "2026-09-13T12:25:37.481Z",
+          "trigger": "finish",
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 18,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "needs_work",
+                "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+                "evidenceIds": [
+                  "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "insufficient_evidence",
+                "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "demonstrated",
+                "reason": "A validated medication administration receipt records the selected dose and route.",
+                "evidenceIds": [
+                  "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+                ]
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "demonstrated",
+                "reason": "A finding or observation was repeated after the recorded intervention.",
+                "evidenceIds": [
+                  "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+                ]
+              },
+              {
+                "criterion": "escalation",
+                "rating": "needs_work",
+                "reason": "A handoff was recorded without a separate senior escalation request.",
+                "evidenceIds": [
+                  "8f420062-1a70-4e30-ad43-59cc48258044"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "46383f9b-d91e-48cd-95f2-610e2abd49fb",
+                  "8f420062-1a70-4e30-ad43-59cc48258044"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was intervention selection dosing.",
+            "strengthEvidenceIds": [
+              "d2f7e861-7945-40d4-b2a7-6eb60fc84754"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "add94ea5-50a4-46ae-8754-e50df97fcd9f"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          }
+        }
+      ],
+      "activeFeedbackRevision": 1,
+      "teachBack": null
+    }
+  }
+}

@@ -62,6 +62,14 @@ The examiner receives only `get_evidence` and `submit_examiner_output`. The serv
 
 Run `npm run evidence:phase05` for deterministic boundary exports and `npm run verify:phase05:real` for the sanitized real-session receipt. The latter proves that one managed Astra session continues from an active-care checkpoint to handoff; it requires the same Agents API permissions as the probe.
 
+## Visual debrief checkpoint
+
+Finish freezes the server clock, serially settles commands already accepted by the run queue, saves the current note draft, and drains the browser's available transcript buffer for up to 750 ms. The resulting `session.ended` event names `finish-v1` and is the immutable basis for the first debrief. The browser receives the reconstruction immediately and polls while the managed examiner runs, so provider latency does not hold open the Finish request.
+
+The debrief turn reads evidence only through that named sequence and can publish only a schema-valid `feedback` output containing the six rubric criteria plus cited strength and improvement summaries. Every cited UUID must resolve to an event inside the cutoff. A failure publishes no feedback: the evidence, chart, actions, and cutoff remain available with an **Evaluation unavailable** state and retry control. A correction after Finish is append-only; retry names a new late-evidence cutoff and preserves the first feedback revision.
+
+`npm run evidence:phase06` produces deterministic three-path exports and cutoff/failure validation evidence. `npm run verify:phase06:real` exercises the same contract with the configured Astra Agents API provider and writes a sanitized receipt only on success. As of the Phase 06 implementation verification, the configured real model read the evidence but did not submit a schema-valid complete feedback envelope after its repair turn; the application correctly retained the run and exposed the recoverable unavailable state.
+
 ## Configuration and failure behavior
 
 `.env.example` is value-free. Blank optional settings use these defaults:

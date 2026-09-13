@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-13T12:25:37.487Z",
+  "invalidReferencePreventedPublication": true,
+  "invalidReferenceError": "Examiner output cites evidence outside the validated cutoff",
+  "evaluatorFailureStatus": "unavailable",
+  "retainedEvidenceCount": 2,
+  "retainedCutoff": {
+    "name": "finish-v1",
+    "sequence": 6
+  }
+}

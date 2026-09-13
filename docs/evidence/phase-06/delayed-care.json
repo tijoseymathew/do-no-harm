@@ -1,0 +1,990 @@
+{
+  "generatedAt": "2026-09-13T12:25:37.467Z",
+  "debrief": {
+    "contractVersion": "1.0.0",
+    "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+    "formative": true,
+    "status": "ready",
+    "evaluationMessage": null,
+    "cutoffName": "finish-v1",
+    "evidenceCutoffSequence": 14,
+    "transcriptDrain": {
+      "status": "empty",
+      "timeoutMs": 750
+    },
+    "trend": [
+      {
+        "simulationTimeMs": 0,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 120000,
+        "heartRate": 118,
+        "spo2": 93,
+        "respiratoryRate": 24,
+        "systolicBp": 112,
+        "diastolicBp": 72
+      }
+    ],
+    "markers": [
+      {
+        "eventId": "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+        "simulationTimeMs": 120000,
+        "kind": "assessment",
+        "label": "Observation: published"
+      },
+      {
+        "eventId": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+        "simulationTimeMs": 120000,
+        "kind": "assessment",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "7f66d04f-996f-469e-9441-4873950f5fc8",
+        "simulationTimeMs": 120000,
+        "kind": "escalation",
+        "label": "Senior contacted"
+      }
+    ],
+    "actions": [
+      {
+        "eventId": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+        "sequence": 8,
+        "simulationTimeMs": 120000,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "7f66d04f-996f-469e-9441-4873950f5fc8",
+        "sequence": 9,
+        "simulationTimeMs": 120000,
+        "status": "completed",
+        "label": "Senior review requested"
+      },
+      {
+        "eventId": "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+        "sequence": 10,
+        "simulationTimeMs": 120000,
+        "status": "completed",
+        "label": "Note revision 1"
+      },
+      {
+        "eventId": "70756c29-57ed-441d-afce-7b56e58c0898",
+        "sequence": 11,
+        "simulationTimeMs": 120000,
+        "status": "completed",
+        "label": "Structured handoff recorded"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "bfed131a-c609-409c-8e54-0497b0537add",
+        "sequence": 2,
+        "simulationTimeMs": 0,
+        "kind": "transcript_segment",
+        "title": "nurse transcript segment",
+        "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "detail": "{\n  \"messageId\": \"5e05af7b-7a11-4e47-8930-1c7c9df5db58\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+        "sequence": 6,
+        "simulationTimeMs": 120000,
+        "kind": "finding",
+        "title": "Observation: published",
+        "summary": "Observation: published",
+        "detail": "{\n  \"reason\": \"delayed_care\",\n  \"observations\": {\n    \"heartRate\": 118,\n    \"spo2\": 93,\n    \"respiratoryRate\": 24,\n    \"systolicBp\": 112,\n    \"diastolicBp\": 72,\n    \"painScore\": 9,\n    \"presentation\": \"More distressed, pale and clammy\"\n  }\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+        "sequence": 8,
+        "simulationTimeMs": 120000,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "9",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 9,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "7f66d04f-996f-469e-9441-4873950f5fc8",
+        "sequence": 9,
+        "simulationTimeMs": 120000,
+        "kind": "action",
+        "title": "Senior review requested",
+        "summary": "Senior review requested",
+        "detail": "{\n  \"acknowledgementDueAtMs\": 135000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+        "sequence": 10,
+        "simulationTimeMs": 120000,
+        "kind": "note_revision",
+        "title": "Note revision 1",
+        "summary": "delayed-care: assessment, actions, rationale, and senior plan documented.",
+        "detail": "{\n  \"revision\": 1,\n  \"content\": \"delayed-care: assessment, actions, rationale, and senior plan documented.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "70756c29-57ed-441d-afce-7b56e58c0898",
+        "sequence": 11,
+        "simulationTimeMs": 120000,
+        "kind": "action",
+        "title": "Structured handoff recorded",
+        "summary": "delayed-care: findings and actual treatment status handed to senior review.",
+        "detail": "{\n  \"content\": \"delayed-care: findings and actual treatment status handed to senior review.\"\n}",
+        "superseded": false,
+        "assisted": false
+      }
+    ],
+    "feedbackRevisions": [
+      {
+        "revision": 1,
+        "label": "Feedback revision 1 · finish-v1",
+        "cutoffName": "finish-v1",
+        "evidenceCutoffSequence": 14,
+        "createdAt": "2026-09-13T12:25:37.464Z",
+        "trigger": "finish",
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "feedback",
+          "evidenceCutoffSequence": 14,
+          "criteria": [
+            {
+              "criterion": "assessment",
+              "rating": "needs_work",
+              "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+              "evidenceIds": [
+                "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+                "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+              ]
+            },
+            {
+              "criterion": "interpretation",
+              "rating": "insufficient_evidence",
+              "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+              "evidenceIds": []
+            },
+            {
+              "criterion": "intervention_selection_dosing",
+              "rating": "insufficient_evidence",
+              "reason": "No treatment selection or dosing evidence is available before the cutoff.",
+              "evidenceIds": []
+            },
+            {
+              "criterion": "reassessment",
+              "rating": "insufficient_evidence",
+              "reason": "Without a recorded intervention, post-intervention reassessment cannot be judged.",
+              "evidenceIds": []
+            },
+            {
+              "criterion": "escalation",
+              "rating": "demonstrated",
+              "reason": "The run records a request for senior review.",
+              "evidenceIds": [
+                "7f66d04f-996f-469e-9441-4873950f5fc8"
+              ]
+            },
+            {
+              "criterion": "communication_documentation",
+              "rating": "demonstrated",
+              "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+              "evidenceIds": [
+                "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+                "70756c29-57ed-441d-afce-7b56e58c0898"
+              ]
+            }
+          ],
+          "strength": "Your strongest documented area was escalation.",
+          "strengthEvidenceIds": [
+            "7f66d04f-996f-469e-9441-4873950f5fc8"
+          ],
+          "priorityImprovement": "Prioritize assessment in the next run.",
+          "priorityImprovementEvidenceIds": [
+            "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+            "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+          ],
+          "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+        }
+      }
+    ],
+    "activeFeedbackRevision": 1,
+    "teachBack": null
+  },
+  "run": {
+    "exportVersion": "1.0.0",
+    "exportedAt": "2026-09-13T12:25:37.467Z",
+    "case": {
+      "id": "adult_chest_pain",
+      "version": "1.0.0-draft.2",
+      "title": "Chest pain with evolving instability",
+      "educationalUse": "formative_simulation_only",
+      "clinicalReviewStatus": "draft_unreviewed"
+    },
+    "state": {
+      "id": "811bb530-6249-452e-b614-6426b1bd4684",
+      "revision": 7,
+      "caseVersion": "1.0.0-draft.2",
+      "mode": "development_fixture",
+      "lifecycle": "ended",
+      "clock": {
+        "simulationTimeMs": 120000,
+        "running": false,
+        "timeScale": 1
+      },
+      "physiology": {
+        "heartRate": 118,
+        "spo2": 93,
+        "respiratoryRate": 24,
+        "systolicBp": 112,
+        "diastolicBp": 72,
+        "painScore": 9,
+        "presentation": "More distressed, pale and clammy"
+      },
+      "sensors": {
+        "ecg": false,
+        "spo2": false,
+        "cuff": false
+      },
+      "measurements": {
+        "hr": null,
+        "spo2": null,
+        "rr": 24,
+        "bp": null
+      },
+      "assessments": [
+        {
+          "id": "pain_score",
+          "label": "Pain score",
+          "kind": "history",
+          "value": 9,
+          "unit": "/10",
+          "firstPerformedAtMs": 120000,
+          "lastPerformedAtMs": 120000,
+          "count": 1
+        }
+      ],
+      "investigations": [
+        {
+          "id": "twelve_lead_ecg",
+          "label": "12-lead ECG",
+          "kind": "ecg",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "troponin_i",
+          "label": "Troponin I",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "full_blood_count",
+          "label": "Full blood count",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "capillary_glucose",
+          "label": "Capillary glucose",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        }
+      ],
+      "devices": {
+        "oxygen": {
+          "status": "off",
+          "deviceId": null,
+          "setting": 0,
+          "unit": null
+        },
+        "ivAccess": {
+          "established": false,
+          "patency": "not_assessed",
+          "lastInspectedAtMs": null
+        },
+        "fluidPump": {
+          "status": "idle",
+          "fluidId": null,
+          "prescribedVolumeMl": 0,
+          "rateMlPerHour": 0,
+          "deliveredVolumeMl": 0,
+          "startedAtMs": null
+        }
+      },
+      "treatments": {
+        "prerequisites": {
+          "allergyHistoryReviewed": false,
+          "administrationHistoryReviewed": false
+        },
+        "receipts": [],
+        "preparedOrders": [],
+        "cumulativeDoses": {},
+        "pendingEffects": [],
+        "appliedEffects": []
+      },
+      "senior": {
+        "requestedAtMs": 120000,
+        "acknowledgedAtMs": null
+      },
+      "authorizations": [],
+      "notes": [
+        {
+          "revision": 1,
+          "content": "delayed-care: assessment, actions, rationale, and senior plan documented.",
+          "savedAtMs": 120000,
+          "eventId": "ee3cc90f-eba8-409d-82f8-2913eb3e7790"
+        }
+      ],
+      "handoffs": [
+        {
+          "content": "delayed-care: findings and actual treatment status handed to senior review.",
+          "recordedAtMs": 120000,
+          "eventId": "70756c29-57ed-441d-afce-7b56e58c0898"
+        }
+      ],
+      "finishedAtMs": 120000,
+      "branch": {
+        "kind": "delayed_care",
+        "enteredAtMs": 120000,
+        "status": "active",
+        "reason": "Authored delayed-care conditions met",
+        "timeoutAtMs": 300000
+      },
+      "branchHistory": [
+        {
+          "kind": "arrival",
+          "enteredAtMs": 0,
+          "exitedAtMs": 120000,
+          "outcome": "delayed-care threshold reached"
+        }
+      ],
+      "lastCommandResult": {
+        "status": "accepted",
+        "message": "Run finished and evidence frozen."
+      },
+      "simulationTimeMs": 120000,
+      "receipts": []
+    },
+    "events": [
+      {
+        "contractVersion": "1.0.0",
+        "id": "dd787dc4-528b-44b0-96f0-1018f06c123d",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 1,
+        "wallTime": "2026-09-13T12:25:37.449Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "session.started",
+        "payload": {
+          "mode": "development_fixture",
+          "reviewStatus": "draft_unreviewed"
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "bfed131a-c609-409c-8e54-0497b0537add",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 2,
+        "wallTime": "2026-09-13T12:25:37.451Z",
+        "simulationTime": 0,
+        "actor": "nurse",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "5e05af7b-7a11-4e47-8930-1c7c9df5db58",
+          "role": "nurse",
+          "source": "authored",
+          "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "2a915218-3784-41c3-8a95-f6dbc1c4c217",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 3,
+        "wallTime": "2026-09-13T12:25:37.451Z",
+        "simulationTime": 0,
+        "actor": "presenter",
+        "type": "presenter.intervention",
+        "payload": {
+          "kind": "advance_time",
+          "deltaMs": 120000,
+          "timeScale": 1
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "2bd801af-d97d-45a8-924b-921fe90c8e9e"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "068b087d-633f-4195-a1bf-a481574cb60e",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 4,
+        "wallTime": "2026-09-13T12:25:37.452Z",
+        "simulationTime": 120000,
+        "actor": "engine",
+        "type": "branch.exited",
+        "payload": {
+          "kind": "arrival",
+          "outcome": "delayed-care threshold reached",
+          "status": "completed"
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "cffef65a-2f6f-4fe5-b54e-0ffbebae88bf",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 5,
+        "wallTime": "2026-09-13T12:25:37.452Z",
+        "simulationTime": 120000,
+        "actor": "engine",
+        "type": "branch.entered",
+        "payload": {
+          "kind": "delayed_care",
+          "reason": "Authored delayed-care conditions met",
+          "timeoutAtMs": 300000
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 6,
+        "wallTime": "2026-09-13T12:25:37.452Z",
+        "simulationTime": 120000,
+        "actor": "engine",
+        "type": "observation.published",
+        "payload": {
+          "reason": "delayed_care",
+          "observations": {
+            "heartRate": 118,
+            "spo2": 93,
+            "respiratoryRate": 24,
+            "systolicBp": 112,
+            "diastolicBp": 72,
+            "painScore": 9,
+            "presentation": "More distressed, pale and clammy"
+          }
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "e983b756-efbf-438c-9ffe-f9babca64299",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 7,
+        "wallTime": "2026-09-13T12:25:37.453Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "pain_score"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "96f42fa3-89fa-4c2f-a5d3-4d411c1b1393"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 8,
+        "wallTime": "2026-09-13T12:25:37.453Z",
+        "simulationTime": 120000,
+        "actor": "patient",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "pain_score",
+          "label": "Pain score",
+          "value": 9,
+          "unit": "/10"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "e983b756-efbf-438c-9ffe-f9babca64299",
+        "idempotencyKey": "96f42fa3-89fa-4c2f-a5d3-4d411c1b1393"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "7f66d04f-996f-469e-9441-4873950f5fc8",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 9,
+        "wallTime": "2026-09-13T12:25:37.454Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "senior.requested",
+        "payload": {
+          "acknowledgementDueAtMs": 135000
+        },
+        "stateVersion": 3,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "0089ee19-b265-458f-ba16-66cc477370fe"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 10,
+        "wallTime": "2026-09-13T12:25:37.455Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "note.saved",
+        "payload": {
+          "revision": 1,
+          "content": "delayed-care: assessment, actions, rationale, and senior plan documented."
+        },
+        "stateVersion": 4,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "43429548-2000-4f2f-b271-166fea8af2c9"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "70756c29-57ed-441d-afce-7b56e58c0898",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 11,
+        "wallTime": "2026-09-13T12:25:37.457Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "handoff.recorded",
+        "payload": {
+          "content": "delayed-care: findings and actual treatment status handed to senior review."
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "c56b1767-2e14-47cb-87be-7cab251300ef"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "db22ae2c-498e-49e3-8ca5-6e9cf29a10b1",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 12,
+        "wallTime": "2026-09-13T12:25:37.457Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "session.handoff_started",
+        "payload": {},
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "70756c29-57ed-441d-afce-7b56e58c0898",
+        "idempotencyKey": "c56b1767-2e14-47cb-87be-7cab251300ef"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "2c6bd8a0-7fa5-4c35-be8b-09b5e5462e0d",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 13,
+        "wallTime": "2026-09-13T12:25:37.458Z",
+        "simulationTime": 120000,
+        "actor": "presenter",
+        "type": "session.paused",
+        "payload": {},
+        "stateVersion": 6,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "04e308dc-12a9-45f1-b408-8b804ab93da1"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "c96bd851-5218-4c2d-bbbd-6430e4ef934d",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 14,
+        "wallTime": "2026-09-13T12:25:37.459Z",
+        "simulationTime": 120000,
+        "actor": "student",
+        "type": "session.ended",
+        "payload": {
+          "evidenceCutoffSequence": 14,
+          "cutoffName": "finish-v1"
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "bcd1e750-64c2-455a-a411-54b9cb8eca26"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "1f7991b9-2695-4585-bd80-d5209b298abc",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 15,
+        "wallTime": "2026-09-13T12:25:37.460Z",
+        "simulationTime": 120000,
+        "actor": "system",
+        "type": "examiner.checkpoint_started",
+        "payload": {
+          "kind": "debrief"
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "c5ec4f21-2017-475c-a4e4-65ec188997a9",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 16,
+        "wallTime": "2026-09-13T12:25:37.463Z",
+        "simulationTime": 120000,
+        "actor": "examiner",
+        "type": "examiner.output_submitted",
+        "payload": {
+          "kind": "feedback",
+          "evidenceCutoffSequence": 14,
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 14,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "needs_work",
+                "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+                "evidenceIds": [
+                  "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+                  "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "insufficient_evidence",
+                "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "insufficient_evidence",
+                "reason": "No treatment selection or dosing evidence is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "insufficient_evidence",
+                "reason": "Without a recorded intervention, post-intervention reassessment cannot be judged.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "escalation",
+                "rating": "demonstrated",
+                "reason": "The run records a request for senior review.",
+                "evidenceIds": [
+                  "7f66d04f-996f-469e-9441-4873950f5fc8"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+                  "70756c29-57ed-441d-afce-7b56e58c0898"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was escalation.",
+            "strengthEvidenceIds": [
+              "7f66d04f-996f-469e-9441-4873950f5fc8"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+              "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          },
+          "providerMode": "verification_fixture"
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "4d16b000-ecb9-4b35-b418-8c1715c59b55",
+        "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+        "sequence": 17,
+        "wallTime": "2026-09-13T12:25:37.464Z",
+        "simulationTime": 120000,
+        "actor": "system",
+        "type": "feedback.published",
+        "payload": {
+          "revision": 1,
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 14,
+          "trigger": "finish"
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2"
+      }
+    ],
+    "debrief": {
+      "contractVersion": "1.0.0",
+      "runId": "811bb530-6249-452e-b614-6426b1bd4684",
+      "formative": true,
+      "status": "ready",
+      "evaluationMessage": null,
+      "cutoffName": "finish-v1",
+      "evidenceCutoffSequence": 14,
+      "transcriptDrain": {
+        "status": "empty",
+        "timeoutMs": 750
+      },
+      "trend": [
+        {
+          "simulationTimeMs": 0,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        },
+        {
+          "simulationTimeMs": 120000,
+          "heartRate": 118,
+          "spo2": 93,
+          "respiratoryRate": 24,
+          "systolicBp": 112,
+          "diastolicBp": 72
+        }
+      ],
+      "markers": [
+        {
+          "eventId": "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+          "simulationTimeMs": 120000,
+          "kind": "assessment",
+          "label": "Observation: published"
+        },
+        {
+          "eventId": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+          "simulationTimeMs": 120000,
+          "kind": "assessment",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "7f66d04f-996f-469e-9441-4873950f5fc8",
+          "simulationTimeMs": 120000,
+          "kind": "escalation",
+          "label": "Senior contacted"
+        }
+      ],
+      "actions": [
+        {
+          "eventId": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+          "sequence": 8,
+          "simulationTimeMs": 120000,
+          "status": "completed",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "7f66d04f-996f-469e-9441-4873950f5fc8",
+          "sequence": 9,
+          "simulationTimeMs": 120000,
+          "status": "completed",
+          "label": "Senior review requested"
+        },
+        {
+          "eventId": "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+          "sequence": 10,
+          "simulationTimeMs": 120000,
+          "status": "completed",
+          "label": "Note revision 1"
+        },
+        {
+          "eventId": "70756c29-57ed-441d-afce-7b56e58c0898",
+          "sequence": 11,
+          "simulationTimeMs": 120000,
+          "status": "completed",
+          "label": "Structured handoff recorded"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "bfed131a-c609-409c-8e54-0497b0537add",
+          "sequence": 2,
+          "simulationTimeMs": 0,
+          "kind": "transcript_segment",
+          "title": "nurse transcript segment",
+          "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "detail": "{\n  \"messageId\": \"5e05af7b-7a11-4e47-8930-1c7c9df5db58\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+          "sequence": 6,
+          "simulationTimeMs": 120000,
+          "kind": "finding",
+          "title": "Observation: published",
+          "summary": "Observation: published",
+          "detail": "{\n  \"reason\": \"delayed_care\",\n  \"observations\": {\n    \"heartRate\": 118,\n    \"spo2\": 93,\n    \"respiratoryRate\": 24,\n    \"systolicBp\": 112,\n    \"diastolicBp\": 72,\n    \"painScore\": 9,\n    \"presentation\": \"More distressed, pale and clammy\"\n  }\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "aeb1f191-f316-4f83-b861-6d1f3d96faef",
+          "sequence": 8,
+          "simulationTimeMs": 120000,
+          "kind": "finding",
+          "title": "Pain score",
+          "summary": "9",
+          "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 9,\n  \"unit\": \"/10\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "7f66d04f-996f-469e-9441-4873950f5fc8",
+          "sequence": 9,
+          "simulationTimeMs": 120000,
+          "kind": "action",
+          "title": "Senior review requested",
+          "summary": "Senior review requested",
+          "detail": "{\n  \"acknowledgementDueAtMs\": 135000\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+          "sequence": 10,
+          "simulationTimeMs": 120000,
+          "kind": "note_revision",
+          "title": "Note revision 1",
+          "summary": "delayed-care: assessment, actions, rationale, and senior plan documented.",
+          "detail": "{\n  \"revision\": 1,\n  \"content\": \"delayed-care: assessment, actions, rationale, and senior plan documented.\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "70756c29-57ed-441d-afce-7b56e58c0898",
+          "sequence": 11,
+          "simulationTimeMs": 120000,
+          "kind": "action",
+          "title": "Structured handoff recorded",
+          "summary": "delayed-care: findings and actual treatment status handed to senior review.",
+          "detail": "{\n  \"content\": \"delayed-care: findings and actual treatment status handed to senior review.\"\n}",
+          "superseded": false,
+          "assisted": false
+        }
+      ],
+      "feedbackRevisions": [
+        {
+          "revision": 1,
+          "label": "Feedback revision 1 · finish-v1",
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 14,
+          "createdAt": "2026-09-13T12:25:37.464Z",
+          "trigger": "finish",
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 14,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "needs_work",
+                "reason": "Some assessment evidence is present, but the recorded survey is limited.",
+                "evidenceIds": [
+                  "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+                  "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "insufficient_evidence",
+                "reason": "No displayed investigation or student interpretation is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "insufficient_evidence",
+                "reason": "No treatment selection or dosing evidence is available before the cutoff.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "insufficient_evidence",
+                "reason": "Without a recorded intervention, post-intervention reassessment cannot be judged.",
+                "evidenceIds": []
+              },
+              {
+                "criterion": "escalation",
+                "rating": "demonstrated",
+                "reason": "The run records a request for senior review.",
+                "evidenceIds": [
+                  "7f66d04f-996f-469e-9441-4873950f5fc8"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "ee3cc90f-eba8-409d-82f8-2913eb3e7790",
+                  "70756c29-57ed-441d-afce-7b56e58c0898"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was escalation.",
+            "strengthEvidenceIds": [
+              "7f66d04f-996f-469e-9441-4873950f5fc8"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "fe6b16e1-e129-4137-981d-ce63bc3265ff",
+              "aeb1f191-f316-4f83-b861-6d1f3d96faef"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          }
+        }
+      ],
+      "activeFeedbackRevision": 1,
+      "teachBack": null
+    }
+  }
+}

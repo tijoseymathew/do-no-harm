@@ -1,0 +1,1972 @@
+{
+  "generatedAt": "2026-09-13T12:25:37.448Z",
+  "debrief": {
+    "contractVersion": "1.0.0",
+    "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+    "formative": true,
+    "status": "ready",
+    "evaluationMessage": null,
+    "cutoffName": "finish-v1",
+    "evidenceCutoffSequence": 34,
+    "transcriptDrain": {
+      "status": "empty",
+      "timeoutMs": 750
+    },
+    "trend": [
+      {
+        "simulationTimeMs": 0,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 30000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 90000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      },
+      {
+        "simulationTimeMs": 105000,
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88
+      }
+    ],
+    "markers": [
+      {
+        "eventId": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Onset and timing"
+      },
+      {
+        "eventId": "ab707947-5604-42be-a29b-d99929f50c9d",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Assess airway"
+      },
+      {
+        "eventId": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+        "simulationTimeMs": 0,
+        "kind": "assessment",
+        "label": "Inspect breathing"
+      },
+      {
+        "eventId": "e70f8d3a-6d9e-4d54-8f9b-f9305c594bef",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "Investigation report opened"
+      },
+      {
+        "eventId": "55b17e1d-42b1-4426-a232-658b54a50b74",
+        "simulationTimeMs": 30000,
+        "kind": "assessment",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+        "simulationTimeMs": 30000,
+        "kind": "treatment",
+        "label": "aspirin_300mg_tablet administered 300 mg oral"
+      },
+      {
+        "eventId": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+        "simulationTimeMs": 90000,
+        "kind": "assessment",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+        "simulationTimeMs": 90000,
+        "kind": "escalation",
+        "label": "Senior contacted"
+      }
+    ],
+    "actions": [
+      {
+        "eventId": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+        "sequence": 4,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Onset and timing"
+      },
+      {
+        "eventId": "ab707947-5604-42be-a29b-d99929f50c9d",
+        "sequence": 6,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+        "sequence": 8,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Assess airway"
+      },
+      {
+        "eventId": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+        "sequence": 10,
+        "simulationTimeMs": 0,
+        "status": "completed",
+        "label": "Inspect breathing"
+      },
+      {
+        "eventId": "044dc90f-1faf-4374-8048-833fb9acf0fb",
+        "sequence": 16,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "Investigation interpretation"
+      },
+      {
+        "eventId": "55b17e1d-42b1-4426-a232-658b54a50b74",
+        "sequence": 17,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "medication_prerequisites"
+      },
+      {
+        "eventId": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+        "sequence": 18,
+        "simulationTimeMs": 30000,
+        "status": "prepared",
+        "label": "aspirin_300mg_tablet prepared"
+      },
+      {
+        "eventId": "dcba1272-f244-47f8-a663-eff3323a0690",
+        "sequence": 19,
+        "simulationTimeMs": 30000,
+        "status": "attempted",
+        "label": "aspirin_300mg_tablet attempted"
+      },
+      {
+        "eventId": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+        "sequence": 20,
+        "simulationTimeMs": 30000,
+        "status": "completed",
+        "label": "aspirin_300mg_tablet administered"
+      },
+      {
+        "eventId": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+        "sequence": 25,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Pain score"
+      },
+      {
+        "eventId": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+        "sequence": 26,
+        "simulationTimeMs": 90000,
+        "status": "completed",
+        "label": "Senior review requested"
+      },
+      {
+        "eventId": "82fe9a15-170f-4354-a59c-cf3485109585",
+        "sequence": 28,
+        "simulationTimeMs": 105000,
+        "status": "completed",
+        "label": "Senior review acknowledged"
+      },
+      {
+        "eventId": "9ff4afe4-9674-450d-bc6b-90671acfc794",
+        "sequence": 30,
+        "simulationTimeMs": 105000,
+        "status": "completed",
+        "label": "Note revision 1"
+      },
+      {
+        "eventId": "f42e3d71-4ee6-4d04-8276-49e959935396",
+        "sequence": 31,
+        "simulationTimeMs": 105000,
+        "status": "completed",
+        "label": "Structured handoff recorded"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "6273ba23-5507-420e-b5da-c13820fdbf86",
+        "sequence": 2,
+        "simulationTimeMs": 0,
+        "kind": "transcript_segment",
+        "title": "nurse transcript segment",
+        "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+        "detail": "{\n  \"messageId\": \"ecee2d11-d475-46e2-9843-af68abf1d6e8\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+        "sequence": 4,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Onset and timing",
+        "summary": "The pressure began suddenly while resting about 45 minutes before arrival.",
+        "detail": "{\n  \"findingId\": \"symptom_onset\",\n  \"label\": \"Onset and timing\",\n  \"value\": \"The pressure began suddenly while resting about 45 minutes before arrival.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ab707947-5604-42be-a29b-d99929f50c9d",
+        "sequence": 6,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "8",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+        "sequence": 8,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Assess airway",
+        "summary": "Airway patent; patient is speaking in complete sentences.",
+        "detail": "{\n  \"findingId\": \"airway_assessment\",\n  \"label\": \"Assess airway\",\n  \"value\": \"Airway patent; patient is speaking in complete sentences.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+        "sequence": 10,
+        "simulationTimeMs": 0,
+        "kind": "finding",
+        "title": "Inspect breathing",
+        "summary": "Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.",
+        "detail": "{\n  \"findingId\": \"breathing_assessment\",\n  \"label\": \"Inspect breathing\",\n  \"value\": \"Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.\",\n  \"unit\": null\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "e70f8d3a-6d9e-4d54-8f9b-f9305c594bef",
+        "sequence": 15,
+        "simulationTimeMs": 30000,
+        "kind": "investigation",
+        "title": "Investigation report opened",
+        "summary": "Investigation report opened",
+        "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"view\": \"report\"\n  },\n  \"result\": null,\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; urgent senior ECG review required.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "044dc90f-1faf-4374-8048-833fb9acf0fb",
+        "sequence": 16,
+        "simulationTimeMs": 30000,
+        "kind": "investigation",
+        "title": "Investigation interpretation",
+        "summary": "Sinus tachycardia; urgent senior ECG review required.",
+        "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"interpretation\": \"Sinus tachycardia; urgent senior ECG review required.\"\n  },\n  \"result\": null,\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; urgent senior ECG review required.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "55b17e1d-42b1-4426-a232-658b54a50b74",
+        "sequence": 17,
+        "simulationTimeMs": 30000,
+        "kind": "finding",
+        "title": "medication_prerequisites",
+        "summary": "medication_prerequisites",
+        "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+        "sequence": 18,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet prepared",
+        "summary": "aspirin_300mg_tablet prepared",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "dcba1272-f244-47f8-a663-eff3323a0690",
+        "sequence": 19,
+        "simulationTimeMs": 30000,
+        "kind": "action",
+        "title": "aspirin_300mg_tablet attempted",
+        "summary": "aspirin_300mg_tablet attempted",
+        "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+        "sequence": 20,
+        "simulationTimeMs": 30000,
+        "kind": "medication_receipt",
+        "title": "aspirin_300mg_tablet administered",
+        "summary": "aspirin_300mg_tablet administered",
+        "detail": "{\n  \"id\": \"eb95221c-ea2a-47f7-a078-8658cdf1ddff\",\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"dose\": 300,\n  \"unit\": \"mg\",\n  \"route\": \"oral\",\n  \"normalizedQuantity\": 300,\n  \"normalizedUnit\": \"mg\",\n  \"cumulativeQuantity\": 300,\n  \"simulationTimeMs\": 30000,\n  \"actor\": \"student\",\n  \"status\": \"administered\",\n  \"mode\": \"development_fixture\",\n  \"effectDueAtMs\": 90000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+        "sequence": 25,
+        "simulationTimeMs": 90000,
+        "kind": "finding",
+        "title": "Pain score",
+        "summary": "8",
+        "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+        "sequence": 26,
+        "simulationTimeMs": 90000,
+        "kind": "action",
+        "title": "Senior review requested",
+        "summary": "Senior review requested",
+        "detail": "{\n  \"acknowledgementDueAtMs\": 105000\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "82fe9a15-170f-4354-a59c-cf3485109585",
+        "sequence": 28,
+        "simulationTimeMs": 105000,
+        "kind": "action",
+        "title": "Senior review acknowledged",
+        "summary": "Senior review acknowledged",
+        "detail": "{\n  \"disposition\": \"Senior review acknowledged; continue monitored care.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "9ff4afe4-9674-450d-bc6b-90671acfc794",
+        "sequence": 30,
+        "simulationTimeMs": 105000,
+        "kind": "note_revision",
+        "title": "Note revision 1",
+        "summary": "timely-care: assessment, actions, rationale, and senior plan documented.",
+        "detail": "{\n  \"revision\": 1,\n  \"content\": \"timely-care: assessment, actions, rationale, and senior plan documented.\"\n}",
+        "superseded": false,
+        "assisted": false
+      },
+      {
+        "id": "f42e3d71-4ee6-4d04-8276-49e959935396",
+        "sequence": 31,
+        "simulationTimeMs": 105000,
+        "kind": "action",
+        "title": "Structured handoff recorded",
+        "summary": "timely-care: findings and actual treatment status handed to senior review.",
+        "detail": "{\n  \"content\": \"timely-care: findings and actual treatment status handed to senior review.\"\n}",
+        "superseded": false,
+        "assisted": false
+      }
+    ],
+    "feedbackRevisions": [
+      {
+        "revision": 1,
+        "label": "Feedback revision 1 · finish-v1",
+        "cutoffName": "finish-v1",
+        "evidenceCutoffSequence": 34,
+        "createdAt": "2026-09-13T12:25:37.446Z",
+        "trigger": "finish",
+        "output": {
+          "contractVersion": "1.0.0",
+          "kind": "feedback",
+          "evidenceCutoffSequence": 34,
+          "criteria": [
+            {
+              "criterion": "assessment",
+              "rating": "demonstrated",
+              "reason": "The evidence shows multiple focused findings or observations were obtained.",
+              "evidenceIds": [
+                "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+                "ab707947-5604-42be-a29b-d99929f50c9d",
+                "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+                "f4293a64-9ba9-403b-8415-e167f42a11c4"
+              ]
+            },
+            {
+              "criterion": "interpretation",
+              "rating": "demonstrated",
+              "reason": "A student-authored investigation interpretation was recorded.",
+              "evidenceIds": [
+                "044dc90f-1faf-4374-8048-833fb9acf0fb"
+              ]
+            },
+            {
+              "criterion": "intervention_selection_dosing",
+              "rating": "demonstrated",
+              "reason": "A validated medication administration receipt records the selected dose and route.",
+              "evidenceIds": [
+                "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+              ]
+            },
+            {
+              "criterion": "reassessment",
+              "rating": "demonstrated",
+              "reason": "A finding or observation was repeated after the recorded intervention.",
+              "evidenceIds": [
+                "55b17e1d-42b1-4426-a232-658b54a50b74",
+                "5a4c3261-d432-45ab-8bf3-6de975d0a123"
+              ]
+            },
+            {
+              "criterion": "escalation",
+              "rating": "demonstrated",
+              "reason": "The run records a request for senior review.",
+              "evidenceIds": [
+                "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+                "82fe9a15-170f-4354-a59c-cf3485109585"
+              ]
+            },
+            {
+              "criterion": "communication_documentation",
+              "rating": "demonstrated",
+              "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+              "evidenceIds": [
+                "9ff4afe4-9674-450d-bc6b-90671acfc794",
+                "f42e3d71-4ee6-4d04-8276-49e959935396"
+              ]
+            }
+          ],
+          "strength": "Your strongest documented area was assessment.",
+          "strengthEvidenceIds": [
+            "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+            "ab707947-5604-42be-a29b-d99929f50c9d",
+            "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+            "f4293a64-9ba9-403b-8415-e167f42a11c4"
+          ],
+          "priorityImprovement": "Prioritize assessment in the next run.",
+          "priorityImprovementEvidenceIds": [
+            "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+            "ab707947-5604-42be-a29b-d99929f50c9d",
+            "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+            "f4293a64-9ba9-403b-8415-e167f42a11c4"
+          ],
+          "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+        }
+      }
+    ],
+    "activeFeedbackRevision": 1,
+    "teachBack": null
+  },
+  "run": {
+    "exportVersion": "1.0.0",
+    "exportedAt": "2026-09-13T12:25:37.448Z",
+    "case": {
+      "id": "adult_chest_pain",
+      "version": "1.0.0-draft.2",
+      "title": "Chest pain with evolving instability",
+      "educationalUse": "formative_simulation_only",
+      "clinicalReviewStatus": "draft_unreviewed"
+    },
+    "state": {
+      "id": "55801665-e6d2-451f-958c-ca7e364f933e",
+      "revision": 20,
+      "caseVersion": "1.0.0-draft.2",
+      "mode": "development_fixture",
+      "lifecycle": "ended",
+      "clock": {
+        "simulationTimeMs": 105000,
+        "running": false,
+        "timeScale": 1
+      },
+      "physiology": {
+        "heartRate": 104,
+        "spo2": 96,
+        "respiratoryRate": 20,
+        "systolicBp": 146,
+        "diastolicBp": 88,
+        "painScore": 8,
+        "presentation": "Alert, anxious, pale and clammy"
+      },
+      "sensors": {
+        "ecg": false,
+        "spo2": false,
+        "cuff": false
+      },
+      "measurements": {
+        "hr": null,
+        "spo2": null,
+        "rr": 20,
+        "bp": null
+      },
+      "assessments": [
+        {
+          "id": "symptom_onset",
+          "label": "Onset and timing",
+          "kind": "history",
+          "value": "The pressure began suddenly while resting about 45 minutes before arrival.",
+          "firstPerformedAtMs": 0,
+          "lastPerformedAtMs": 0,
+          "count": 1
+        },
+        {
+          "id": "pain_score",
+          "label": "Pain score",
+          "kind": "history",
+          "value": 8,
+          "unit": "/10",
+          "firstPerformedAtMs": 0,
+          "lastPerformedAtMs": 90000,
+          "count": 2
+        },
+        {
+          "id": "airway_assessment",
+          "label": "Assess airway",
+          "kind": "assessment",
+          "value": "Airway patent; patient is speaking in complete sentences.",
+          "firstPerformedAtMs": 0,
+          "lastPerformedAtMs": 0,
+          "count": 1
+        },
+        {
+          "id": "breathing_assessment",
+          "label": "Inspect breathing",
+          "kind": "assessment",
+          "value": "Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.",
+          "firstPerformedAtMs": 0,
+          "lastPerformedAtMs": 0,
+          "count": 1
+        }
+      ],
+      "investigations": [
+        {
+          "id": "twelve_lead_ecg",
+          "label": "12-lead ECG",
+          "kind": "ecg",
+          "status": "displayed",
+          "requestedAtMs": 0,
+          "collectedAtMs": 0,
+          "availableAtMs": 15000,
+          "displayedAtMs": 30000,
+          "displayedViews": [
+            "report"
+          ],
+          "result": null,
+          "report": "Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.",
+          "interpretations": [
+            {
+              "content": "Sinus tachycardia; urgent senior ECG review required.",
+              "simulationTimeMs": 30000
+            }
+          ]
+        },
+        {
+          "id": "troponin_i",
+          "label": "Troponin I",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "full_blood_count",
+          "label": "Full blood count",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        },
+        {
+          "id": "capillary_glucose",
+          "label": "Capillary glucose",
+          "kind": "laboratory",
+          "status": "not_requested",
+          "requestedAtMs": null,
+          "collectedAtMs": null,
+          "availableAtMs": null,
+          "displayedAtMs": null,
+          "displayedViews": [],
+          "result": null,
+          "report": null,
+          "interpretations": []
+        }
+      ],
+      "devices": {
+        "oxygen": {
+          "status": "off",
+          "deviceId": null,
+          "setting": 0,
+          "unit": null
+        },
+        "ivAccess": {
+          "established": false,
+          "patency": "not_assessed",
+          "lastInspectedAtMs": null
+        },
+        "fluidPump": {
+          "status": "idle",
+          "fluidId": null,
+          "prescribedVolumeMl": 0,
+          "rateMlPerHour": 0,
+          "deliveredVolumeMl": 0,
+          "startedAtMs": null
+        }
+      },
+      "treatments": {
+        "prerequisites": {
+          "allergyHistoryReviewed": true,
+          "administrationHistoryReviewed": true
+        },
+        "receipts": [
+          {
+            "id": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+            "medicationId": "aspirin_300mg_tablet",
+            "dose": 300,
+            "unit": "mg",
+            "route": "oral",
+            "normalizedQuantity": 300,
+            "normalizedUnit": "mg",
+            "cumulativeQuantity": 300,
+            "simulationTimeMs": 30000,
+            "actor": "student",
+            "status": "administered",
+            "mode": "development_fixture",
+            "effectDueAtMs": 90000
+          }
+        ],
+        "preparedOrders": [
+          {
+            "id": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+            "order": {
+              "drugId": "aspirin_300mg_tablet",
+              "dose": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "source": "ui",
+            "preparedAtMs": 30000,
+            "status": "administered",
+            "statusAtMs": 30000,
+            "message": "Administration accepted."
+          }
+        ],
+        "cumulativeDoses": {
+          "aspirin_300mg_tablet": {
+            "quantity": 300,
+            "unit": "mg"
+          }
+        },
+        "pendingEffects": [],
+        "appliedEffects": [
+          {
+            "medicationId": "aspirin_300mg_tablet",
+            "appliedAtMs": 90000,
+            "rule": "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation",
+            "causedBy": "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+          }
+        ]
+      },
+      "senior": {
+        "requestedAtMs": 90000,
+        "acknowledgedAtMs": 105000
+      },
+      "authorizations": [],
+      "notes": [
+        {
+          "revision": 1,
+          "content": "timely-care: assessment, actions, rationale, and senior plan documented.",
+          "savedAtMs": 105000,
+          "eventId": "9ff4afe4-9674-450d-bc6b-90671acfc794"
+        }
+      ],
+      "handoffs": [
+        {
+          "content": "timely-care: findings and actual treatment status handed to senior review.",
+          "recordedAtMs": 105000,
+          "eventId": "f42e3d71-4ee6-4d04-8276-49e959935396"
+        }
+      ],
+      "finishedAtMs": 105000,
+      "branch": {
+        "kind": "timely_care",
+        "enteredAtMs": 30000,
+        "status": "completed",
+        "reason": "Authored timely-care conditions met",
+        "timeoutAtMs": 210000
+      },
+      "branchHistory": [
+        {
+          "kind": "timely_care",
+          "enteredAtMs": 30000,
+          "exitedAtMs": 105000,
+          "outcome": "effect recorded and senior review acknowledged"
+        }
+      ],
+      "lastCommandResult": {
+        "status": "accepted",
+        "message": "Run finished and evidence frozen."
+      },
+      "simulationTimeMs": 105000,
+      "receipts": [
+        {
+          "id": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+          "medicationId": "aspirin_300mg_tablet",
+          "dose": 300,
+          "unit": "mg",
+          "route": "oral",
+          "normalizedQuantity": 300,
+          "normalizedUnit": "mg",
+          "cumulativeQuantity": 300,
+          "simulationTimeMs": 30000,
+          "actor": "student",
+          "status": "administered",
+          "mode": "development_fixture",
+          "effectDueAtMs": 90000
+        }
+      ]
+    },
+    "events": [
+      {
+        "contractVersion": "1.0.0",
+        "id": "99aaeafd-2c0e-4757-8284-591e037d7787",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 1,
+        "wallTime": "2026-09-13T12:25:37.426Z",
+        "simulationTime": 0,
+        "actor": "system",
+        "type": "session.started",
+        "payload": {
+          "mode": "development_fixture",
+          "reviewStatus": "draft_unreviewed"
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "6273ba23-5507-420e-b5da-c13820fdbf86",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 2,
+        "wallTime": "2026-09-13T12:25:37.431Z",
+        "simulationTime": 0,
+        "actor": "nurse",
+        "type": "transcript.recorded",
+        "payload": {
+          "messageId": "ecee2d11-d475-46e2-9843-af68abf1d6e8",
+          "role": "nurse",
+          "source": "authored",
+          "text": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "assisted": false,
+          "interrupted": false
+        },
+        "stateVersion": 0,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "0e490df4-7fd7-4c67-b787-0f20a65f21e8",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 3,
+        "wallTime": "2026-09-13T12:25:37.432Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "symptom_onset"
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "52946131-b36f-43ef-a574-073c860193da"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 4,
+        "wallTime": "2026-09-13T12:25:37.432Z",
+        "simulationTime": 0,
+        "actor": "patient",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "symptom_onset",
+          "label": "Onset and timing",
+          "value": "The pressure began suddenly while resting about 45 minutes before arrival.",
+          "unit": null
+        },
+        "stateVersion": 1,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "0e490df4-7fd7-4c67-b787-0f20a65f21e8",
+        "idempotencyKey": "52946131-b36f-43ef-a574-073c860193da"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "0c806241-8215-4a75-85df-c6dd519266ec",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 5,
+        "wallTime": "2026-09-13T12:25:37.433Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "pain_score"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "9be85281-a410-4808-aaae-781f9c1f9537"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ab707947-5604-42be-a29b-d99929f50c9d",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 6,
+        "wallTime": "2026-09-13T12:25:37.433Z",
+        "simulationTime": 0,
+        "actor": "patient",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "pain_score",
+          "label": "Pain score",
+          "value": 8,
+          "unit": "/10"
+        },
+        "stateVersion": 2,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "0c806241-8215-4a75-85df-c6dd519266ec",
+        "idempotencyKey": "9be85281-a410-4808-aaae-781f9c1f9537"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "de7c8bce-af13-4d20-99f1-cc1b7aa8f255",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 7,
+        "wallTime": "2026-09-13T12:25:37.433Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "airway_assessment"
+        },
+        "stateVersion": 3,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "9bacc0c7-d90c-499f-94b6-5eacf99ca70c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 8,
+        "wallTime": "2026-09-13T12:25:37.433Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "airway_assessment",
+          "label": "Assess airway",
+          "value": "Airway patent; patient is speaking in complete sentences.",
+          "unit": null
+        },
+        "stateVersion": 3,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "de7c8bce-af13-4d20-99f1-cc1b7aa8f255",
+        "idempotencyKey": "9bacc0c7-d90c-499f-94b6-5eacf99ca70c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "2479c587-46de-4b18-bc90-e1fba674166f",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 9,
+        "wallTime": "2026-09-13T12:25:37.434Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "breathing_assessment"
+        },
+        "stateVersion": 4,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "c7a3f1f3-6099-4a28-8998-3ad829186b07"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 10,
+        "wallTime": "2026-09-13T12:25:37.434Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "breathing_assessment",
+          "label": "Inspect breathing",
+          "value": "Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.",
+          "unit": null
+        },
+        "stateVersion": 4,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "2479c587-46de-4b18-bc90-e1fba674166f",
+        "idempotencyKey": "c7a3f1f3-6099-4a28-8998-3ad829186b07"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "831870b4-d16e-4c9a-a18c-9fc88a0adec1",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 11,
+        "wallTime": "2026-09-13T12:25:37.434Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "investigation.requested",
+        "payload": {
+          "investigationId": "twelve_lead_ecg",
+          "label": "12-lead ECG"
+        },
+        "stateVersion": 5,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "9546d238-aab2-4963-8da4-b73c46eed38c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "a3aa901e-b299-40a5-967d-cc0d92458d45",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 12,
+        "wallTime": "2026-09-13T12:25:37.435Z",
+        "simulationTime": 0,
+        "actor": "student",
+        "type": "investigation.collected",
+        "payload": {
+          "investigationId": "twelve_lead_ecg",
+          "availableAtMs": 15000
+        },
+        "stateVersion": 6,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "8590c364-8394-4c91-85a8-2bd5583844d1"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "1d6e3e0d-bc1a-41fe-b906-217205b98347",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 13,
+        "wallTime": "2026-09-13T12:25:37.435Z",
+        "simulationTime": 0,
+        "actor": "presenter",
+        "type": "presenter.intervention",
+        "payload": {
+          "kind": "advance_time",
+          "deltaMs": 30000,
+          "timeScale": 1
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "9566be7e-b859-4c85-b984-e653066acae8"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "1e08caaa-20c3-4abe-bde0-7cb7823bec0e",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 14,
+        "wallTime": "2026-09-13T12:25:37.435Z",
+        "simulationTime": 15000,
+        "actor": "engine",
+        "type": "investigation.available",
+        "payload": {
+          "investigationId": "twelve_lead_ecg"
+        },
+        "stateVersion": 7,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "a3aa901e-b299-40a5-967d-cc0d92458d45"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "e70f8d3a-6d9e-4d54-8f9b-f9305c594bef",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 15,
+        "wallTime": "2026-09-13T12:25:37.435Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "investigation.displayed",
+        "payload": {
+          "investigationId": "twelve_lead_ecg",
+          "view": "report"
+        },
+        "stateVersion": 8,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "a8a3aa6c-f9ff-4e6e-a329-922b6ed1b48c"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "044dc90f-1faf-4374-8048-833fb9acf0fb",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 16,
+        "wallTime": "2026-09-13T12:25:37.436Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "investigation.interpreted",
+        "payload": {
+          "investigationId": "twelve_lead_ecg",
+          "interpretation": "Sinus tachycardia; urgent senior ECG review required."
+        },
+        "stateVersion": 9,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "7ddc4b5a-f5a4-4dc7-a8c0-f958de3eff6b"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "55b17e1d-42b1-4426-a232-658b54a50b74",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 17,
+        "wallTime": "2026-09-13T12:25:37.436Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "assessment.performed",
+        "payload": {
+          "assessment": "medication_prerequisites",
+          "allergyHistoryReviewed": true,
+          "administrationHistoryReviewed": true
+        },
+        "stateVersion": 10,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "12d588a0-a495-4cc5-9df3-f5ca642df3a6"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 18,
+        "wallTime": "2026-09-13T12:25:37.436Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "medication.prepared",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": null,
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "prepared"
+        },
+        "stateVersion": 11,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "88df73ec-475d-4e8c-b11d-c5ac64b2bc65"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "dcba1272-f244-47f8-a663-eff3323a0690",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 19,
+        "wallTime": "2026-09-13T12:25:37.437Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "medication.attempted",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 300,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "attempted"
+        },
+        "stateVersion": 12,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "6669582a-25f1-4d77-9930-4ab2e33d011b"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 20,
+        "wallTime": "2026-09-13T12:25:37.437Z",
+        "simulationTime": 30000,
+        "actor": "student",
+        "type": "medication.administered",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "entered": {
+            "quantity": 300,
+            "unit": "mg",
+            "route": "oral"
+          },
+          "normalized": {
+            "quantity": 300,
+            "unit": "mg"
+          },
+          "validation": {
+            "status": "accepted",
+            "reasons": []
+          },
+          "administrationStatus": "administered"
+        },
+        "stateVersion": 12,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "dcba1272-f244-47f8-a663-eff3323a0690",
+        "idempotencyKey": "6669582a-25f1-4d77-9930-4ab2e33d011b"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "3a5f65fb-4e58-4e02-a30a-4fd982636caa",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 21,
+        "wallTime": "2026-09-13T12:25:37.437Z",
+        "simulationTime": 30000,
+        "actor": "engine",
+        "type": "branch.entered",
+        "payload": {
+          "kind": "timely_care",
+          "reason": "Authored timely-care conditions met",
+          "timeoutAtMs": 210000
+        },
+        "stateVersion": 12,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b51f394c-328d-4e21-833a-5cd69ce48c92",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 22,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 30000,
+        "actor": "presenter",
+        "type": "presenter.intervention",
+        "payload": {
+          "kind": "advance_time",
+          "deltaMs": 60000,
+          "timeScale": 1
+        },
+        "stateVersion": 13,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "e2fb8bf5-cf66-483b-9dea-ce957cd3607e"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b1e2fa99-77ff-48a8-bac6-6f3c0fe391d7",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 23,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 90000,
+        "actor": "engine",
+        "type": "treatment.effect_applied",
+        "payload": {
+          "medicationId": "aspirin_300mg_tablet",
+          "effectRule": "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation"
+        },
+        "stateVersion": 13,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "544695a0-8f97-41ce-b174-50fecd67779c",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 24,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 90000,
+        "actor": "student",
+        "type": "assessment.requested",
+        "payload": {
+          "findingId": "pain_score"
+        },
+        "stateVersion": 14,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "a41dd1af-8be5-4a5d-9a57-da98a45589c5"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 25,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 90000,
+        "actor": "patient",
+        "type": "assessment.performed",
+        "payload": {
+          "findingId": "pain_score",
+          "label": "Pain score",
+          "value": 8,
+          "unit": "/10"
+        },
+        "stateVersion": 14,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "544695a0-8f97-41ce-b174-50fecd67779c",
+        "idempotencyKey": "a41dd1af-8be5-4a5d-9a57-da98a45589c5"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 26,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 90000,
+        "actor": "student",
+        "type": "senior.requested",
+        "payload": {
+          "acknowledgementDueAtMs": 105000
+        },
+        "stateVersion": 15,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "27e7e9cd-b798-4e3f-9df9-c4089974d946"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b4ef35dc-6b70-4d60-8aa4-993808d55bf6",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 27,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 90000,
+        "actor": "presenter",
+        "type": "presenter.intervention",
+        "payload": {
+          "kind": "advance_time",
+          "deltaMs": 15000,
+          "timeScale": 1
+        },
+        "stateVersion": 16,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "e0fa08cc-af5f-4d01-b366-2b3c2a63fdba"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "82fe9a15-170f-4354-a59c-cf3485109585",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 28,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 105000,
+        "actor": "nurse",
+        "type": "senior.acknowledged",
+        "payload": {
+          "disposition": "Senior review acknowledged; continue monitored care."
+        },
+        "stateVersion": 16,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "e11a3bde-3bf9-4bca-ab68-e655433a981f"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "f72a605c-b725-4690-93d7-b959707f1372",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 29,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 105000,
+        "actor": "engine",
+        "type": "branch.exited",
+        "payload": {
+          "kind": "timely_care",
+          "outcome": "effect recorded and senior review acknowledged",
+          "status": "completed"
+        },
+        "stateVersion": 16,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "9ff4afe4-9674-450d-bc6b-90671acfc794",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 30,
+        "wallTime": "2026-09-13T12:25:37.438Z",
+        "simulationTime": 105000,
+        "actor": "student",
+        "type": "note.saved",
+        "payload": {
+          "revision": 1,
+          "content": "timely-care: assessment, actions, rationale, and senior plan documented."
+        },
+        "stateVersion": 17,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "394df801-edb8-42ba-844c-2f6a705e9c54"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "f42e3d71-4ee6-4d04-8276-49e959935396",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 31,
+        "wallTime": "2026-09-13T12:25:37.439Z",
+        "simulationTime": 105000,
+        "actor": "student",
+        "type": "handoff.recorded",
+        "payload": {
+          "content": "timely-care: findings and actual treatment status handed to senior review."
+        },
+        "stateVersion": 18,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "6220fcff-85d4-4e04-912b-607fac63dbc8"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "9335aec9-48de-402c-aa4b-1bd236cc6fa1",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 32,
+        "wallTime": "2026-09-13T12:25:37.439Z",
+        "simulationTime": 105000,
+        "actor": "student",
+        "type": "session.handoff_started",
+        "payload": {},
+        "stateVersion": 18,
+        "caseVersion": "1.0.0-draft.2",
+        "causedBy": "f42e3d71-4ee6-4d04-8276-49e959935396",
+        "idempotencyKey": "6220fcff-85d4-4e04-912b-607fac63dbc8"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "480d84ac-7ca0-449a-8d9d-391cb854072e",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 33,
+        "wallTime": "2026-09-13T12:25:37.439Z",
+        "simulationTime": 105000,
+        "actor": "presenter",
+        "type": "session.paused",
+        "payload": {},
+        "stateVersion": 19,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "21fa9ad9-fb49-4a25-85db-1f235b350434"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "bb81ae9a-e4aa-4c4e-8a20-801f7651b47f",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 34,
+        "wallTime": "2026-09-13T12:25:37.439Z",
+        "simulationTime": 105000,
+        "actor": "student",
+        "type": "session.ended",
+        "payload": {
+          "evidenceCutoffSequence": 34,
+          "cutoffName": "finish-v1"
+        },
+        "stateVersion": 20,
+        "caseVersion": "1.0.0-draft.2",
+        "idempotencyKey": "ca45687e-c8d3-4276-8034-551efb9e8050"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b5d11edd-7850-4709-90b7-35b49bc30e47",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 35,
+        "wallTime": "2026-09-13T12:25:37.442Z",
+        "simulationTime": 105000,
+        "actor": "system",
+        "type": "examiner.checkpoint_started",
+        "payload": {
+          "kind": "debrief"
+        },
+        "stateVersion": 20,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "b6ecf92e-24d4-4d9f-b732-38a77a0cfbf5",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 36,
+        "wallTime": "2026-09-13T12:25:37.445Z",
+        "simulationTime": 105000,
+        "actor": "examiner",
+        "type": "examiner.output_submitted",
+        "payload": {
+          "kind": "feedback",
+          "evidenceCutoffSequence": 34,
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 34,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "demonstrated",
+                "reason": "The evidence shows multiple focused findings or observations were obtained.",
+                "evidenceIds": [
+                  "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+                  "ab707947-5604-42be-a29b-d99929f50c9d",
+                  "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+                  "f4293a64-9ba9-403b-8415-e167f42a11c4"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "demonstrated",
+                "reason": "A student-authored investigation interpretation was recorded.",
+                "evidenceIds": [
+                  "044dc90f-1faf-4374-8048-833fb9acf0fb"
+                ]
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "demonstrated",
+                "reason": "A validated medication administration receipt records the selected dose and route.",
+                "evidenceIds": [
+                  "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+                ]
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "demonstrated",
+                "reason": "A finding or observation was repeated after the recorded intervention.",
+                "evidenceIds": [
+                  "55b17e1d-42b1-4426-a232-658b54a50b74",
+                  "5a4c3261-d432-45ab-8bf3-6de975d0a123"
+                ]
+              },
+              {
+                "criterion": "escalation",
+                "rating": "demonstrated",
+                "reason": "The run records a request for senior review.",
+                "evidenceIds": [
+                  "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+                  "82fe9a15-170f-4354-a59c-cf3485109585"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "9ff4afe4-9674-450d-bc6b-90671acfc794",
+                  "f42e3d71-4ee6-4d04-8276-49e959935396"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was assessment.",
+            "strengthEvidenceIds": [
+              "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+              "ab707947-5604-42be-a29b-d99929f50c9d",
+              "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+              "f4293a64-9ba9-403b-8415-e167f42a11c4"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+              "ab707947-5604-42be-a29b-d99929f50c9d",
+              "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+              "f4293a64-9ba9-403b-8415-e167f42a11c4"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          },
+          "providerMode": "verification_fixture"
+        },
+        "stateVersion": 20,
+        "caseVersion": "1.0.0-draft.2"
+      },
+      {
+        "contractVersion": "1.0.0",
+        "id": "d5a4ef5d-3bde-40c9-b56e-8a4d81aa4395",
+        "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+        "sequence": 37,
+        "wallTime": "2026-09-13T12:25:37.446Z",
+        "simulationTime": 105000,
+        "actor": "system",
+        "type": "feedback.published",
+        "payload": {
+          "revision": 1,
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 34,
+          "trigger": "finish"
+        },
+        "stateVersion": 20,
+        "caseVersion": "1.0.0-draft.2"
+      }
+    ],
+    "debrief": {
+      "contractVersion": "1.0.0",
+      "runId": "55801665-e6d2-451f-958c-ca7e364f933e",
+      "formative": true,
+      "status": "ready",
+      "evaluationMessage": null,
+      "cutoffName": "finish-v1",
+      "evidenceCutoffSequence": 34,
+      "transcriptDrain": {
+        "status": "empty",
+        "timeoutMs": 750
+      },
+      "trend": [
+        {
+          "simulationTimeMs": 0,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        },
+        {
+          "simulationTimeMs": 30000,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        },
+        {
+          "simulationTimeMs": 90000,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        },
+        {
+          "simulationTimeMs": 105000,
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88
+        }
+      ],
+      "markers": [
+        {
+          "eventId": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+          "simulationTimeMs": 0,
+          "kind": "assessment",
+          "label": "Onset and timing"
+        },
+        {
+          "eventId": "ab707947-5604-42be-a29b-d99929f50c9d",
+          "simulationTimeMs": 0,
+          "kind": "assessment",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+          "simulationTimeMs": 0,
+          "kind": "assessment",
+          "label": "Assess airway"
+        },
+        {
+          "eventId": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+          "simulationTimeMs": 0,
+          "kind": "assessment",
+          "label": "Inspect breathing"
+        },
+        {
+          "eventId": "e70f8d3a-6d9e-4d54-8f9b-f9305c594bef",
+          "simulationTimeMs": 30000,
+          "kind": "assessment",
+          "label": "Investigation report opened"
+        },
+        {
+          "eventId": "55b17e1d-42b1-4426-a232-658b54a50b74",
+          "simulationTimeMs": 30000,
+          "kind": "assessment",
+          "label": "medication_prerequisites"
+        },
+        {
+          "eventId": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+          "simulationTimeMs": 30000,
+          "kind": "treatment",
+          "label": "aspirin_300mg_tablet administered 300 mg oral"
+        },
+        {
+          "eventId": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+          "simulationTimeMs": 90000,
+          "kind": "assessment",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+          "simulationTimeMs": 90000,
+          "kind": "escalation",
+          "label": "Senior contacted"
+        }
+      ],
+      "actions": [
+        {
+          "eventId": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+          "sequence": 4,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Onset and timing"
+        },
+        {
+          "eventId": "ab707947-5604-42be-a29b-d99929f50c9d",
+          "sequence": 6,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+          "sequence": 8,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Assess airway"
+        },
+        {
+          "eventId": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+          "sequence": 10,
+          "simulationTimeMs": 0,
+          "status": "completed",
+          "label": "Inspect breathing"
+        },
+        {
+          "eventId": "044dc90f-1faf-4374-8048-833fb9acf0fb",
+          "sequence": 16,
+          "simulationTimeMs": 30000,
+          "status": "completed",
+          "label": "Investigation interpretation"
+        },
+        {
+          "eventId": "55b17e1d-42b1-4426-a232-658b54a50b74",
+          "sequence": 17,
+          "simulationTimeMs": 30000,
+          "status": "completed",
+          "label": "medication_prerequisites"
+        },
+        {
+          "eventId": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+          "sequence": 18,
+          "simulationTimeMs": 30000,
+          "status": "prepared",
+          "label": "aspirin_300mg_tablet prepared"
+        },
+        {
+          "eventId": "dcba1272-f244-47f8-a663-eff3323a0690",
+          "sequence": 19,
+          "simulationTimeMs": 30000,
+          "status": "attempted",
+          "label": "aspirin_300mg_tablet attempted"
+        },
+        {
+          "eventId": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+          "sequence": 20,
+          "simulationTimeMs": 30000,
+          "status": "completed",
+          "label": "aspirin_300mg_tablet administered"
+        },
+        {
+          "eventId": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+          "sequence": 25,
+          "simulationTimeMs": 90000,
+          "status": "completed",
+          "label": "Pain score"
+        },
+        {
+          "eventId": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+          "sequence": 26,
+          "simulationTimeMs": 90000,
+          "status": "completed",
+          "label": "Senior review requested"
+        },
+        {
+          "eventId": "82fe9a15-170f-4354-a59c-cf3485109585",
+          "sequence": 28,
+          "simulationTimeMs": 105000,
+          "status": "completed",
+          "label": "Senior review acknowledged"
+        },
+        {
+          "eventId": "9ff4afe4-9674-450d-bc6b-90671acfc794",
+          "sequence": 30,
+          "simulationTimeMs": 105000,
+          "status": "completed",
+          "label": "Note revision 1"
+        },
+        {
+          "eventId": "f42e3d71-4ee6-4d04-8276-49e959935396",
+          "sequence": 31,
+          "simulationTimeMs": 105000,
+          "status": "completed",
+          "label": "Structured handoff recorded"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "6273ba23-5507-420e-b5da-c13820fdbf86",
+          "sequence": 2,
+          "simulationTimeMs": 0,
+          "kind": "transcript_segment",
+          "title": "nurse transcript segment",
+          "summary": "This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?",
+          "detail": "{\n  \"messageId\": \"ecee2d11-d475-46e2-9843-af68abf1d6e8\",\n  \"role\": \"nurse\",\n  \"source\": \"authored\",\n  \"text\": \"This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?\",\n  \"assisted\": false,\n  \"interrupted\": false\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+          "sequence": 4,
+          "simulationTimeMs": 0,
+          "kind": "finding",
+          "title": "Onset and timing",
+          "summary": "The pressure began suddenly while resting about 45 minutes before arrival.",
+          "detail": "{\n  \"findingId\": \"symptom_onset\",\n  \"label\": \"Onset and timing\",\n  \"value\": \"The pressure began suddenly while resting about 45 minutes before arrival.\",\n  \"unit\": null\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ab707947-5604-42be-a29b-d99929f50c9d",
+          "sequence": 6,
+          "simulationTimeMs": 0,
+          "kind": "finding",
+          "title": "Pain score",
+          "summary": "8",
+          "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+          "sequence": 8,
+          "simulationTimeMs": 0,
+          "kind": "finding",
+          "title": "Assess airway",
+          "summary": "Airway patent; patient is speaking in complete sentences.",
+          "detail": "{\n  \"findingId\": \"airway_assessment\",\n  \"label\": \"Assess airway\",\n  \"value\": \"Airway patent; patient is speaking in complete sentences.\",\n  \"unit\": null\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "f4293a64-9ba9-403b-8415-e167f42a11c4",
+          "sequence": 10,
+          "simulationTimeMs": 0,
+          "kind": "finding",
+          "title": "Inspect breathing",
+          "summary": "Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.",
+          "detail": "{\n  \"findingId\": \"breathing_assessment\",\n  \"label\": \"Inspect breathing\",\n  \"value\": \"Equal chest movement, no audible wheeze or stridor; respiratory rate 20 breaths/min.\",\n  \"unit\": null\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "e70f8d3a-6d9e-4d54-8f9b-f9305c594bef",
+          "sequence": 15,
+          "simulationTimeMs": 30000,
+          "kind": "investigation",
+          "title": "Investigation report opened",
+          "summary": "Investigation report opened",
+          "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"view\": \"report\"\n  },\n  \"result\": null,\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; urgent senior ECG review required.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "044dc90f-1faf-4374-8048-833fb9acf0fb",
+          "sequence": 16,
+          "simulationTimeMs": 30000,
+          "kind": "investigation",
+          "title": "Investigation interpretation",
+          "summary": "Sinus tachycardia; urgent senior ECG review required.",
+          "detail": "{\n  \"event\": {\n    \"investigationId\": \"twelve_lead_ecg\",\n    \"interpretation\": \"Sinus tachycardia; urgent senior ECG review required.\"\n  },\n  \"result\": null,\n  \"report\": \"Development report: sinus tachycardia at approximately 104 beats/min. Diagnostic ST-segment interpretation is intentionally withheld pending specialist ECG review.\",\n  \"interpretations\": [\n    {\n      \"content\": \"Sinus tachycardia; urgent senior ECG review required.\",\n      \"simulationTimeMs\": 30000\n    }\n  ]\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "55b17e1d-42b1-4426-a232-658b54a50b74",
+          "sequence": 17,
+          "simulationTimeMs": 30000,
+          "kind": "finding",
+          "title": "medication_prerequisites",
+          "summary": "medication_prerequisites",
+          "detail": "{\n  \"assessment\": \"medication_prerequisites\",\n  \"allergyHistoryReviewed\": true,\n  \"administrationHistoryReviewed\": true\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "6adb80c9-6e21-4838-b34d-c34984bb4b33",
+          "sequence": 18,
+          "simulationTimeMs": 30000,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet prepared",
+          "summary": "aspirin_300mg_tablet prepared",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": null,\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"prepared\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "dcba1272-f244-47f8-a663-eff3323a0690",
+          "sequence": 19,
+          "simulationTimeMs": 30000,
+          "kind": "action",
+          "title": "aspirin_300mg_tablet attempted",
+          "summary": "aspirin_300mg_tablet attempted",
+          "detail": "{\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"entered\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\",\n    \"route\": \"oral\"\n  },\n  \"normalized\": {\n    \"quantity\": 300,\n    \"unit\": \"mg\"\n  },\n  \"validation\": {\n    \"status\": \"accepted\",\n    \"reasons\": []\n  },\n  \"administrationStatus\": \"attempted\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "eb95221c-ea2a-47f7-a078-8658cdf1ddff",
+          "sequence": 20,
+          "simulationTimeMs": 30000,
+          "kind": "medication_receipt",
+          "title": "aspirin_300mg_tablet administered",
+          "summary": "aspirin_300mg_tablet administered",
+          "detail": "{\n  \"id\": \"eb95221c-ea2a-47f7-a078-8658cdf1ddff\",\n  \"medicationId\": \"aspirin_300mg_tablet\",\n  \"dose\": 300,\n  \"unit\": \"mg\",\n  \"route\": \"oral\",\n  \"normalizedQuantity\": 300,\n  \"normalizedUnit\": \"mg\",\n  \"cumulativeQuantity\": 300,\n  \"simulationTimeMs\": 30000,\n  \"actor\": \"student\",\n  \"status\": \"administered\",\n  \"mode\": \"development_fixture\",\n  \"effectDueAtMs\": 90000\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "5a4c3261-d432-45ab-8bf3-6de975d0a123",
+          "sequence": 25,
+          "simulationTimeMs": 90000,
+          "kind": "finding",
+          "title": "Pain score",
+          "summary": "8",
+          "detail": "{\n  \"findingId\": \"pain_score\",\n  \"label\": \"Pain score\",\n  \"value\": 8,\n  \"unit\": \"/10\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+          "sequence": 26,
+          "simulationTimeMs": 90000,
+          "kind": "action",
+          "title": "Senior review requested",
+          "summary": "Senior review requested",
+          "detail": "{\n  \"acknowledgementDueAtMs\": 105000\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "82fe9a15-170f-4354-a59c-cf3485109585",
+          "sequence": 28,
+          "simulationTimeMs": 105000,
+          "kind": "action",
+          "title": "Senior review acknowledged",
+          "summary": "Senior review acknowledged",
+          "detail": "{\n  \"disposition\": \"Senior review acknowledged; continue monitored care.\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "9ff4afe4-9674-450d-bc6b-90671acfc794",
+          "sequence": 30,
+          "simulationTimeMs": 105000,
+          "kind": "note_revision",
+          "title": "Note revision 1",
+          "summary": "timely-care: assessment, actions, rationale, and senior plan documented.",
+          "detail": "{\n  \"revision\": 1,\n  \"content\": \"timely-care: assessment, actions, rationale, and senior plan documented.\"\n}",
+          "superseded": false,
+          "assisted": false
+        },
+        {
+          "id": "f42e3d71-4ee6-4d04-8276-49e959935396",
+          "sequence": 31,
+          "simulationTimeMs": 105000,
+          "kind": "action",
+          "title": "Structured handoff recorded",
+          "summary": "timely-care: findings and actual treatment status handed to senior review.",
+          "detail": "{\n  \"content\": \"timely-care: findings and actual treatment status handed to senior review.\"\n}",
+          "superseded": false,
+          "assisted": false
+        }
+      ],
+      "feedbackRevisions": [
+        {
+          "revision": 1,
+          "label": "Feedback revision 1 · finish-v1",
+          "cutoffName": "finish-v1",
+          "evidenceCutoffSequence": 34,
+          "createdAt": "2026-09-13T12:25:37.446Z",
+          "trigger": "finish",
+          "output": {
+            "contractVersion": "1.0.0",
+            "kind": "feedback",
+            "evidenceCutoffSequence": 34,
+            "criteria": [
+              {
+                "criterion": "assessment",
+                "rating": "demonstrated",
+                "reason": "The evidence shows multiple focused findings or observations were obtained.",
+                "evidenceIds": [
+                  "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+                  "ab707947-5604-42be-a29b-d99929f50c9d",
+                  "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+                  "f4293a64-9ba9-403b-8415-e167f42a11c4"
+                ]
+              },
+              {
+                "criterion": "interpretation",
+                "rating": "demonstrated",
+                "reason": "A student-authored investigation interpretation was recorded.",
+                "evidenceIds": [
+                  "044dc90f-1faf-4374-8048-833fb9acf0fb"
+                ]
+              },
+              {
+                "criterion": "intervention_selection_dosing",
+                "rating": "demonstrated",
+                "reason": "A validated medication administration receipt records the selected dose and route.",
+                "evidenceIds": [
+                  "eb95221c-ea2a-47f7-a078-8658cdf1ddff"
+                ]
+              },
+              {
+                "criterion": "reassessment",
+                "rating": "demonstrated",
+                "reason": "A finding or observation was repeated after the recorded intervention.",
+                "evidenceIds": [
+                  "55b17e1d-42b1-4426-a232-658b54a50b74",
+                  "5a4c3261-d432-45ab-8bf3-6de975d0a123"
+                ]
+              },
+              {
+                "criterion": "escalation",
+                "rating": "demonstrated",
+                "reason": "The run records a request for senior review.",
+                "evidenceIds": [
+                  "e11a3bde-3bf9-4bca-ab68-e655433a981f",
+                  "82fe9a15-170f-4354-a59c-cf3485109585"
+                ]
+              },
+              {
+                "criterion": "communication_documentation",
+                "rating": "demonstrated",
+                "reason": "The evidence contains both a saved clinical note and a structured handoff.",
+                "evidenceIds": [
+                  "9ff4afe4-9674-450d-bc6b-90671acfc794",
+                  "f42e3d71-4ee6-4d04-8276-49e959935396"
+                ]
+              }
+            ],
+            "strength": "Your strongest documented area was assessment.",
+            "strengthEvidenceIds": [
+              "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+              "ab707947-5604-42be-a29b-d99929f50c9d",
+              "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+              "f4293a64-9ba9-403b-8415-e167f42a11c4"
+            ],
+            "priorityImprovement": "Prioritize assessment in the next run.",
+            "priorityImprovementEvidenceIds": [
+              "acce0b75-af3f-43d3-86e2-1a30e69aea14",
+              "ab707947-5604-42be-a29b-d99929f50c9d",
+              "ba6c67a0-da7f-4a9c-9bfe-7a3ea3dd4ebd",
+              "f4293a64-9ba9-403b-8415-e167f42a11c4"
+            ],
+            "nextPracticeObjective": "In the next case, complete and explicitly document assessment before handoff."
+          }
+        }
+      ],
+      "activeFeedbackRevision": 1,
+      "teachBack": null
+    }
+  }
+}
