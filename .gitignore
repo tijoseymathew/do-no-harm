@@ -13,6 +13,8 @@ coverage/
 # Local run evidence and diagnostics
 runs/
 *.log
+test-results/
+playwright-report/
 
 # Editor and OS files
 .DS_Store

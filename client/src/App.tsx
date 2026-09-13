@@ -1,181 +1,405 @@
-import { useEffect, useRef, useState } from "react";
-import { StudentCaseSchema, type StudentCase } from "../../shared/contracts/student.js";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  StudentCaseSchema,
+  type StudentCase,
+} from "../../shared/contracts/student.js";
+import type {
+  FixtureCommand,
+  FixtureState,
+} from "../../shared/contracts/fixture.js";
+import { Room, stations, type Station } from "./Room.js";
+import { Monitor } from "./Monitor.js";
+import { Medication } from "./Medication.js";
+import { Probe } from "./Probe.js";
 
-type ConnectionState = "idle" | "connecting" | "connected" | "closing" | "error";
-
-interface LiveSessionResult {
-  session: { id: string };
-  transport: { type: "webrtc"; sdp: string };
-}
-
-async function waitForIce(connection: RTCPeerConnection) {
-  if (connection.iceGatheringState === "complete") return;
-  await new Promise<void>((resolve, reject) => {
-    const timeout = window.setTimeout(() => {
-      connection.removeEventListener("icegatheringstatechange", onState);
-      reject(new Error("Timed out while gathering ICE candidates"));
-    }, 10_000);
-    function onState() {
-      if (connection.iceGatheringState !== "complete") return;
-      window.clearTimeout(timeout);
-      connection.removeEventListener("icegatheringstatechange", onState);
-      resolve();
-    }
-    connection.addEventListener("icegatheringstatechange", onState);
-    onState();
+async function json<T>(url: string, body?: unknown): Promise<T> {
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(10000),
+    ...(body === undefined
+      ? {}
+      : {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }),
   });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error ?? "Server unavailable");
+  return result as T;
 }
-
 export function App() {
-  const [caseData, setCaseData] = useState<StudentCase>();
-  const [connection, setConnection] = useState<ConnectionState>("idle");
-  const [status, setStatus] = useState("Ready to start the real GPT-Live probe.");
-  const [eventsSeen, setEventsSeen] = useState<string[]>([]);
-  const peerRef = useRef<RTCPeerConnection | undefined>(undefined);
-  const channelRef = useRef<RTCDataChannel | undefined>(undefined);
-  const microphoneRef = useRef<MediaStream | undefined>(undefined);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const closeTimerRef = useRef<number | undefined>(undefined);
-
-  useEffect(() => {
-    fetch("/api/cases/current")
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Case endpoint unavailable");
-        return StudentCaseSchema.parse(await response.json());
-      })
-      .then(setCaseData)
-      .catch((error: unknown) => setStatus(error instanceof Error ? error.message : "Unable to load case"));
-    return () => cleanup();
+  if (window.location.pathname === "/probe") return <Probe />;
+  return <Bedside />;
+}
+function Bedside() {
+  const [patient, setPatient] = useState<StudentCase>();
+  const [state, setState] = useState<FixtureState>();
+  const [selected, setSelected] = useState<Station>("Patient");
+  const [paused, setPaused] = useState(false);
+  const [reduced, setReduced] = useState(
+    () => matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const [muted, setMuted] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const authoritative = useRef<FixtureState>(undefined);
+  const locked = useRef(false);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const audio = useRef<AudioContext>(undefined);
+  const select = useCallback((station: Station) => {
+    setSelected(station);
+    requestAnimationFrame(() => heading.current?.focus());
   }, []);
-
-  function cleanup() {
-    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
-    microphoneRef.current?.getTracks().forEach((track) => track.stop());
-    channelRef.current?.close();
-    peerRef.current?.close();
-    if (audioRef.current) audioRef.current.srcObject = null;
-    microphoneRef.current = undefined;
-    channelRef.current = undefined;
-    peerRef.current = undefined;
-  }
-
-  async function startConversation() {
-    setConnection("connecting");
-    setEventsSeen([]);
-    setStatus("Requesting microphone access…");
+  useEffect(() => {
+    let active = true;
+    void Promise.all([
+      json<unknown>("/api/cases/current").then((value) =>
+        StudentCaseSchema.parse(value),
+      ),
+      json<FixtureState>("/api/fixtures", {}),
+    ])
+      .then(([p, s]) => {
+        if (active) {
+          setPatient(p);
+          setState(s);
+          authoritative.current = s;
+        }
+      })
+      .catch((e) => {
+        if (active) setError(String(e));
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+  useEffect(() => {
+    const query = matchMedia("(prefers-reduced-motion: reduce)");
+    const change = () => setReduced(query.matches);
+    query.addEventListener("change", change);
+    return () => query.removeEventListener("change", change);
+  }, []);
+  const send = useCallback(async (command: FixtureCommand) => {
+    const s = authoritative.current;
+    if (!s || locked.current) return false;
+    locked.current = true;
+    setBusy(true);
     try {
-      const peer = new RTCPeerConnection();
-      peerRef.current = peer;
-      peer.addEventListener("track", (event) => {
-        if (!audioRef.current) return;
-        audioRef.current.srcObject = new MediaStream([event.track]);
-        void audioRef.current.play().catch(() => setStatus("Connected. Select play on the audio control to hear Patient."));
-      });
-
-      const microphone = await navigator.mediaDevices.getUserMedia({ audio: true });
-      microphoneRef.current = microphone;
-      microphone.getAudioTracks().forEach((track) => peer.addTrack(track, microphone));
-
-      const channel = peer.createDataChannel("oai-events");
-      channelRef.current = channel;
-      channel.addEventListener("message", ({ data }) => {
-        const event = JSON.parse(String(data)) as { type?: string; session?: { id?: string } };
-        const type = event.type ?? "unknown";
-        setEventsSeen((current) => [...current.slice(-7), type]);
-        if (type === "session.started") {
-          setConnection("connected");
-          setStatus(`Connected to a real session (${event.session?.id ?? "opaque id"}). Speak to Patient; interrupt while Patient replies to verify full duplex.`);
-        } else if (type === "session.closed") {
-          cleanup();
-          setConnection("idle");
-          setStatus("Conversation ended with a final session event.");
-        }
-      });
-      channel.addEventListener("close", () => {
-        if (connection !== "closing") {
-          setConnection("idle");
-        }
-      });
-
-      const offer = await peer.createOffer();
-      await peer.setLocalDescription(offer);
-      await waitForIce(peer);
-      const sdp = peer.localDescription?.sdp;
-      if (!sdp) throw new Error("Browser did not produce an SDP offer");
-
-      setStatus("Creating a server-authenticated GPT-Live session…");
-      const response = await fetch("/api/live/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sdp }),
-      });
-      if (!response.ok) {
-        const body = (await response.json().catch(() => ({}))) as { error?: string };
-        throw new Error(body.error ?? `Session creation failed (${response.status})`);
-      }
-      const result = (await response.json()) as LiveSessionResult;
-      await peer.setRemoteDescription({ type: "answer", sdp: result.transport.sdp });
-    } catch (error) {
-      cleanup();
-      setConnection("error");
-      setStatus(error instanceof Error ? error.message : "Unable to connect");
+      const updated = await json<FixtureState>(
+        `/api/fixtures/${s.id}/commands`,
+        { revision: s.revision, key: crypto.randomUUID(), command },
+      );
+      authoritative.current = updated;
+      setState(updated);
+      setError("");
+      return true;
+    } catch (e) {
+      setPaused(true);
+      setError(
+        `${e instanceof Error ? e.message : "Connection lost"} Fixture paused. Refresh state before continuing.`,
+      );
+      return false;
+    } finally {
+      locked.current = false;
+      setBusy(false);
+    }
+  }, []);
+  useEffect(() => {
+    if (paused || !state) return;
+    const timer = setInterval(
+      () => void send({ type: "advance", seconds: 1 }),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [paused, Boolean(state), send]);
+  useEffect(() => {
+    if (muted || paused || !state?.sensors.ecg) return;
+    const timer = setInterval(() => {
+      const ctx = audio.current;
+      if (!ctx) return;
+      const tone = ctx.createOscillator();
+      const gain = ctx.createGain();
+      tone.frequency.value = 660;
+      gain.gain.setValueAtTime(0.025, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.065);
+      tone.connect(gain);
+      gain.connect(ctx.destination);
+      tone.start();
+      tone.stop(ctx.currentTime + 0.07);
+    }, 60000 / state.pulseRate);
+    return () => clearInterval(timer);
+  }, [muted, paused, state?.sensors.ecg, state?.pulseRate]);
+  useEffect(
+    () => () => {
+      void audio.current?.close();
+    },
+    [],
+  );
+  async function refresh() {
+    if (!state || locked.current) return;
+    locked.current = true;
+    setBusy(true);
+    try {
+      const s = await json<FixtureState>(`/api/fixtures/${state.id}`);
+      authoritative.current = s;
+      setState(s);
+      setError("");
+    } catch {
+      setError(
+        "Server unavailable. Fixture remains paused; try Refresh state again.",
+      );
+    } finally {
+      locked.current = false;
+      setBusy(false);
     }
   }
-
-  function endConversation() {
-    const channel = channelRef.current;
-    if (!channel || channel.readyState !== "open") return;
-    setConnection("closing");
-    setStatus("Closing gracefully…");
-    channel.send(JSON.stringify({ type: "session.close" }));
-    closeTimerRef.current = window.setTimeout(() => {
-      cleanup();
-      setConnection("error");
-      setStatus("Session closed without a final session.closed event.");
-    }, 15_000);
-  }
-
   return (
-    <main>
-      <header>
-        <p className="eyebrow">FOUNDATION / REAL API PROBE</p>
-        <h1>DO NO HARM</h1>
-        <p className="lede">A minimal, student-visible voice connection. No hidden rubric or provider credential is sent to this page.</p>
+    <main className="simulator">
+      <header className="topbar">
+        <div>
+          <p className="eyebrow">BEDSIDE PRACTICE / BAY 01</p>
+          <h1>
+            DO NO HARM<span>Interaction lab</span>
+          </h1>
+        </div>
+        <div className="toolbar">
+          <span className="clock" aria-label="Fixture time">
+            {Math.floor((state?.simulationTimeMs ?? 0) / 60000)
+              .toString()
+              .padStart(2, "0")}
+            :
+            {Math.floor(((state?.simulationTimeMs ?? 0) / 1000) % 60)
+              .toString()
+              .padStart(2, "0")}
+          </span>
+          <button
+            className="secondary"
+            disabled={!state || !!error}
+            onClick={() => setPaused(!paused)}
+          >
+            {paused ? "Resume" : "Pause"}
+          </button>
+          <button
+            className="secondary"
+            aria-pressed={muted}
+            onClick={() => {
+              if (muted) {
+                audio.current ??= new AudioContext();
+                void audio.current.resume();
+              }
+              setMuted(!muted);
+            }}
+          >
+            {muted ? "Sound muted" : "Mute sound"}
+          </button>
+          <button
+            className="secondary"
+            disabled={!state || busy || !!error}
+            onClick={() => void send({ type: "advance", seconds: 30 })}
+          >
+            Advance fixture +30 s
+          </button>
+          <label className="motion">
+            <input
+              type="checkbox"
+              checked={reduced}
+              onChange={(e) => setReduced(e.target.checked)}
+            />
+            Reduced motion
+          </label>
+        </div>
       </header>
-
-      <section className="case-card" aria-labelledby="case-heading">
-        <div>
-          <p className="label">SIMULATION CASE</p>
-          <h2 id="case-heading">{caseData?.title ?? "Loading case…"}</h2>
-          {caseData && <p>{caseData.patient.displayName}, {caseData.patient.ageYears} · {caseData.patient.presentingComplaint}</p>}
+      <div className="fixture-banner">
+        FIXTURE-BACKED SERVER{" "}
+        <span>
+          Interaction practice only · physiology is fixture-driven · clinical
+          content unreviewed
+        </span>
+        <a href="/probe">API probe ↗</a>
+      </div>
+      {error && (
+        <div className="error" role="alert">
+          {error}{" "}
+          {state && (
+            <button onClick={() => void refresh()} disabled={busy}>
+              Refresh state
+            </button>
+          )}
         </div>
-        <span className="review">{caseData?.clinicalReviewStatus.replaceAll("_", " ") ?? "checking"}</span>
-      </section>
-
-      <section className="probe" aria-labelledby="probe-heading">
-        <div className="pulse" data-state={connection} aria-hidden="true" />
-        <div>
-          <p className="label">PATIENT · GPT-LIVE-1</p>
-          <h2 id="probe-heading">Browser conversation probe</h2>
-          <p className="status" role="status">{status}</p>
-        </div>
-        <div className="controls">
-          <button onClick={() => void startConversation()} disabled={connection === "connecting" || connection === "connected" || connection === "closing"}>
-            Start conversation
-          </button>
-          <button className="secondary" onClick={endConversation} disabled={connection !== "connected"}>
-            End conversation
-          </button>
-        </div>
-        <audio ref={audioRef} autoPlay controls aria-label="Patient audio" />
-        <div className="instructions">
-          <h3>Interruption check</h3>
-          <p>After Patient begins a longer reply, speak naturally over it. Pass only if Patient stops, listens, and responds to the interruption.</p>
-        </div>
-        <div className="event-log" aria-label="Recent provider event types">
-          {eventsSeen.length ? eventsSeen.map((event, index) => <code key={`${event}-${index}`}>{event}</code>) : <span>No provider events yet</span>}
-        </div>
-      </section>
+      )}
+      {state && patient ? (
+        <>
+          <div className="workspace">
+            <Room
+              selected={selected}
+              select={select}
+              state={state}
+              reduced={reduced}
+              paused={paused || !!error}
+            />
+            <aside>
+              <Monitor
+                state={state}
+                paused={paused || !!error}
+                reduced={reduced}
+              />
+              <section className="equipment" aria-label="Active equipment">
+                <div className="panel-heading">
+                  <h2 ref={heading} tabIndex={-1}>
+                    {selected}
+                  </h2>
+                  <span className="tag">BEDSIDE</span>
+                </div>
+                {selected === "Patient" && (
+                  <>
+                    <h3>{patient.patient.displayName}</h3>
+                    <p>
+                      {patient.patient.ageYears} years ·{" "}
+                      {patient.patient.weightKg} kg · fictional patient
+                    </p>
+                    <p>{patient.patient.presentingComplaint}</p>
+                    <p>Alert, anxious, pale and clammy.</p>
+                    <p className="muted">
+                      Focused assessment and conversation are unavailable in
+                      this interaction slice.
+                    </p>
+                    <button onClick={() => select("Monitor")}>
+                      Open monitoring
+                    </button>
+                  </>
+                )}
+                {selected === "Monitor" && (
+                  <>
+                    <div className="sensor-controls">
+                      {(
+                        [
+                          ["ecg", "ECG leads"],
+                          ["spo2", "SpO₂ probe"],
+                          ["cuff", "BP cuff"],
+                        ] as const
+                      ).map(([key, label]) => (
+                        <button
+                          className="secondary"
+                          key={key}
+                          aria-pressed={state.sensors[key]}
+                          disabled={busy || !!error}
+                          onClick={() =>
+                            void send({
+                              type: "sensor",
+                              sensor: key,
+                              connected: !state.sensors[key],
+                            })
+                          }
+                        >
+                          {state.sensors[key] ? "Disconnect" : "Connect"}{" "}
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      disabled={!state.sensors.cuff || busy || !!error}
+                      onClick={() => void send({ type: "measure_bp" })}
+                    >
+                      {state.measurements.bp
+                        ? "Repeat BP measurement"
+                        : "Measure BP"}
+                    </button>
+                    <p className="muted">
+                      A disconnected sensor shows no live value. Last BP remains
+                      timestamped until measured again.
+                    </p>
+                  </>
+                )}
+                {selected === "Medication" && (
+                  <Medication
+                    patient={patient}
+                    state={state}
+                    busy={busy || !!error}
+                    send={send}
+                  />
+                )}
+                {selected === "Oxygen / IV" && (
+                  <>
+                    <h3>Oxygen and IV station</h3>
+                    <p>
+                      Oxygen tubing: not connected. IV access: not established.
+                    </p>
+                    <p className="unavailable">
+                      Unavailable in Phase 02: oxygen settings, IV access and
+                      fluids. Suction is set dressing only.
+                    </p>
+                  </>
+                )}
+                {selected === "ECG / results" && (
+                  <>
+                    <h3>ECG / results workstation</h3>
+                    <p className="unavailable">
+                      12-lead acquisition, interpretation and blood results are
+                      unavailable in Phase 02.
+                    </p>
+                    <p>
+                      The monitor strip is an illustrative rhythm fixture, not a
+                      diagnostic 12-lead ECG.
+                    </p>
+                  </>
+                )}
+                {selected === "Clipboard" && (
+                  <>
+                    <h3>Patient chart</h3>
+                    <p>
+                      {patient.patient.displayName}
+                      <br />
+                      {patient.patient.allergies.join(", ")}
+                      <br />
+                      {patient.patient.currentMedications.join(", ")}
+                    </p>
+                    <p className="unavailable">
+                      Note entry and revisions unavailable in Phase 02.
+                    </p>
+                  </>
+                )}
+                {selected === "Call station" && (
+                  <>
+                    <h3>Senior call station</h3>
+                    <p className="unavailable">
+                      Senior review, handoff and authorization unavailable in
+                      Phase 02.
+                    </p>
+                  </>
+                )}
+              </section>
+            </aside>
+          </div>
+          <div className="captions" aria-label="Captions">
+            <span>PATIENT · AUTHORED TEXT</span>
+            <p>“{patient.opening}”</p>
+            <small>No live conversation connected</small>
+          </div>
+          <nav className="station-nav" aria-label="Bedside controls">
+            {stations.map((station, index) => (
+              <button
+                key={station}
+                aria-pressed={selected === station}
+                onClick={() => select(station)}
+              >
+                <span>0{index + 1}</span>
+                {station}
+              </button>
+            ))}
+          </nav>
+          <footer>
+            <span>
+              {paused ? "Fixture paused" : "Fixture clock running"} ·
+              Medications do not alter physiology
+            </span>
+          </footer>
+        </>
+      ) : (
+        <p role="status">
+          {error
+            ? "Unable to load bedside. Reload to retry."
+            : "Loading fixture bedside…"}
+        </p>
+      )}
     </main>
   );
 }
