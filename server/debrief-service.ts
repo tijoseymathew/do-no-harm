@@ -27,6 +27,11 @@ export class DebriefService {
     return value ? structuredClone(value) : null;
   }
 
+  restore(snapshot: DebriefSnapshot | null) {
+    if (snapshot && !this.debriefs.has(snapshot.runId))
+      this.debriefs.set(snapshot.runId, structuredClone(snapshot));
+  }
+
   async finish(runId: string, input: FinishRunInput) {
     const prepared = await this.prepareFinish(runId, input);
     if (!prepared.created) return prepared.snapshot;

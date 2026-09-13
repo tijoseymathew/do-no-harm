@@ -16,6 +16,12 @@ interface ManagedConversation {
   awaitingAssistedAnswer: boolean;
 }
 
+export interface ConversationPersistence {
+  snapshot: ConversationSnapshot;
+  examinerSessionId: string | null;
+  awaitingAssistedAnswer: boolean;
+}
+
 export interface CheckpointResult {
   status: "completed" | "skipped" | "stale" | "unavailable";
   message: string;
@@ -35,6 +41,26 @@ export class ConversationService {
     private readonly examinerProvider: ExaminerProvider,
   ) {
     this.tools = new ConversationTools(casePack, store);
+  }
+
+  persistence(runId: string): ConversationPersistence | null {
+    const managed = this.conversations.get(runId);
+    if (!managed) return null;
+    return structuredClone({
+      snapshot: managed.snapshot,
+      examinerSessionId: managed.examinerSessionId,
+      awaitingAssistedAnswer: managed.awaitingAssistedAnswer,
+    });
+  }
+
+  restore(persisted: ConversationPersistence | null) {
+    if (!persisted || this.conversations.has(persisted.snapshot.runId)) return;
+    this.conversations.set(persisted.snapshot.runId, {
+      snapshot: structuredClone(persisted.snapshot),
+      examinerSessionId: persisted.examinerSessionId,
+      checkpointQueue: Promise.resolve(),
+      awaitingAssistedAnswer: persisted.awaitingAssistedAnswer,
+    });
   }
 
   async state(runId: string) {

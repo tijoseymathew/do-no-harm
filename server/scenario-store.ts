@@ -5,12 +5,19 @@ import {
   ScenarioEngine,
   type CommandEnvelope,
   type CommandResult,
+  type ScenarioEnginePersistence,
 } from "./scenario-engine.js";
 
 interface StoredRun {
   engine: ScenarioEngine;
   queue: Promise<void>;
   snapshots: Array<{ throughSequence: number; state: ScenarioSnapshot }>;
+  debrief: unknown | null;
+}
+
+export interface ScenarioStorePersistence {
+  engine: ScenarioEnginePersistence;
+  snapshots: StoredRun["snapshots"];
   debrief: unknown | null;
 }
 
@@ -44,6 +51,27 @@ export class ScenarioStore {
 
   get(id: string): ScenarioSnapshot | null {
     return this.runs.get(id)?.engine.snapshot() ?? null;
+  }
+
+  persistence(id: string): ScenarioStorePersistence | null {
+    const run = this.runs.get(id);
+    if (!run) return null;
+    return structuredClone({
+      engine: run.engine.persistence(),
+      snapshots: run.snapshots,
+      debrief: run.debrief,
+    });
+  }
+
+  restore(persisted: ScenarioStorePersistence) {
+    const id = persisted.engine.state.id;
+    if (this.runs.has(id)) return;
+    this.runs.set(id, {
+      engine: ScenarioEngine.restore(this.casePack, persisted.engine),
+      queue: Promise.resolve(),
+      snapshots: structuredClone(persisted.snapshots),
+      debrief: structuredClone(persisted.debrief),
+    });
   }
 
   events(id: string) {

@@ -6,17 +6,36 @@ import {
   TextTurnInputSchema,
   TranscriptCorrectionInputSchema,
 } from "../shared/contracts/conversation.js";
-import { FinishRunInputSchema } from "../shared/contracts/debrief.js";
+import {
+  FinishRunInputSchema,
+  type DebriefSnapshot,
+} from "../shared/contracts/debrief.js";
 import { CasePackSchema, toStudentCase } from "../shared/contracts/server.js";
 import { CommandEnvelopeSchema } from "../shared/contracts/scenario.js";
 import { StudentCaseSchema } from "../shared/contracts/student.js";
-import { ConversationService } from "../server/conversation-service.js";
+import {
+  ConversationService,
+  type ConversationPersistence,
+} from "../server/conversation-service.js";
 import { DebriefService } from "../server/debrief-service.js";
 import {
   DeterministicExaminerProvider,
   OpenAIExaminerProvider,
 } from "../server/examiner-provider.js";
-import { ScenarioStore } from "../server/scenario-store.js";
+import {
+  ScenarioStore,
+  type ScenarioStorePersistence,
+} from "../server/scenario-store.js";
+
+interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  first<T>(): Promise<T | null>;
+  run(): Promise<unknown>;
+}
+
+interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+}
 
 interface SitesEnvironment {
   OPENAI_API_KEY?: string;
@@ -24,10 +43,54 @@ interface SitesEnvironment {
   OPENAI_EXAMINER_MODEL?: string;
   APP_ORIGIN?: string;
   ASSETS?: { fetch(request: Request): Promise<Response> };
+  DB?: D1Database;
 }
 
 interface SitesExecutionContext {
   waitUntil(operation: Promise<unknown>): void;
+}
+
+interface RuntimePersistence {
+  store: ScenarioStorePersistence;
+  conversation: ConversationPersistence | null;
+  debrief: DebriefSnapshot | null;
+}
+
+class D1RunPersistence {
+  private initialized: Promise<void> | undefined;
+
+  constructor(private readonly database: D1Database) {}
+
+  async load(runId: string): Promise<RuntimePersistence | null> {
+    await this.initialize();
+    const row = await this.database
+      .prepare("SELECT payload FROM simulator_runs WHERE id = ?")
+      .bind(runId)
+      .first<{ payload: string }>();
+    return row ? (JSON.parse(row.payload) as RuntimePersistence) : null;
+  }
+
+  async save(runId: string, payload: RuntimePersistence) {
+    await this.initialize();
+    await this.database
+      .prepare(
+        "INSERT INTO simulator_runs (id, payload, updated_at) VALUES (?, ?, ?) " +
+          "ON CONFLICT(id) DO UPDATE SET payload = excluded.payload, updated_at = excluded.updated_at",
+      )
+      .bind(runId, JSON.stringify(payload), new Date().toISOString())
+      .run();
+  }
+
+  private initialize() {
+    this.initialized ??= this.database
+      .prepare(
+        "CREATE TABLE IF NOT EXISTS simulator_runs (" +
+          "id TEXT PRIMARY KEY, payload TEXT NOT NULL, updated_at TEXT NOT NULL)",
+      )
+      .run()
+      .then(() => undefined);
+    return this.initialized;
+  }
 }
 
 const LiveStatusSchema = z
@@ -46,6 +109,7 @@ class SitesRuntime {
   readonly debrief: DebriefService;
   readonly liveModel: string;
   readonly examinerModel: string;
+  readonly persistence: D1RunPersistence | null;
 
   constructor(readonly environment: SitesEnvironment) {
     const apiKey = environment.OPENAI_API_KEY?.trim();
@@ -64,10 +128,31 @@ class SitesRuntime {
       examiner,
     );
     this.debrief = new DebriefService(this.casePack, this.store, this.conversation);
+    this.persistence = environment.DB ? new D1RunPersistence(environment.DB) : null;
+  }
+
+  snapshot(runId: string): RuntimePersistence | null {
+    const store = this.store.persistence(runId);
+    if (!store) return null;
+    return {
+      store,
+      conversation: this.conversation.persistence(runId),
+      debrief: this.debrief.get(runId),
+    };
+  }
+
+  restore(persisted: RuntimePersistence) {
+    this.store.restore(persisted.store);
+    this.conversation.restore(persisted.conversation);
+    this.debrief.restore(persisted.debrief);
   }
 }
 
 let activeRuntime: SitesRuntime | undefined;
+
+export function resetSitesRuntimeForTest() {
+  activeRuntime = undefined;
+}
 
 function runtimeFor(environment: SitesEnvironment) {
   activeRuntime ??= new SitesRuntime(environment);
@@ -379,6 +464,63 @@ async function apiResponse(
   return null;
 }
 
+async function runIdFor(request: Request, pathname: string) {
+  const route = match(
+    pathname,
+    /^\/api\/(?:runs|fixtures|conversations|debriefs)\/([^/]+)/,
+  );
+  if (route) return route[0]!;
+  if (request.method === "POST" && pathname === "/api/live/session") {
+    const body = (await request.clone().json().catch(() => null)) as {
+      runId?: unknown;
+    } | null;
+    return typeof body?.runId === "string" ? body.runId : null;
+  }
+  return null;
+}
+
+async function persistedApiResponse(
+  request: Request,
+  environment: SitesEnvironment,
+  context: SitesExecutionContext,
+) {
+  const runtime = runtimeFor(environment);
+  const pathname = new URL(request.url).pathname;
+  let runId = await runIdFor(request, pathname);
+  if (runId && runtime.persistence) {
+    const persisted = await runtime.persistence.load(runId);
+    if (persisted) runtime.restore(persisted);
+  }
+
+  const persistenceContext: SitesExecutionContext = {
+    waitUntil(operation) {
+      context.waitUntil(
+        operation.then(async () => {
+          if (!runId || !runtime.persistence) return;
+          const snapshot = runtime.snapshot(runId);
+          if (snapshot) await runtime.persistence.save(runId, snapshot);
+        }),
+      );
+    },
+  };
+  const response = await apiResponse(request, environment, persistenceContext);
+  if (!response) return null;
+
+  if (
+    !runId &&
+    request.method === "POST" &&
+    ["/api/runs", "/api/fixtures"].includes(pathname)
+  ) {
+    const created = (await response.clone().json()) as { id?: unknown };
+    if (typeof created.id === "string") runId = created.id;
+  }
+  if (runId && runtime.persistence) {
+    const snapshot = runtime.snapshot(runId);
+    if (snapshot) await runtime.persistence.save(runId, snapshot);
+  }
+  return response;
+}
+
 export default {
   async fetch(
     request: Request,
@@ -387,7 +529,7 @@ export default {
   ) {
     const path = new URL(request.url).pathname;
     try {
-      const response = await apiResponse(request, environment, context);
+      const response = await persistedApiResponse(request, environment, context);
       if (response) return response;
       if (path.startsWith("/api/"))
         return json({ error: "API endpoint not found." }, 404);

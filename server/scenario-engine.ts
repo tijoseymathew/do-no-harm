@@ -31,6 +31,12 @@ interface StoredResult {
   result: CommandResult;
 }
 
+export interface ScenarioEnginePersistence {
+  state: ScenarioState;
+  events: RunEvent[];
+  requests: Array<[string, StoredResult]>;
+}
+
 export class ScenarioEngine {
   readonly casePack: CasePack;
   readonly state: ScenarioState;
@@ -147,6 +153,24 @@ export class ScenarioEngine {
 
   eventLog(): RunEvent[] {
     return structuredClone(this.events);
+  }
+
+  persistence(): ScenarioEnginePersistence {
+    return structuredClone({
+      state: this.state,
+      events: this.events,
+      requests: [...this.requests.entries()],
+    });
+  }
+
+  static restore(casePack: CasePack, persisted: ScenarioEnginePersistence) {
+    const engine = new ScenarioEngine(casePack, { runId: persisted.state.id });
+    Object.assign(engine.state, structuredClone(persisted.state));
+    engine.events.splice(0, engine.events.length, ...structuredClone(persisted.events));
+    engine.requests.clear();
+    for (const [key, value] of persisted.requests)
+      engine.requests.set(key, structuredClone(value));
+    return engine;
   }
 
   recordEvidence(
