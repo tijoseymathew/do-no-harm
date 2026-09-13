@@ -68,7 +68,7 @@ Finish freezes the server clock, serially settles commands already accepted by t
 
 The debrief turn reads evidence only through that named sequence and can publish only a schema-valid `feedback` output containing the six rubric criteria plus cited strength and improvement summaries. Every cited UUID must resolve to an event inside the cutoff. A failure publishes no feedback: the evidence, chart, actions, and cutoff remain available with an **Evaluation unavailable** state and retry control. A correction after Finish is append-only; retry names a new late-evidence cutoff and preserves the first feedback revision.
 
-`npm run evidence:phase06` produces deterministic three-path exports and cutoff/failure validation evidence. `npm run verify:phase06:real` exercises the same contract with the configured Astra Agents API provider and writes a sanitized receipt only on success. As of the Phase 06 implementation verification, the configured real model read the evidence but did not submit a schema-valid complete feedback envelope after its repair turn; the application correctly retained the run and exposed the recoverable unavailable state.
+`npm run evidence:phase06` produces deterministic three-path exports and cutoff/failure validation evidence. `npm run verify:phase06:real` exercises the same contract with the configured Astra Agents API provider and writes a sanitized receipt only on success. The retained real Phase 06 receipt subsequently reached `ready`, with all six criteria and all citations resolved. Earlier failures remain a useful recovery test, not the current integration status. See `docs/evidence/phase-06/real-debrief-checkpoint.json` for the timestamped verification.
 
 ## Configuration and failure behavior
 
@@ -82,3 +82,9 @@ The debrief turn reads evidence only through that named sequence and can publish
 | `OPENAI_EXAMINER_MODEL` | `gpt-6-astra` |
 
 `GET /api/health` returns case version, clinical review status, configured booleans, explicit `mode: "real"` labels, and model names. It never returns a credential. Missing provider configuration is an unavailable/blocked state, not a mock success. Provider API errors are reduced to status and request ID; response bodies and request credentials are not logged.
+
+## Submission reliability review
+
+The browser now handles `session.delegation.created` metadata and returns the server-grounded transcript result with the original opaque delegation ID. Input and output captions are separate; repeated delegation events are deduplicated and obsolete results are suppressed after newer input or disconnect. Microphone mute has a matching unmute; interruption uses natural speech rather than an input-mute command. Disconnect sends `session.close`, stops media tracks, and releases the application binding.
+
+Examiner checkpoint requests have a 120-second browser window instead of the ordinary 10-second API timeout. The reasoning checkpoint holds simulation advances while reviewing to avoid making its own evidence stale. Debrief remains asynchronous and polled. The browser voice test simulates WebRTC events; it is not a real audio/interruption proof.

@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import type {
   ConversationMessage,
   ConversationSnapshot,
+  ConversationTurnResult,
 } from "../../shared/contracts/conversation.js";
+import { LiveDelegationBridge } from "./live-delegation.js";
 
 interface Props {
   runId: string;
   briefing: string;
   conversation: ConversationSnapshot;
   busy: boolean;
-  sendText: (text: string, source: "text" | "voice", interrupted?: boolean) => Promise<void>;
+  sendText: (text: string, source: "text" | "voice", interrupted?: boolean, expectedRunId?: string) => Promise<ConversationTurnResult | undefined>;
   correct: (messageId: string, text: string) => Promise<void>;
   checkpoint: () => Promise<void>;
   registerFinishFlush?: (flush: () => string) => void;
@@ -47,12 +49,20 @@ export function Conversation({
   const [liveStatus, setLiveStatus] = useState<LiveStatus>("disconnected");
   const [liveMessage, setLiveMessage] = useState("Voice disconnected — continue by text.");
   const [liveCaption, setLiveCaption] = useState("");
+  const [inputCaption, setInputCaption] = useState("");
+  const [micMuted, setMicMuted] = useState(false);
   const peer = useRef<RTCPeerConnection | undefined>(undefined);
   const channel = useRef<RTCDataChannel | undefined>(undefined);
   const microphone = useRef<MediaStream | undefined>(undefined);
   const audio = useRef<HTMLAudioElement>(null);
   const transcript = useRef("");
   const transcriptTimer = useRef<number | undefined>(undefined);
+  const bridge = useRef<LiveDelegationBridge | undefined>(undefined);
+  const transcriptVersion = useRef(0);
+  const voiceQueue = useRef<Promise<void>>(Promise.resolve());
+  const liveSessionId = useRef<string | undefined>(undefined);
+  const attempt = useRef(0);
+  const connectionTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => disconnect(), []);
   useEffect(() => {
@@ -60,13 +70,27 @@ export function Conversation({
       if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);
       const complete = transcript.current.trim();
       transcript.current = "";
-      setLiveCaption("");
+      setInputCaption("");
+      disconnect();
       return complete;
     });
   }, [registerFinishFlush]);
 
   function disconnect() {
+    attempt.current++;
+    window.clearTimeout(connectionTimer.current);
     if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);
+    bridge.current?.close();
+    bridge.current = undefined;
+    if (channel.current?.readyState === "open")
+      channel.current.send(JSON.stringify({ type: "session.close" }));
+    const sessionId = liveSessionId.current;
+    liveSessionId.current = undefined;
+    if (sessionId) void fetch(`/api/conversations/${runId}/live/status`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, status: "disconnected" }),
+      keepalive: true,
+    }).catch(() => undefined);
     microphone.current?.getTracks().forEach((track) => track.stop());
     channel.current?.close();
     peer.current?.close();
@@ -76,28 +100,69 @@ export function Conversation({
     peer.current = undefined;
   }
 
+  function flushVoice() {
+    if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);
+    const complete = transcript.current.trim();
+    transcript.current = "";
+    setInputCaption("");
+    if (!complete) return;
+    const currentBridge = bridge.current;
+    const version = transcriptVersion.current;
+    voiceQueue.current = voiceQueue.current.then(async () => {
+      const result = await sendText(complete, "voice", false, runId);
+      const answer = result?.conversation.messages.at(-1);
+      currentBridge?.resolve(version, answer && ["nurse", "patient"].includes(answer.role)
+        ? `${answer.role}: ${answer.text}`
+        : "The application could not verify this request. Ask the learner to use the bedside controls or text. Do not invent an answer or claim an action succeeded.");
+    }).catch(() => {
+      currentBridge?.resolve(version, "The application is unavailable. Ask the learner to continue by text; do not claim success.");
+    });
+  }
+
   async function connect() {
+    disconnect();
+    const currentAttempt = attempt.current;
+    transcript.current = "";
+    setInputCaption("");
+    setLiveCaption("");
+    setMicMuted(false);
     setLiveStatus("connecting");
     setLiveMessage("Requesting microphone and connecting…");
+    connectionTimer.current = window.setTimeout(() => {
+      disconnect();
+      setLiveStatus("failed");
+      setLiveMessage("Voice connection timed out. Continue by text or reconnect.");
+    }, 40000);
     try {
       const connection = new RTCPeerConnection();
       peer.current = connection;
       connection.addEventListener("track", ({ track }) => {
         if (!audio.current) return;
         audio.current.srcObject = new MediaStream([track]);
-        void audio.current.play();
+        void audio.current.play().catch(() => setLiveMessage("Audio playback was blocked. Reconnect voice to enable sound."));
       });
       const media = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (peer.current !== connection) {
+        media.getTracks().forEach((track) => track.stop());
+        return;
+      }
       microphone.current = media;
       media.getTracks().forEach((track) => connection.addTrack(track, media));
       const events = connection.createDataChannel("oai-events");
       channel.current = events;
+      bridge.current = new LiveDelegationBridge((event) => {
+        if (events.readyState === "open") events.send(JSON.stringify(event));
+      });
       events.addEventListener("message", ({ data }) => {
-        const event = JSON.parse(String(data)) as {
+        if (peer.current !== connection) return;
+        let event: {
           type?: string;
           delta?: string;
+          delegation?: { id?: string; target?: string };
         };
+        try { event = JSON.parse(String(data)); } catch { return; }
         if (event.type === "session.started") {
+          window.clearTimeout(connectionTimer.current);
           setLiveStatus("connected");
           setLiveMessage("Voice connected. Interrupt naturally at any time.");
           events.send(
@@ -110,29 +175,43 @@ export function Conversation({
         }
         if (event.type === "session.input_transcript.delta" && event.delta) {
           transcript.current += event.delta;
-          setLiveCaption(transcript.current);
+          transcriptVersion.current = bridge.current?.inputChanged() ?? 0;
+          setInputCaption(transcript.current);
+          setLiveCaption("");
           if (transcriptTimer.current) window.clearTimeout(transcriptTimer.current);
-          transcriptTimer.current = window.setTimeout(() => {
-            const complete = transcript.current.trim();
-            transcript.current = "";
-            setLiveCaption("");
-            if (complete) void sendText(complete, "voice");
-          }, 900);
+          transcriptTimer.current = window.setTimeout(flushVoice, 900);
         }
+        if (event.type === "session.delegation.created" && event.delegation?.target === "client" && event.delegation.id)
+          bridge.current?.delegate(event.delegation.id);
         if (event.type === "session.output_transcript.delta" && event.delta)
           setLiveCaption((current) => `${current}${event.delta}`);
         if (event.type === "session.closed") {
+          flushVoice();
           disconnect();
           setLiveStatus("disconnected");
           setLiveMessage("Voice session ended — continue by text.");
         }
         if (event.type === "error") {
+          flushVoice();
+          disconnect();
           setLiveStatus("failed");
           setLiveMessage("Voice interrupted. Accepted actions and transcript are preserved; continue by text or reconnect.");
         }
       });
       events.addEventListener("close", () => {
+        if (peer.current !== connection) return;
+        flushVoice();
+        disconnect();
         setLiveStatus((current) => (current === "failed" ? current : "disconnected"));
+        setLiveMessage("Voice disconnected — continue by text or reconnect.");
+      });
+      connection.addEventListener("connectionstatechange", () => {
+        if (peer.current === connection && connection.connectionState === "failed") {
+          flushVoice();
+          disconnect();
+          setLiveStatus("failed");
+          setLiveMessage("Voice connection lost. Continue by text or reconnect.");
+        }
       });
       const offer = await connection.createOffer();
       await connection.setLocalDescription(offer);
@@ -140,6 +219,7 @@ export function Conversation({
       const sdp = connection.localDescription?.sdp;
       if (!sdp) throw new Error("No browser SDP offer was produced");
       const response = await fetch("/api/live/session", {
+        signal: AbortSignal.timeout(30000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ runId, sdp }),
@@ -148,9 +228,12 @@ export function Conversation({
         const result = (await response.json().catch(() => ({}))) as { error?: string };
         throw new Error(result.error ?? "Voice connection failed");
       }
-      const result = (await response.json()) as { transport: { sdp: string } };
+      const result = (await response.json()) as { session: { id: string }; transport: { sdp: string } };
+      if (peer.current !== connection) return;
+      liveSessionId.current = result.session.id;
       await connection.setRemoteDescription({ type: "answer", sdp: result.transport.sdp });
     } catch (error) {
+      if (attempt.current !== currentAttempt) return;
       disconnect();
       setLiveStatus("failed");
       setLiveMessage(
@@ -171,7 +254,7 @@ export function Conversation({
     <section className="conversation" aria-label="Live conversation and captions">
       <div className="conversation-heading">
         <div>
-          <p className="eyebrow">LIVE CONVERSATION</p>
+          <p className="eyebrow">GPT-LIVE-1 · LIVE CONVERSATION</p>
           <h2>Conversation and captions</h2>
         </div>
         <div className="live-controls">
@@ -179,14 +262,24 @@ export function Conversation({
             {liveStatus === "failed" ? "Reconnect voice" : "Connect voice"}
           </button>
           <button className="secondary" disabled={liveStatus !== "connected"} onClick={() => {
-            channel.current?.send(JSON.stringify({ type: "session.input_audio.mute" }));
-            setLiveMessage("Nurse/Patient interrupted; listening for your correction.");
-          }}>Interrupt</button>
+            const next = !micMuted;
+            microphone.current?.getAudioTracks().forEach((track) => { track.enabled = !next; });
+            if (channel.current?.readyState === "open") channel.current.send(JSON.stringify({ type: next ? "session.input_audio.mute" : "session.input_audio.unmute" }));
+            setMicMuted(next);
+            setLiveMessage(next ? "Microphone muted. Unmute to speak." : "Voice connected. Speak to interrupt naturally.");
+          }}>{micMuted ? "Unmute microphone" : "Mute microphone"}</button>
+          <button className="secondary" disabled={liveStatus !== "connected" && liveStatus !== "connecting"} onClick={() => {
+            flushVoice();
+            disconnect();
+            setLiveStatus("disconnected");
+            setLiveMessage("Voice disconnected — continue by text.");
+          }}>Disconnect voice</button>
         </div>
       </div>
       <p className={`connection-state ${liveStatus}`} role="status">{liveMessage}</p>
       <audio ref={audio} autoPlay className="live-audio" aria-label="Live Nurse, Patient, and Examiner audio" />
-      {liveCaption && <p className="live-caption"><strong>LIVE · VOICE</strong> {liveCaption}</p>}
+      {inputCaption && <p className="live-caption"><strong>YOU · LIVE</strong> {inputCaption}</p>}
+      {liveCaption && <p className="live-caption"><strong>PATIENT / NURSE · LIVE</strong> {liveCaption}</p>}
       <ol className="transcript-list" aria-label="Transcript">
         {conversation.messages.map((message) => (
           <li key={message.id} className={message.supersededByMessageId ? "superseded" : ""}>
@@ -223,7 +316,7 @@ export function Conversation({
         <button disabled={busy || !text.trim()}>Send</button>
       </form>
       <div className="examiner-checkpoint">
-        <span>EXAMINER · {conversation.examiner.mode === "real" ? "ASTRA" : "VERIFICATION FIXTURE"}</span>
+        <span>EXAMINER · {conversation.examiner.mode === "real" ? "ASTRA · AGENTS API" : "VERIFICATION FIXTURE"}</span>
         <button className="secondary" disabled={busy || conversation.examiner.followUpDelivered || conversation.examiner.status === "running"} onClick={() => void checkpoint()}>
           Enter reasoning checkpoint
         </button>

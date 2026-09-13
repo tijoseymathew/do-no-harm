@@ -34,9 +34,9 @@ class ApiError extends Error {
   }
 }
 
-async function json<T>(url: string, body?: unknown): Promise<T> {
+async function json<T>(url: string, body?: unknown, timeoutMs = 10000): Promise<T> {
   const response = await fetch(url, {
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(timeoutMs),
     ...(body === undefined
       ? {}
       : {
@@ -176,7 +176,7 @@ export function Bedside() {
       if (command.type === "record_handoff") {
         const result = await json<{
           conversation: ConversationSnapshot;
-        }>(`/api/conversations/${updated.id}/checkpoints`, { kind: "handoff" });
+        }>(`/api/conversations/${updated.id}/checkpoints`, { kind: "handoff" }, 120000);
         setConversation(result.conversation);
       }
       setError("");
@@ -203,9 +203,10 @@ export function Bedside() {
     text: string,
     source: "text" | "voice",
     interrupted = false,
+    expectedRunId?: string,
   ) => {
     const current = authoritative.current;
-    if (!current) return;
+    if (!current || (expectedRunId && current.id !== expectedRunId)) return;
     setBusy(true);
     try {
       const result = await json<ConversationTurnResult & { state: ScenarioSnapshot }>(
@@ -217,6 +218,7 @@ export function Bedside() {
       setConversation(result.conversation);
       if (result.focusStation) select(result.focusStation);
       setError("");
+      return result;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Conversation unavailable");
     } finally {
@@ -234,15 +236,20 @@ export function Bedside() {
   }, []);
   const requestReasoningCheckpoint = useCallback(async () => {
     const current = authoritative.current;
-    if (!current) return;
+    if (!current || locked.current) return;
+    locked.current = true;
     setBusy(true);
     try {
       const result = await json<{ conversation: ConversationSnapshot }>(
         `/api/conversations/${current.id}/checkpoints`,
         { kind: "reasoning" },
+        120000,
       );
       setConversation(result.conversation);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Examiner unavailable; your evidence is preserved.");
     } finally {
+      locked.current = false;
       setBusy(false);
     }
   }, []);
@@ -430,12 +437,21 @@ export function Bedside() {
         </div>
       </header>
       <div className="fixture-banner">
-        DETERMINISTIC ENGINE · DEVELOPMENT RULES{" "}
+        FICTIONAL TRAINING PROTOTYPE{" "}
         <span>
-          Server-authoritative state and effects · clinical content unreviewed
+          Practise decisions safely · clinical content unreviewed
         </span>
         <a href="/probe">API probe ↗</a>
       </div>
+      <details className="quick-start">
+        <summary>First visit? Talk. Assess. Act. Reflect.</summary>
+        <div className="quick-start-grid">
+          <p><strong>1 · Talk to the patient</strong>Connect voice below, allow your microphone, and ask when the pressure started. Speak naturally to interrupt. Text is also available.</p>
+          <p><strong>2 · Make your decisions</strong>Explore the bedside controls. Saying “Prepare aspirin” opens an incomplete draft for review. Only your confirmed administration creates a treatment receipt.</p>
+          <p><strong>3 · Inspect the evidence</strong>Record a handoff at the Call station to unlock Finish. Astra reviews the run through the Agents API; open a feedback citation to inspect the exact event.</p>
+        </div>
+        <p>One fictional chest-pain case, with paths shaped by decisions and timing. <a href="https://www.youtube.com/watch?v=G1_KK_b_cj4" target="_blank" rel="noreferrer">Watch the submitted demo ↗</a></p>
+      </details>
       {error && (
         <div className="error" role="alert">
           {error}{" "}
@@ -454,7 +470,7 @@ export function Bedside() {
             busy={busy}
             retry={retryDebrief}
             teachBack={requestTeachBack}
-            answerTeachBack={(text) => sendText(text, "text")}
+            answerTeachBack={async (text) => { await sendText(text, "text"); }}
             correctTranscript={async (messageId, text) => {
               await correctTranscript(messageId, text);
               const current = authoritative.current;

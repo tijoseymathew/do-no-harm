@@ -1,79 +1,62 @@
 # DO NO HARM
 
-An interactive emergency-room simulation for medical students: the Live voice opens with an authored briefing (formative simulation, student role, patient identity, complaint, visible appearance, and the task to assess and manage), then the student assesses a fictional patient, operates bedside equipment, chooses medication doses, administers treatment, reassesses, and receives a visual evidence-linked debrief.
+A browser emergency-room simulation for medical students. Talk to a fictional patient with **GPT-Live-1**, use bedside equipment, make treatment decisions, and receive an **Agents API** examiner debrief linked to the actions actually recorded.
 
-Phase 01 provides the application skeleton, versioned case contracts, an unreviewed fictional chest-pain draft, and independently runnable real-provider probes.
+[Try the deployed app](https://do-no-harm-simulator.tijoseymathew.chatgpt.site/) · [Submitted demo](https://www.youtube.com/watch?v=G1_KK_b_cj4) · [Submission review](docs/submission-review.md)
 
-Phase 03 adds a deterministic server scenario engine behind the Three.js emergency bay at `/`. The engine owns simulation time, physiology, connected and intermittent observations, treatment state, bounded scenario branches, state revisions, administration receipts, and append-only events. The original voice connection probe remains at `/probe`.
+One fictional chest-pain case supports timely care, delayed care, and inappropriate-attempt paths. Clinical content remains **unreviewed**; this is a formative prototype.
 
-The bedside requires no provider credentials. Each reload creates an isolated in-memory run through `POST /api/runs`; commands carry the current revision and an idempotency key. The server serializes mutations, rejects stale commands, and persists replay records under ignored local `runs/` files. Pause stops simulation time, pending effects, waveforms, and fluid delivery together. The room exposes monitor connections, stale BP behavior, validated aspirin administration, IV-fluid accounting, and senior acknowledgment. Diagnostic ECG/results, oxygen settings, notes, and handoff remain later-phase work.
+## Try the complete flow
 
-The case timing, deterioration, aspirin effect marker, and fluid limits are still unreviewed development fixtures. They are visibly labeled and cannot establish clinical acceptance. The current rule review record is in `docs/evidence/phase-03/clinical-rule-review.json`.
+1. Connect voice, allow microphone access, and ask when the pressure started. Speak naturally to interrupt. Microphone mute/unmute and disconnect are explicit controls; text remains available.
+2. Assess the patient and explore the monitor, investigations, medication, oxygen/IV, notes, and call station. “Prepare aspirin” opens a draft with missing parameters left unset. Preparation never counts as administration.
+3. Record a handoff at the Call station. The examiner can ask one neutral question grounded in the run; it cannot perform treatment.
+4. Select Finish. Open a feedback citation to inspect its exact evidence event, then review the next-practice objective. Provider latency or failure preserves the evidence and exposes retry.
 
-- [Product specification](specs.md): experience, room layout, clinical interactions, architecture, and demo requirements.
-- [Implementation phases](docs/phases/README.md): seven verifiable phases with dependencies and acceptance checklists.
-- [Provider contracts](docs/provider-integrations.md): the exact Live WebRTC and Agents API boundaries.
-- [Clinical review checklist](docs/clinical-review-checklist.md): the sign-off required before this draft case can be treated as reviewed education content.
+## What the two integrations do
 
-## Requirements
+**GPT-Live-1:** server-created WebRTC sessions carry full-duplex audio. The browser accumulates input transcripts and sends them through the application’s bounded fact, visible-state, and draft-order workflow. Client delegations receive those grounded results through `session.commentary.append` using the original delegation ID. Transcript corrections remain append-only. The current language router is deliberately bounded; arbitrary conversation understanding and human microphone interruption verification remain limitations.
 
-- Node.js 22.6 or newer (tested with Node.js 24.15.0)
-- npm 11 or newer
-- A project API key with GPT-Live and Agents API access for the real probes
-- A microphone and a browser served from localhost or HTTPS for the Live probe
+**Agents API:** a real managed `gpt-6-astra` session reads evidence through application functions and continues across checkpoints. Only schema-valid output with resolvable evidence citations is accepted. Finish freezes a named evidence cutoff; the examiner returns six criterion outcomes, a strength, a priority improvement, and a next-practice objective. It cannot administer treatment or alter the deterministic scenario engine.
+
+The server owns physiology, simulation time, revisions, idempotency, treatment receipts, and append-only evidence. Hosted runs persist in Sites D1. The browser receives student-safe case data, never the project API key or hidden rubric. See [provider contracts](docs/provider-integrations.md) and [clinical review checklist](docs/clinical-review-checklist.md).
 
 ## Install and verify
+
+Node.js 22.6+ and npm are required.
 
 ```bash
 npm ci
 npm run verify
-```
-
-`npm run verify` type-checks the browser and server boundaries separately, validates the case contracts, builds both targets, and scans the browser output for provider credentials and hidden rubric markers. It does not make provider requests and cannot satisfy a real-provider gate.
-
-For browser verification after building:
-
-```bash
 npx playwright install chromium
 npm run test:browser
 ```
 
-The browser suite starts the built server on port 3102, checks the room at 1440×900 and 1280×720, exercises keyboard, reconnect, and WebGL fallback flows, and regenerates Phase 03 screenshots, an interaction recording, and engine receipts in `docs/evidence/phase-03/`. If Chromium is already installed elsewhere, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to its executable path. Browser traces and incidental test output go to ignored `test-results/`.
+`verify` runs type checks, unit/contract tests, the production build, and a browser-bundle boundary scan. Browser tests cover equipment, medication validation, recovery, voice delegation with a simulated WebRTC connection, and citation-linked debriefs. They do not prove real microphone audio or provider access. Generated browser evidence is local verification output; review it before committing.
 
-Regenerate deterministic branch logs and the machine-readable rule-review status with:
+Real provider verification, with a server-only `OPENAI_API_KEY` in `.env`:
 
 ```bash
-npm run evidence:phase03
+npm run probe:examiner
+npm run verify:phase06:real
 ```
 
-Copy `.env.example` to `.env` and set `OPENAI_API_KEY` only when running real probes. Missing configuration returns an actionable HTTP 503 or command-line error. Never put this key in a `VITE_` variable; Vite exposes those variables to browser code.
+The key needs Live and Agents API access. Sanitized receipts are retained under `docs/evidence/`; unavailable providers are not represented as real success. Local development without a key uses an explicitly labeled examiner verification fixture.
 
-## Develop
-
-Run the API and Vite development server in separate terminals:
+## Develop and build
 
 ```bash
 npm run dev:server
 npm run dev:client
 ```
 
-Open `http://127.0.0.1:5173`. The browser calls the local server through Vite's `/api` proxy. Defaults and optional environment overrides are documented in `.env.example` and [the provider notes](docs/provider-integrations.md).
-
-## Production build
+Open `http://127.0.0.1:5173`. Vite proxies `/api` to the local Express server. Copy `.env.example` to `.env` for real provider access; never use a `VITE_` variable for credentials.
 
 ```bash
 npm run build
-npm start
+npm start -- --port 3000
 ```
 
-Open `http://127.0.0.1:3000`. The Node server serves the built browser application and API.
+The production build uses vinext and a Cloudflare Worker, matching ChatGPT Sites. `npm run build:local` followed by `npm run start:local` is the separate Express build. `.openai/hosting.json` identifies the existing Site; deployments must preserve its public audience and D1 binding.
 
-## Real API proofs
-
-With `OPENAI_API_KEY` configured on the server:
-
-```bash
-npm run probe:examiner
-```
-
-This starts one real managed Agents API session, handles its application function request, and writes a sanitized receipt under `docs/evidence/`. For the Live proof, start both development processes, open `/probe`, grant microphone permission, and follow the interruption check shown beside the controls. The deterministic bedside does not itself satisfy either real-provider gate.
+[Product specification](specs.md) · [Historical implementation phases](docs/phases/README.md) · [Video source project](video/hackathon-90s/README.md)

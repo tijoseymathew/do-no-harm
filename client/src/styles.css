@@ -1419,3 +1419,12 @@ button.citation {
   .action-panel { max-height: none; }
   .evidence-card-list { grid-template-columns: 1fr; }
 }
+
+/* Compact orientation keeps the patient and equipment as the main interface. */
+.quick-start { margin: 12px 0; padding: 14px 18px; border: 1px solid #294753; border-radius: 12px; background: #102530; color: #c8dce3; }
+.quick-start summary { cursor: pointer; color: #b3efe1; font-weight: 600; }
+.quick-start-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.quick-start p { font-size: 13px; line-height: 1.6; }
+.quick-start strong { display: block; color: #f0f8fa; margin-bottom: 6px; }
+.quick-start a { color: #9fe8d7; }
+@media (max-width: 720px) { .quick-start-grid { grid-template-columns: 1fr; gap: 0; } }
