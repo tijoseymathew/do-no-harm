@@ -18,7 +18,8 @@ describe("application API boundary", () => {
     const serialized = JSON.stringify(response.body);
     expect(serialized).not.toContain("hiddenRubric");
     expect(serialized).not.toContain("referenceDoseRule");
-    expect(serialized).not.toContain("twelve_lead_ecg");
+    expect(serialized).not.toContain("sinus tachycardia");
+    expect(serialized).not.toContain("18 ng/L");
   });
 
   it("gives an actionable error when provider configuration is missing", async () => {

@@ -11,6 +11,11 @@ import { Room, stations, type Station } from "./Room.js";
 import { Monitor } from "./Monitor.js";
 import { Medication } from "./Medication.js";
 import { Probe } from "./Probe.js";
+import { Assessment } from "./Assessment.js";
+import { Investigations } from "./Investigations.js";
+import { OxygenIv } from "./OxygenIv.js";
+import { Notes } from "./Notes.js";
+import { CallStation } from "./CallStation.js";
 
 class ApiError extends Error {
   constructor(
@@ -233,6 +238,13 @@ function Bedside() {
           >
             Advance scenario +30 s
           </button>
+          <button
+            className="finish"
+            disabled={!state || busy || syncLost || !state.handoffs.length || state.lifecycle === "ended"}
+            onClick={() => void send({ type: "finish" })}
+          >
+            Finish
+          </button>
           <label className="motion">
             <input
               type="checkbox"
@@ -284,22 +296,7 @@ function Bedside() {
                   <span className="tag">BEDSIDE</span>
                 </div>
                 {selected === "Patient" && (
-                  <>
-                    <h3>{patient.patient.displayName}</h3>
-                    <p>
-                      {patient.patient.ageYears} years ·{" "}
-                      {patient.patient.weightKg} kg · fictional patient
-                    </p>
-                    <p>{patient.patient.presentingComplaint}</p>
-                    <p>{state.physiology.presentation}.</p>
-                    <p className="muted">
-                      Focused assessment and conversation are unavailable in
-                      this interaction slice.
-                    </p>
-                    <button onClick={() => select("Monitor")}>
-                      Open monitoring
-                    </button>
-                  </>
+                  <Assessment patient={patient} state={state} busy={busy || syncLost} send={send} />
                 )}
                 {selected === "Monitor" && (
                   <>
@@ -352,107 +349,18 @@ function Bedside() {
                   />
                 )}
                 {selected === "Oxygen / IV" && (
-                  <>
-                    <h3>Oxygen and IV station</h3>
-                    <p>
-                      IV access: {state.devices.ivAccess.established
-                        ? "established"
-                        : "not established"}
-                      .
-                    </p>
-                    {!state.devices.ivAccess.established && (
-                      <button
-                        disabled={busy || syncLost}
-                        onClick={() => void send({ type: "establish_iv" })}
-                      >
-                        Establish simulated IV access
-                      </button>
-                    )}
-                    {state.devices.ivAccess.established &&
-                      state.devices.fluidPump.status !== "running" && (
-                        <button
-                          disabled={busy || syncLost}
-                          onClick={() =>
-                            void send({
-                              type: "start_fluid",
-                              fluidId: "sodium_chloride_0_9",
-                              volume: 500,
-                              volumeUnit: "mL",
-                              rate: 500,
-                              rateUnit: "mL/h",
-                            })
-                          }
-                        >
-                          Start 500 mL at 500 mL/h
-                        </button>
-                      )}
-                    {state.devices.fluidPump.status === "running" && (
-                      <button
-                        disabled={busy || syncLost}
-                        onClick={() => void send({ type: "stop_fluid" })}
-                      >
-                        Stop fluid
-                      </button>
-                    )}
-                    <p>
-                      Fluid: {state.devices.fluidPump.status} ·{" "}
-                      {state.devices.fluidPump.deliveredVolumeMl.toFixed(1)} mL
-                      delivered
-                    </p>
-                    <p className="unavailable">
-                      Oxygen settings remain unavailable. Suction is set
-                      dressing only.
-                    </p>
-                  </>
+                  <OxygenIv patient={patient} state={state} busy={busy || syncLost} send={send} />
                 )}
                 {selected === "ECG / results" && (
-                  <>
-                    <h3>ECG / results workstation</h3>
-                    <p className="unavailable">
-                      12-lead acquisition, interpretation and blood results are
-                      unavailable in Phase 02.
-                    </p>
-                    <p>
-                      The monitor strip is an illustrative rhythm fixture, not a
-                      diagnostic 12-lead ECG.
-                    </p>
-                  </>
+                  <Investigations patient={patient} state={state} busy={busy || syncLost} send={send} />
                 )}
                 {selected === "Clipboard" && (
-                  <>
-                    <h3>Patient chart</h3>
-                    <p>
-                      {patient.patient.displayName}
-                      <br />
-                      {patient.patient.allergies.join(", ")}
-                      <br />
-                      {patient.patient.currentMedications.join(", ")}
-                    </p>
-                    <p className="unavailable">
-                      Note entry and revisions unavailable in Phase 02.
-                    </p>
-                  </>
+                  <Notes state={state} busy={busy || syncLost} send={send} />
                 )}
                 {selected === "Call station" && (
-                  <>
-                    <h3>Senior call station</h3>
-                    <p className="unavailable">
-                      {state.senior.acknowledgedAtMs !== null
-                        ? "Senior review acknowledged."
-                        : state.senior.requestedAtMs !== null
-                          ? "Senior review requested; acknowledgment pending."
-                          : "Senior review has not been requested."}
-                    </p>
-                    {state.senior.requestedAtMs === null && (
-                      <button
-                        disabled={busy || syncLost}
-                        onClick={() => void send({ type: "request_senior" })}
-                      >
-                        Request senior review
-                      </button>
-                    )}
-                  </>
+                  <CallStation state={state} busy={busy || syncLost} send={send} />
                 )}
+                {state.lastCommandResult && <p className={`command-status ${state.lastCommandResult.status}`} aria-live="polite">{state.lastCommandResult.message}</p>}
               </section>
             </aside>
           </div>
@@ -481,6 +389,8 @@ function Bedside() {
               {" · server revision "}
               {state.revision}
             </span>
+            <span>{state.lifecycle === "ended" ? "Run finished · evidence frozen" : `Lifecycle: ${state.lifecycle}`}</span>
+            <a className="export-link" href={`/api/runs/${state.id}/export`} download>Export run JSON</a>
           </footer>
         </>
       ) : (

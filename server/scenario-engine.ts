@@ -1590,6 +1590,14 @@ function commandMessage(command: ScenarioCommand) {
       return "Fluid delivery started.";
     case "stop_fluid":
       return "Fluid delivery stopped.";
+    case "request_case_item":
+      return `${command.name} is outside this authored case; no finding or treatment was invented.`;
+    case "prepare_medication":
+      return "Medication prepared but not administered.";
+    case "record_handoff":
+      return "Handoff recorded separately from the senior request.";
+    case "finish":
+      return "Run finished and evidence frozen.";
     default:
       return "Command accepted.";
   }

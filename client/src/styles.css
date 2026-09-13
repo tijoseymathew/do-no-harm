@@ -442,6 +442,9 @@ aside {
   font-size: 0.77rem;
   line-height: 1.5;
   min-height: 245px;
+  max-height: 340px;
+  overflow: auto;
+  scrollbar-color: #48636e #0d2029;
 }
 .equipment h3 {
   margin: 8px 0;
@@ -476,7 +479,8 @@ form label {
   font-size: 0.7rem;
 }
 input,
-select {
+select,
+textarea {
   font: inherit;
   color: #edf4f5;
   background: #071820;
@@ -486,10 +490,16 @@ select {
   min-width: 0;
 }
 form input,
-form select {
+form select,
+form textarea {
   display: block;
   width: 100%;
   margin: 4px 0 10px;
+}
+textarea {
+  resize: vertical;
+  width: 100%;
+  line-height: 1.45;
 }
 .order-fields {
   display: grid;
@@ -503,6 +513,156 @@ form select {
 .actions {
   display: flex;
   gap: 8px;
+}
+.finish {
+  background: #f0b868;
+  color: #241506;
+}
+.command-status {
+  position: sticky;
+  bottom: -1px;
+  margin: 10px -4px -4px !important;
+  padding: 8px 10px;
+  border-radius: 5px;
+  background: #18343e;
+  border: 1px solid #41616c;
+  font-size: 0.68rem;
+}
+.command-status.rejected {
+  background: #573029;
+}
+.control-group {
+  border-top: 1px solid #2a414c;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.action-grid button {
+  text-align: left;
+}
+.finding-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.finding-list article,
+.investigation-list article {
+  border: 1px solid #2d4b57;
+  border-radius: 6px;
+  background: #0a1a21;
+  padding: 9px 10px;
+}
+.finding-list strong,
+.finding-list span,
+.finding-list small {
+  display: block;
+}
+.finding-list span {
+  margin: 3px 0;
+}
+.finding-list small {
+  color: #8fa9b1;
+}
+.check-grid {
+  display: grid;
+  gap: 5px;
+  margin: 2px 0 10px;
+}
+.check-grid input {
+  width: auto;
+  display: inline;
+  margin: 0;
+}
+.status-history,
+.unsupported-request {
+  margin-top: 12px;
+  border-top: 1px solid #2a414c;
+  padding-top: 9px;
+}
+.status-history summary {
+  cursor: pointer;
+  color: #b8d3d9;
+  font-weight: 700;
+}
+.status-history ol {
+  padding-left: 22px;
+}
+.status-history li {
+  margin: 6px 0;
+}
+.investigation-list {
+  display: grid;
+  gap: 8px;
+}
+.investigation-list article > header {
+  max-width: none;
+  margin: 0 0 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.state-pill {
+  border: 1px solid #526873;
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: #a8bdc3;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+}
+.state-pill.available,
+.state-pill.displayed,
+.state-pill.authorized {
+  border-color: #4a8a79;
+  color: #8fe1cb;
+}
+.result-value {
+  font: 700 0.85rem ui-monospace, monospace;
+  color: #dcf3ed;
+}
+.report-copy,
+.saved-copy {
+  padding: 8px;
+  border-left: 2px solid #65b8a8;
+  background: #112a31;
+}
+.ecg-viewer {
+  margin: 9px 0;
+}
+.ecg-viewer > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ecg-viewer input {
+  padding: 0;
+  width: 130px;
+}
+.ecg-scroll {
+  overflow: auto;
+  border: 1px solid #6c7779;
+  margin-top: 6px;
+  background: #fff9f3;
+}
+.ecg-scroll svg {
+  min-width: 620px;
+  display: block;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  fill: #202629;
+}
+.authorization {
+  color: #d9ca9e;
+}
+.export-link {
+  border: 1px solid #49636e;
+  border-radius: 5px;
+  padding: 5px 8px;
+  text-decoration: none;
 }
 .receipt {
   padding: 10px 12px;
@@ -594,6 +754,7 @@ footer {
   .equipment {
     font-size: 0.72rem;
     line-height: 1.35;
+    max-height: 235px;
   }
   .equipment h3 {
     font-size: 0.9rem;
@@ -646,7 +807,7 @@ footer {
     margin-bottom: 12px;
   }
   .room {
-    min-height: 470px;
+    min-height: 440px;
   }
   .monitor,
   .equipment {
