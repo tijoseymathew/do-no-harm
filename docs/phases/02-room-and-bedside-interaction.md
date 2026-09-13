@@ -1,6 +1,6 @@
 # Phase 02 — Visual room and bedside interaction slice
 
-Status: Blocked — implementation and Phase 02 verification pass; Phase 01's browser audio gate remains pending.
+Status: Complete.
 
 Dependencies: Phase 01.
 
@@ -41,7 +41,7 @@ Record verification commands or manual steps, actual results, and artifact locat
 - Results / artifact locations: [1440×900 review](../evidence/phase-02/room-1440x900.png), [1280×720 review](../evidence/phase-02/room-1280x720.png), [1440×900 receipt](../evidence/phase-02/accepted-1440x900.png), [1280×720 receipt](../evidence/phase-02/accepted-1280x720.png), [automated interaction recording](../evidence/phase-02/interaction-1280x720.webm), and server receipts for [1440](../evidence/phase-02/receipt-1440.json) / [1280](../evidence/phase-02/receipt-1280.json). These are synthetic fixture interactions, not clinical validation or a real conversation demonstration.
 - V02/V03 details: disconnected ECG/SpO₂ return null measurements and labeled unavailable strips; connected HR is the same 104 beats/min pulse source used for the traces. A rhythm test verifies seven QRS peaks across a four-second strip. BP age advances from 0 to 30 seconds, resets on repeat measurement, and the previous reading remains labeled after cuff disconnection.
 - V04/V05/V06 details: reviewing and canceling issue no administration request; explicit Administer returns exactly one receipt and turns the trolley tray green. Server tests reject malformed input, stale commands, duplicate administration and retry-key reuse with a different payload. Keyboard-only sensor/medication flows pass with normal and reduced motion, sound muted. Blocking WebGL context creation preserves the functional monitor and administration flow with an explicit reduced-graphics message. A lost-acknowledgment test verifies pause and recovery of the already accepted receipt without another administration.
-- Remaining blockers: Phase 01 V04 still requires human-observed microphone input, a real spoken response and interruption at `/probe`; Phase 02 cannot be marked Complete until that dependency closes. No Phase 02 gate remains pending. The Vite build reports the expected large Three.js-containing client chunk (~872 kB uncompressed); hardware performance and clinical behavior are not established by these checks.
+- Remaining blockers: None. Phase 01 V04 was independently verified by the user on 13 September 2026, closing this phase's final dependency. The Vite build reports the expected large Three.js-containing client chunk (~872 kB uncompressed); hardware performance and clinical behavior are not established by these checks.
 
 ## Fixture boundary and handoff
 

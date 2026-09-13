@@ -1,6 +1,6 @@
 # Phase 03 — Deterministic scenario engine and treatment rules
 
-Status: Blocked — implementation and software verification pass; qualified clinical review and the Phase 01/02 dependency chain remain pending.
+Status: Blocked — implementation and software verification pass; qualified clinical review remains pending.
 
 Dependencies: Phase 01; integrate with the Phase 02 room before closing this phase.
 
@@ -45,7 +45,7 @@ Record verification commands or manual steps, actual results, and artifact locat
 - V03/V04: A paused run rejects time advancement and leaves simulation time, pending effects, monitor sources, and delivered volume frozen; resume reaches the same scheduled effect and volume. Tests cover `0.3 g → 300 mg`, null/unsupported units, nonpositive values, exact-dose rules, cumulative limits, repeat intervals, IV access, and senior authorization.
 - V05/V06/V07: Engine and concurrent API tests prove retry/double-click deduplication, command serialization, stale-revision rejection evidence, and no unauthorized treatment/device mutation. Connected HR/SpO₂ follow underlying deterioration; disconnected readings remain unavailable; the original BP stays timestamped until a new measurement.
 - V08 / review result: The case, progression, aspirin effect marker, and IV-fluid rules all record source title/URL, source revision, and `draft_unreviewed`. The server therefore marks every run `development_fixture`, and the browser labels this status. This verifies review metadata and containment only; it is not clinical review.
-- Remaining blockers: An appropriately qualified reviewer must complete [`docs/clinical-review-checklist.md`](../clinical-review-checklist.md), name the local protocol/revision, resolve the listed clinical parameters, and sign the complete case before the final implementation item or clinical acceptance can pass. Phase 01 V04 still needs the human-observed live microphone/response/interruption check; Phase 02 is consequently blocked on that dependency, so Phase 03 cannot be marked Complete even though its own software and room-integration checks pass. The Vite build retains the expected Three.js chunk-size warning (~875 kB uncompressed); this did not fail the build or browser checks.
+- Remaining blockers: An appropriately qualified reviewer must complete [`docs/clinical-review-checklist.md`](../clinical-review-checklist.md), name the local protocol/revision, resolve the listed clinical parameters, and sign the complete case before the final implementation item or clinical acceptance can pass. Phase 01's Live audio gate and the Phase 02 dependency are complete. The Vite build retains the expected Three.js chunk-size warning (~875 kB uncompressed); this did not fail the build or browser checks.
 
 ## Engine boundary and handoff
 
