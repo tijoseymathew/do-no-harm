@@ -161,7 +161,7 @@ export class OpenAIExaminerProvider implements ExaminerProvider {
         get_evidence: async (arguments_) => {
           const result = input.tools.getEvidence(arguments_);
           evidenceReturned = Array.isArray(result) ? result.length : 0;
-          return result;
+          return { events: result };
         },
         submit_examiner_output: async (arguments_) => {
           try {

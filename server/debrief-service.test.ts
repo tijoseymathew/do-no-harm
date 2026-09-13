@@ -47,6 +47,7 @@ describe("visual debrief and evidence cutoff", () => {
     const throughCutoff = store.events(run.id)!.filter(({ sequence }) => sequence <= result.evidenceCutoffSequence);
     expect(throughCutoff.map(({ type }) => type)).toEqual(expect.arrayContaining(["assessment.performed", "note.saved", "transcript.recorded", "session.ended"]));
     expect(throughCutoff.at(-1)).toMatchObject({ type: "session.ended", sequence: result.evidenceCutoffSequence });
+    expect(result.evidence.map(({ id }) => id)).toEqual(throughCutoff.map(({ id }) => id));
     expect(result.feedbackRevisions[0]?.output.criteria).toHaveLength(6);
   });
 

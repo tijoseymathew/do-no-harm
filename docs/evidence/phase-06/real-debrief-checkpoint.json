@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-09-13T13:12:41.432Z",
+  "startedAt": "2026-09-13T13:11:44.445Z",
+  "provider": "OpenAI Agents API",
+  "mode": "real",
+  "mocked": false,
+  "model": "gpt-6-astra",
+  "status": "ready",
+  "cutoffName": "finish-v1",
+  "evidenceCutoffSequence": 10,
+  "criteria": [
+    {
+      "criterion": "assessment",
+      "rating": "demonstrated",
+      "citationCount": 2
+    },
+    {
+      "criterion": "interpretation",
+      "rating": "insufficient_evidence",
+      "citationCount": 0
+    },
+    {
+      "criterion": "intervention_selection_dosing",
+      "rating": "insufficient_evidence",
+      "citationCount": 0
+    },
+    {
+      "criterion": "reassessment",
+      "rating": "insufficient_evidence",
+      "citationCount": 0
+    },
+    {
+      "criterion": "escalation",
+      "rating": "demonstrated",
+      "citationCount": 1
+    },
+    {
+      "criterion": "communication_documentation",
+      "rating": "needs_work",
+      "citationCount": 3
+    }
+  ],
+  "allCitationsResolved": true
+}

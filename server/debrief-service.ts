@@ -315,14 +315,13 @@ function evidenceCards(events: RunEvent[], state: ScenarioSnapshot): EvidenceCar
     events.map(({ payload }) => record(payload).correctsEventId).filter((id): id is string => typeof id === "string"),
   );
   return events.flatMap((event) => {
-    let kind: EvidenceCard["kind"] | null = null;
+    let kind: EvidenceCard["kind"] = "action";
     if (event.type === "transcript.recorded") kind = "transcript_segment";
     else if (event.type === "note.saved") kind = "note_revision";
     else if (event.type === "medication.administered") kind = "medication_receipt";
     else if (["assessment.performed", "observation.published"].includes(event.type)) kind = "finding";
     else if (["investigation.displayed", "investigation.interpreted"].includes(event.type)) kind = "investigation";
     else if (actionFor(event).length || event.type === "handoff.recorded") kind = "action";
-    if (!kind) return [];
     const payload = record(event.payload);
     let detail = JSON.stringify(payload, null, 2);
     if (kind === "medication_receipt") {
