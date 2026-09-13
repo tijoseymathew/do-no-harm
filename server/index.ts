@@ -13,7 +13,6 @@ const app = createApp(config);
 const clientDirectory = join(process.cwd(), "dist", "client");
 
 if (existsSync(clientDirectory)) {
-  app.get("/_worker.js", (_request, response) => response.sendStatus(404));
   app.use(express.static(clientDirectory));
   app.get("*path", (_request, response) => response.sendFile(join(clientDirectory, "index.html")));
 }

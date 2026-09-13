@@ -1,0 +1,11 @@
+{
+  "compatibility_date": "2026-09-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "index.js",
+  "assets": {
+    "directory": "../client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "no_bundle": true
+}
