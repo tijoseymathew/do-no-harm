@@ -1,0 +1,982 @@
+{
+  "generatedBy": "npm run evidence:phase03",
+  "caseVersion": "1.0.0-draft.2",
+  "deterministicWallTime": "2026-09-13T00:00:00.000Z",
+  "paths": {
+    "timelyCare": {
+      "state": {
+        "revision": 4,
+        "simulationTimeMs": 60000,
+        "physiology": {
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88,
+          "painScore": 8,
+          "presentation": "Alert, anxious, pale and clammy"
+        },
+        "measurements": {
+          "hr": null,
+          "spo2": null,
+          "rr": 20,
+          "bp": null
+        },
+        "devices": {
+          "ivAccess": {
+            "established": false
+          },
+          "fluidPump": {
+            "status": "idle",
+            "fluidId": null,
+            "prescribedVolumeMl": 0,
+            "rateMlPerHour": 0,
+            "deliveredVolumeMl": 0,
+            "startedAtMs": null
+          }
+        },
+        "treatments": {
+          "prerequisites": {
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "receipts": [
+            {
+              "id": "timely_0004",
+              "medicationId": "aspirin_300mg_tablet",
+              "dose": 300,
+              "unit": "mg",
+              "route": "oral",
+              "normalizedQuantity": 300,
+              "normalizedUnit": "mg",
+              "cumulativeQuantity": 300,
+              "simulationTimeMs": 0,
+              "actor": "student",
+              "status": "administered",
+              "mode": "development_fixture",
+              "effectDueAtMs": 60000
+            }
+          ],
+          "cumulativeDoses": {
+            "aspirin_300mg_tablet": {
+              "quantity": 300,
+              "unit": "mg"
+            }
+          },
+          "pendingEffects": [],
+          "appliedEffects": [
+            {
+              "medicationId": "aspirin_300mg_tablet",
+              "appliedAtMs": 60000,
+              "rule": "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation",
+              "causedBy": "timely_0004"
+            }
+          ]
+        },
+        "senior": {
+          "requestedAtMs": 0,
+          "acknowledgedAtMs": 15000
+        },
+        "branch": {
+          "kind": "timely_care",
+          "enteredAtMs": 0,
+          "status": "completed",
+          "reason": "Authored timely-care conditions met",
+          "timeoutAtMs": 180000
+        },
+        "branchHistory": [
+          {
+            "kind": "timely_care",
+            "enteredAtMs": 0,
+            "exitedAtMs": 60000,
+            "outcome": "effect recorded and senior review acknowledged"
+          }
+        ]
+      },
+      "events": [
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0001",
+          "runId": "run_timely",
+          "sequence": 1,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "system",
+          "type": "session.started",
+          "payload": {
+            "mode": "development_fixture",
+            "reviewStatus": "draft_unreviewed"
+          },
+          "stateVersion": 0,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0002",
+          "runId": "run_timely",
+          "sequence": 2,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "assessment.performed",
+          "payload": {
+            "assessment": "medication_prerequisites",
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "stateVersion": 1,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "timely_command_1"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0003",
+          "runId": "run_timely",
+          "sequence": 3,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "medication.attempted",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "attempted"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "timely_command_2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0004",
+          "runId": "run_timely",
+          "sequence": 4,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "medication.administered",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "administered"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "timely_0003",
+          "idempotencyKey": "timely_command_2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0006",
+          "runId": "run_timely",
+          "sequence": 5,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "engine",
+          "type": "branch.entered",
+          "payload": {
+            "kind": "timely_care",
+            "reason": "Authored timely-care conditions met",
+            "timeoutAtMs": 180000
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "timely_0004"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0007",
+          "runId": "run_timely",
+          "sequence": 6,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "senior.requested",
+          "payload": {
+            "acknowledgementDueAtMs": 15000
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "timely_command_3"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0008",
+          "runId": "run_timely",
+          "sequence": 7,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "presenter",
+          "type": "presenter.intervention",
+          "payload": {
+            "kind": "advance_time",
+            "deltaMs": 60000,
+            "timeScale": 1
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "timely_command_4"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0009",
+          "runId": "run_timely",
+          "sequence": 8,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 15000,
+          "actor": "nurse",
+          "type": "senior.acknowledged",
+          "payload": {
+            "disposition": "Senior review acknowledged; continue monitored care."
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "timely_0007"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0010",
+          "runId": "run_timely",
+          "sequence": 9,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 60000,
+          "actor": "engine",
+          "type": "treatment.effect_applied",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "effectRule": "At 60 seconds, record the authored antiplatelet action as active; do not change heart rate, blood pressure, pain score, or oxygen saturation"
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "timely_0004"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "timely_0011",
+          "runId": "run_timely",
+          "sequence": 10,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 60000,
+          "actor": "engine",
+          "type": "branch.exited",
+          "payload": {
+            "kind": "timely_care",
+            "outcome": "effect recorded and senior review acknowledged",
+            "status": "completed"
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2"
+        }
+      ]
+    },
+    "delayedCare": {
+      "state": {
+        "revision": 6,
+        "simulationTimeMs": 135000,
+        "physiology": {
+          "heartRate": 118,
+          "spo2": 93,
+          "respiratoryRate": 24,
+          "systolicBp": 112,
+          "diastolicBp": 72,
+          "painScore": 9,
+          "presentation": "More distressed, pale and clammy"
+        },
+        "measurements": {
+          "hr": 118,
+          "spo2": null,
+          "rr": 24,
+          "bp": null
+        },
+        "devices": {
+          "ivAccess": {
+            "established": false
+          },
+          "fluidPump": {
+            "status": "idle",
+            "fluidId": null,
+            "prescribedVolumeMl": 0,
+            "rateMlPerHour": 0,
+            "deliveredVolumeMl": 0,
+            "startedAtMs": null
+          }
+        },
+        "treatments": {
+          "prerequisites": {
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "receipts": [
+            {
+              "id": "delayed_0009",
+              "medicationId": "aspirin_300mg_tablet",
+              "dose": 300,
+              "unit": "mg",
+              "route": "oral",
+              "normalizedQuantity": 300,
+              "normalizedUnit": "mg",
+              "cumulativeQuantity": 300,
+              "simulationTimeMs": 120000,
+              "actor": "student",
+              "status": "administered",
+              "mode": "development_fixture",
+              "effectDueAtMs": 180000
+            }
+          ],
+          "cumulativeDoses": {
+            "aspirin_300mg_tablet": {
+              "quantity": 300,
+              "unit": "mg"
+            }
+          },
+          "pendingEffects": [
+            {
+              "id": "delayed_0010",
+              "medicationId": "aspirin_300mg_tablet",
+              "dueAtMs": 180000,
+              "causedBy": "delayed_0009"
+            }
+          ],
+          "appliedEffects": []
+        },
+        "senior": {
+          "requestedAtMs": 120000,
+          "acknowledgedAtMs": 135000
+        },
+        "branch": {
+          "kind": "delayed_care",
+          "enteredAtMs": 120000,
+          "status": "completed",
+          "reason": "Authored delayed-care conditions met",
+          "timeoutAtMs": 300000
+        },
+        "branchHistory": [
+          {
+            "kind": "arrival",
+            "enteredAtMs": 0,
+            "exitedAtMs": 120000,
+            "outcome": "delayed-care threshold reached"
+          },
+          {
+            "kind": "delayed_care",
+            "enteredAtMs": 120000,
+            "exitedAtMs": 135000,
+            "outcome": "treatment accepted and senior review acknowledged"
+          }
+        ]
+      },
+      "events": [
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0001",
+          "runId": "run_delayed",
+          "sequence": 1,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "system",
+          "type": "session.started",
+          "payload": {
+            "mode": "development_fixture",
+            "reviewStatus": "draft_unreviewed"
+          },
+          "stateVersion": 0,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0002",
+          "runId": "run_delayed",
+          "sequence": 2,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "equipment.connected",
+          "payload": {
+            "equipment": "ecg",
+            "connected": true
+          },
+          "stateVersion": 1,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_1"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0003",
+          "runId": "run_delayed",
+          "sequence": 3,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "presenter",
+          "type": "presenter.intervention",
+          "payload": {
+            "kind": "advance_time",
+            "deltaMs": 120000,
+            "timeScale": 1
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0004",
+          "runId": "run_delayed",
+          "sequence": 4,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "engine",
+          "type": "branch.exited",
+          "payload": {
+            "kind": "arrival",
+            "outcome": "delayed-care threshold reached",
+            "status": "completed"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0005",
+          "runId": "run_delayed",
+          "sequence": 5,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "engine",
+          "type": "branch.entered",
+          "payload": {
+            "kind": "delayed_care",
+            "reason": "Authored delayed-care conditions met",
+            "timeoutAtMs": 300000
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0006",
+          "runId": "run_delayed",
+          "sequence": 6,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "engine",
+          "type": "observation.published",
+          "payload": {
+            "reason": "delayed_care",
+            "observations": {
+              "heartRate": 118,
+              "spo2": 93,
+              "respiratoryRate": 24,
+              "systolicBp": 112,
+              "diastolicBp": 72,
+              "painScore": 9,
+              "presentation": "More distressed, pale and clammy"
+            }
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0007",
+          "runId": "run_delayed",
+          "sequence": 7,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "student",
+          "type": "assessment.performed",
+          "payload": {
+            "assessment": "medication_prerequisites",
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_3"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0008",
+          "runId": "run_delayed",
+          "sequence": 8,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "student",
+          "type": "medication.attempted",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "attempted"
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_4"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0009",
+          "runId": "run_delayed",
+          "sequence": 9,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "student",
+          "type": "medication.administered",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "administered"
+          },
+          "stateVersion": 4,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "delayed_0008",
+          "idempotencyKey": "delayed_command_4"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0011",
+          "runId": "run_delayed",
+          "sequence": 10,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "student",
+          "type": "senior.requested",
+          "payload": {
+            "acknowledgementDueAtMs": 135000
+          },
+          "stateVersion": 5,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_5"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0012",
+          "runId": "run_delayed",
+          "sequence": 11,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 120000,
+          "actor": "presenter",
+          "type": "presenter.intervention",
+          "payload": {
+            "kind": "advance_time",
+            "deltaMs": 15000,
+            "timeScale": 1
+          },
+          "stateVersion": 6,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "delayed_command_6"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0013",
+          "runId": "run_delayed",
+          "sequence": 12,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 135000,
+          "actor": "nurse",
+          "type": "senior.acknowledged",
+          "payload": {
+            "disposition": "Senior review acknowledged; continue monitored care."
+          },
+          "stateVersion": 6,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "delayed_0011"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "delayed_0014",
+          "runId": "run_delayed",
+          "sequence": 13,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 135000,
+          "actor": "engine",
+          "type": "branch.exited",
+          "payload": {
+            "kind": "delayed_care",
+            "outcome": "treatment accepted and senior review acknowledged",
+            "status": "completed"
+          },
+          "stateVersion": 6,
+          "caseVersion": "1.0.0-draft.2"
+        }
+      ]
+    },
+    "inappropriateAttempt": {
+      "state": {
+        "revision": 3,
+        "simulationTimeMs": 0,
+        "physiology": {
+          "heartRate": 104,
+          "spo2": 96,
+          "respiratoryRate": 20,
+          "systolicBp": 146,
+          "diastolicBp": 88,
+          "painScore": 8,
+          "presentation": "Alert, anxious, pale and clammy"
+        },
+        "measurements": {
+          "hr": null,
+          "spo2": null,
+          "rr": 20,
+          "bp": null
+        },
+        "devices": {
+          "ivAccess": {
+            "established": false
+          },
+          "fluidPump": {
+            "status": "idle",
+            "fluidId": null,
+            "prescribedVolumeMl": 0,
+            "rateMlPerHour": 0,
+            "deliveredVolumeMl": 0,
+            "startedAtMs": null
+          }
+        },
+        "treatments": {
+          "prerequisites": {
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "receipts": [
+            {
+              "id": "inappropriate_0008",
+              "medicationId": "aspirin_300mg_tablet",
+              "dose": 300,
+              "unit": "mg",
+              "route": "oral",
+              "normalizedQuantity": 300,
+              "normalizedUnit": "mg",
+              "cumulativeQuantity": 300,
+              "simulationTimeMs": 0,
+              "actor": "student",
+              "status": "administered",
+              "mode": "development_fixture",
+              "effectDueAtMs": 60000
+            }
+          ],
+          "cumulativeDoses": {
+            "aspirin_300mg_tablet": {
+              "quantity": 300,
+              "unit": "mg"
+            }
+          },
+          "pendingEffects": [
+            {
+              "id": "inappropriate_0009",
+              "medicationId": "aspirin_300mg_tablet",
+              "dueAtMs": 60000,
+              "causedBy": "inappropriate_0008"
+            }
+          ],
+          "appliedEffects": []
+        },
+        "senior": {
+          "requestedAtMs": null,
+          "acknowledgedAtMs": null
+        },
+        "branch": {
+          "kind": "timely_care",
+          "enteredAtMs": 0,
+          "status": "active",
+          "reason": "Authored timely-care conditions met",
+          "timeoutAtMs": 180000
+        },
+        "branchHistory": [
+          {
+            "kind": "arrival",
+            "enteredAtMs": 0,
+            "exitedAtMs": 0,
+            "outcome": "blocked medication attempt"
+          },
+          {
+            "kind": "inappropriate_attempt",
+            "enteredAtMs": 0,
+            "exitedAtMs": 0,
+            "outcome": "corrected administration accepted"
+          }
+        ]
+      },
+      "events": [
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0001",
+          "runId": "run_inappropriate",
+          "sequence": 1,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "system",
+          "type": "session.started",
+          "payload": {
+            "mode": "development_fixture",
+            "reviewStatus": "draft_unreviewed"
+          },
+          "stateVersion": 0,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0002",
+          "runId": "run_inappropriate",
+          "sequence": 2,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "assessment.performed",
+          "payload": {
+            "assessment": "medication_prerequisites",
+            "allergyHistoryReviewed": true,
+            "administrationHistoryReviewed": true
+          },
+          "stateVersion": 1,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "inappropriate_command_1"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0003",
+          "runId": "run_inappropriate",
+          "sequence": 3,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "medication.attempted",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 600,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 600,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "rejected",
+              "reasons": [
+                "Dose must normalize to 300 mg.",
+                "Cumulative dose would exceed 300 mg."
+              ]
+            },
+            "administrationStatus": "attempted"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "inappropriate_command_2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0004",
+          "runId": "run_inappropriate",
+          "sequence": 4,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "system",
+          "type": "medication.blocked",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 600,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 600,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "rejected",
+              "reasons": [
+                "Dose must normalize to 300 mg.",
+                "Cumulative dose would exceed 300 mg."
+              ]
+            },
+            "administrationStatus": "blocked"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "inappropriate_0003",
+          "idempotencyKey": "inappropriate_command_2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0005",
+          "runId": "run_inappropriate",
+          "sequence": 5,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "engine",
+          "type": "branch.exited",
+          "payload": {
+            "kind": "arrival",
+            "outcome": "blocked medication attempt",
+            "status": "completed"
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0006",
+          "runId": "run_inappropriate",
+          "sequence": 6,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "engine",
+          "type": "branch.entered",
+          "payload": {
+            "kind": "inappropriate_attempt",
+            "reason": "Dose must normalize to 300 mg. Cumulative dose would exceed 300 mg.",
+            "timeoutAtMs": 60000
+          },
+          "stateVersion": 2,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "inappropriate_0003"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0007",
+          "runId": "run_inappropriate",
+          "sequence": 7,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "medication.attempted",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "attempted"
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2",
+          "idempotencyKey": "inappropriate_command_3"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0008",
+          "runId": "run_inappropriate",
+          "sequence": 8,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "student",
+          "type": "medication.administered",
+          "payload": {
+            "medicationId": "aspirin_300mg_tablet",
+            "entered": {
+              "quantity": 300,
+              "unit": "mg",
+              "route": "oral"
+            },
+            "normalized": {
+              "quantity": 300,
+              "unit": "mg"
+            },
+            "validation": {
+              "status": "accepted",
+              "reasons": []
+            },
+            "administrationStatus": "administered"
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "inappropriate_0007",
+          "idempotencyKey": "inappropriate_command_3"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0010",
+          "runId": "run_inappropriate",
+          "sequence": 9,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "engine",
+          "type": "branch.exited",
+          "payload": {
+            "kind": "inappropriate_attempt",
+            "outcome": "corrected administration accepted",
+            "status": "completed"
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2"
+        },
+        {
+          "contractVersion": "1.0.0",
+          "id": "inappropriate_0011",
+          "runId": "run_inappropriate",
+          "sequence": 10,
+          "wallTime": "2026-09-13T00:00:00.000Z",
+          "simulationTime": 0,
+          "actor": "engine",
+          "type": "branch.entered",
+          "payload": {
+            "kind": "timely_care",
+            "reason": "Authored timely-care conditions met",
+            "timeoutAtMs": 180000
+          },
+          "stateVersion": 3,
+          "caseVersion": "1.0.0-draft.2",
+          "causedBy": "inappropriate_0008"
+        }
+      ]
+    }
+  }
+}

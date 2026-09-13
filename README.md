@@ -4,9 +4,11 @@ An interactive emergency-room simulation for medical students: assess a fictiona
 
 Phase 01 provides the application skeleton, versioned case contracts, an unreviewed fictional chest-pain draft, and independently runnable real-provider probes.
 
-Phase 02 adds a Three.js emergency bay at `/`, accessible bedside controls, fixture-driven ECG/pleth and sensor measurements, timestamped BP, and an explicit review/administer medication flow with server receipts. The original voice connection probe is at `/probe`.
+Phase 03 adds a deterministic server scenario engine behind the Three.js emergency bay at `/`. The engine owns simulation time, physiology, connected and intermittent observations, treatment state, bounded scenario branches, state revisions, administration receipts, and append-only events. The original voice connection probe remains at `/probe`.
 
-The bedside requires no provider credentials. It is an interaction fixture, not a clinical simulation engine: medication input is checked for format and supported unit/route only, one administration is allowed per fixture session, and medication does not change physiology. Oxygen/IV treatment, diagnostic ECG/results, notes, senior calls, alarms and trends are labeled unavailable. Reload creates a fresh in-memory fixture; restarting the server clears all fixtures. The fixture clock advances through server commands and pauses on failed synchronization; it is not a durable scenario clock.
+The bedside requires no provider credentials. Each reload creates an isolated in-memory run through `POST /api/runs`; commands carry the current revision and an idempotency key. The server serializes mutations, rejects stale commands, and persists replay records under ignored local `runs/` files. Pause stops simulation time, pending effects, waveforms, and fluid delivery together. The room exposes monitor connections, stale BP behavior, validated aspirin administration, IV-fluid accounting, and senior acknowledgment. Diagnostic ECG/results, oxygen settings, notes, and handoff remain later-phase work.
+
+The case timing, deterioration, aspirin effect marker, and fluid limits are still unreviewed development fixtures. They are visibly labeled and cannot establish clinical acceptance. The current rule review record is in `docs/evidence/phase-03/clinical-rule-review.json`.
 
 - [Product specification](specs.md): experience, room layout, clinical interactions, architecture, and demo requirements.
 - [Implementation phases](docs/phases/README.md): seven verifiable phases with dependencies and acceptance checklists.
@@ -36,7 +38,13 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The browser suite starts the built server on port 3102, checks the room at 1440×900 and 1280×720, exercises keyboard and WebGL fallback flows, and regenerates screenshots, an automated interaction recording, and fixture receipts in `docs/evidence/phase-02/`. If Chromium is already installed elsewhere, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to its executable path. Browser traces and incidental test output go to ignored `test-results/`.
+The browser suite starts the built server on port 3102, checks the room at 1440×900 and 1280×720, exercises keyboard, reconnect, and WebGL fallback flows, and regenerates Phase 03 screenshots, an interaction recording, and engine receipts in `docs/evidence/phase-03/`. If Chromium is already installed elsewhere, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to its executable path. Browser traces and incidental test output go to ignored `test-results/`.
+
+Regenerate deterministic branch logs and the machine-readable rule-review status with:
+
+```bash
+npm run evidence:phase03
+```
 
 Copy `.env.example` to `.env` and set `OPENAI_API_KEY` only when running real probes. Missing configuration returns an actionable HTTP 503 or command-line error. Never put this key in a `VITE_` variable; Vite exposes those variables to browser code.
 
@@ -68,4 +76,4 @@ With `OPENAI_API_KEY` configured on the server:
 npm run probe:examiner
 ```
 
-This starts one real managed Agents API session, handles its application function request, and writes a sanitized receipt under `docs/evidence/`. For the Live proof, start both development processes, open `/probe`, grant microphone permission, and follow the interruption check shown beside the controls. The bedside fixture cannot satisfy either real-provider gate.
+This starts one real managed Agents API session, handles its application function request, and writes a sanitized receipt under `docs/evidence/`. For the Live proof, start both development processes, open `/probe`, grant microphone permission, and follow the interruption check shown beside the controls. The deterministic bedside does not itself satisfy either real-provider gate.
