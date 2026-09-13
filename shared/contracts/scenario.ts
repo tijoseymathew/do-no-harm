@@ -103,7 +103,18 @@ export const ScenarioCommandSchema = z.discriminatedUnion("type", [
     .strict(),
   z.object({ type: z.literal("stop_fluid") }).strict(),
   z
-    .object({ type: z.literal("prepare_medication"), order: MedicationOrderInputSchema })
+    .object({
+      type: z.literal("prepare_medication"),
+      order: MedicationOrderInputSchema,
+      source: z.enum(["voice", "text"]).optional(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("update_prepared_medication"),
+      preparedOrderId: z.string().min(1),
+      order: MedicationOrderInputSchema,
+    })
     .strict(),
   z
     .object({ type: z.literal("cancel_medication"), preparedOrderId: z.string().min(1) })
@@ -256,6 +267,7 @@ export interface ScenarioState {
     preparedOrders: Array<{
       id: string;
       order: MedicationOrderInput;
+      source: "ui" | "voice" | "text";
       preparedAtMs: number;
       status: "prepared" | "canceled" | "blocked" | "administered";
       statusAtMs: number;

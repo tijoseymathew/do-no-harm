@@ -1,7 +1,8 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
+import type { RunEvent } from "../shared/contracts/common.js";
 import type { CasePack } from "../shared/contracts/server.js";
-import type { ScenarioSnapshot } from "../shared/contracts/scenario.js";
+import type { ScenarioCommand, ScenarioSnapshot } from "../shared/contracts/scenario.js";
 import {
   ScenarioEngine,
   type CommandEnvelope,
@@ -78,6 +79,35 @@ export class ScenarioStore {
     run.queue = operation.catch(() => undefined);
     await operation;
     return result!;
+  }
+
+  async executeCurrent(id: string, command: ScenarioCommand): Promise<CommandResult | null> {
+    const state = this.get(id);
+    if (!state) return null;
+    return this.execute(id, {
+      revision: state.revision,
+      idempotencyKey: crypto.randomUUID(),
+      command,
+    });
+  }
+
+  async recordEvidence(
+    id: string,
+    actor: RunEvent["actor"],
+    type: RunEvent["type"],
+    payload: RunEvent["payload"],
+    metadata: { causedBy?: string } = {},
+  ): Promise<RunEvent | null> {
+    const run = this.runs.get(id);
+    if (!run) return null;
+    let event: RunEvent | undefined;
+    const operation = run.queue.then(async () => {
+      event = run.engine.recordEvidence(actor, type, payload, metadata);
+      await this.append(id, [{ recordType: "event", event }]);
+    });
+    run.queue = operation.catch(() => undefined);
+    await operation;
+    return event!;
   }
 
   private async append(id: string, records: unknown[]) {

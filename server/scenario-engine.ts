@@ -150,6 +150,15 @@ export class ScenarioEngine {
     return structuredClone(this.events);
   }
 
+  recordEvidence(
+    actor: RunEvent["actor"],
+    type: RunEvent["type"],
+    payload: RunEvent["payload"],
+    metadata: { causedBy?: string } = {},
+  ): RunEvent {
+    return structuredClone(this.emit(actor, type, payload, metadata));
+  }
+
   execute(envelope: CommandEnvelope): CommandResult {
     const fingerprint = JSON.stringify(envelope.command);
     const stored = this.requests.get(envelope.idempotencyKey);
@@ -404,7 +413,19 @@ export class ScenarioEngine {
         );
         return null;
       case "prepare_medication":
-        return this.prepareMedication(command.order, idempotencyKey, stateVersion);
+        return this.prepareMedication(
+          command.order,
+          command.source ?? "ui",
+          idempotencyKey,
+          stateVersion,
+        );
+      case "update_prepared_medication":
+        return this.updatePreparedMedication(
+          command.preparedOrderId,
+          command.order,
+          idempotencyKey,
+          stateVersion,
+        );
       case "cancel_medication":
         return this.cancelMedication(
           command.preparedOrderId,
@@ -751,15 +772,23 @@ export class ScenarioEngine {
 
   private prepareMedication(
     order: Extract<ScenarioCommand, { type: "prepare_medication" }>["order"],
+    source: "ui" | "voice" | "text",
     idempotencyKey: string,
     stateVersion: number,
   ): string | null {
     const rule = this.casePack.medicationRules.find(({ id }) => id === order.drugId);
     const reasons = validateOrderShape(rule, order);
-    if (reasons.length || !rule)
+    if ((reasons.length && source === "ui") || !rule)
       return this.commandRejected(
         reasons.join(" ") || "Medication is not in the active formulary.",
-        { type: "prepare_medication", order },
+        { type: "prepare_medication", order, ...(source === "ui" ? {} : { source }) },
+        idempotencyKey,
+        stateVersion,
+      );
+    if (this.state.treatments.preparedOrders.some(({ status }) => status === "prepared"))
+      return this.commandRejected(
+        "Review or cancel the active medication draft first.",
+        { type: "prepare_medication", order, ...(source === "ui" ? {} : { source }) },
         idempotencyKey,
         stateVersion,
       );
@@ -772,11 +801,56 @@ export class ScenarioEngine {
     this.state.treatments.preparedOrders.push({
       id: prepared.id,
       order: structuredClone(order),
+      source,
       preparedAtMs: this.state.clock.simulationTimeMs,
       status: "prepared",
       statusAtMs: this.state.clock.simulationTimeMs,
       message: "Prepared for final bedside confirmation.",
     });
+    return null;
+  }
+
+  private updatePreparedMedication(
+    preparedOrderId: string,
+    order: MedicationOrderInput,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const prepared = this.state.treatments.preparedOrders.find(
+      ({ id }) => id === preparedOrderId,
+    );
+    if (!prepared || prepared.status !== "prepared")
+      return this.commandRejected(
+        "That medication draft is no longer active.",
+        { type: "update_prepared_medication", preparedOrderId, order },
+        idempotencyKey,
+        stateVersion,
+      );
+    const rule = this.casePack.medicationRules.find(({ id }) => id === order.drugId);
+    const reasons = validateOrderShape(rule, order);
+    if (reasons.length || !rule)
+      return this.commandRejected(
+        reasons.join(" ") || "Medication is not in the active formulary.",
+        { type: "update_prepared_medication", preparedOrderId, order },
+        idempotencyKey,
+        stateVersion,
+      );
+    prepared.order = structuredClone(order);
+    prepared.statusAtMs = this.state.clock.simulationTimeMs;
+    prepared.message = "Draft parameters confirmed; still not administered.";
+    this.emit(
+      "student",
+      "action.drafted",
+      {
+        kind: "medication",
+        preparedOrderId,
+        parameters: order,
+        source: prepared.source,
+        executed: false,
+        requiresStudentConfirmation: true,
+      },
+      { causedBy: prepared.id, idempotencyKey, stateVersion },
+    );
     return null;
   }
 
@@ -1594,6 +1668,8 @@ function commandMessage(command: ScenarioCommand) {
       return `${command.name} is outside this authored case; no finding or treatment was invented.`;
     case "prepare_medication":
       return "Medication prepared but not administered.";
+    case "update_prepared_medication":
+      return "Medication draft parameters updated; not administered.";
     case "record_handoff":
       return "Handoff recorded separately from the senior request.";
     case "finish":
