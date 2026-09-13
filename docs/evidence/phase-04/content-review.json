@@ -1,0 +1,23 @@
+{
+  "caseVersion": "1.0.0-draft.2",
+  "reviewedOn": "2026-09-13",
+  "softwareContentReview": {
+    "status": "passed",
+    "ecg": [
+      "All 12 lead labels are present",
+      "10 mm/mV and 25 mm/s calibration text and pulse are present",
+      "Artwork, report, zoom and student interpretation are separately accessible",
+      "Request, acquisition, availability and display are distinct events"
+    ],
+    "medication": [
+      "Patient identity, allergies, current medicines and prior administration count are visible",
+      "Preparation, cancellation, blocked attempt, authorization and administration statuses remain distinct",
+      "Only a final server-validated administration creates a receipt or schedules an effect"
+    ]
+  },
+  "clinicalContentReview": {
+    "status": "blocked_pending_qualified_review",
+    "reason": "The case pack remains explicitly draft_unreviewed. The development ECG pattern, investigation values, oxygen range, IV-fluid rule and complete case coherence require specialist review before educational validation.",
+    "source": "docs/clinical-review-checklist.md"
+  }
+}
