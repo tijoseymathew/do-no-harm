@@ -50,18 +50,32 @@ export function Room({
     }
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
     element.appendChild(renderer.domElement);
     renderer.domElement.setAttribute("aria-hidden", "true");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#172a35");
+    scene.background = new THREE.Color("#081219");
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(7.6, 6.8, 10.5);
     const target = new THREE.Vector3(0, 1, 0);
-    scene.add(new THREE.HemisphereLight(0xd5f0ff, 0x33424c, 2.6));
-    const lamp = new THREE.DirectionalLight(0xffe2bc, 4);
+    scene.add(new THREE.HemisphereLight(0x8fb8cc, 0x0e1820, 1.15));
+    // The bay reads as a room only if one warm overhead pool dominates and the
+    // cool fills merely keep the shadowed faces legible. A wide, bright ambient
+    // flattens the whole thing into haze.
+    const lamp = new THREE.SpotLight(0xffd7a2, 360, 0, 0.58, 0.8, 1.5);
     lamp.position.set(0, 7, 3);
+    lamp.target.position.set(0, 1, 0);
     lamp.castShadow = true;
-    scene.add(lamp);
+    lamp.shadow.mapSize.set(1024, 1024);
+    lamp.shadow.bias = -0.0015;
+    scene.add(lamp, lamp.target);
+    const fill = new THREE.DirectionalLight(0x7fb4cf, 0.8);
+    fill.position.set(-7, 4.5, 7);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0x4f83a8, 0.6);
+    rim.position.set(5, 3, -7);
+    scene.add(rim);
     const hits: THREE.Object3D[] = [];
     function box(
       x: number,
@@ -72,10 +86,15 @@ export function Room({
       d: number,
       color: string,
       station?: Station,
+      finish?: { roughness?: number; metalness?: number },
     ) {
       const mesh = new THREE.Mesh(
         new THREE.BoxGeometry(w, h, d),
-        new THREE.MeshStandardMaterial({ color, roughness: 0.65 }),
+        new THREE.MeshStandardMaterial({
+          color,
+          roughness: finish?.roughness ?? 0.65,
+          metalness: finish?.metalness ?? 0.04,
+        }),
       );
       mesh.position.set(x, y, z);
       mesh.castShadow = true;
@@ -107,12 +126,24 @@ export function Room({
       hits.push(m);
       return m;
     }
-    box(0, -0.1, 0, 9, 0.2, 8, "#526876");
-    box(0, 1.8, -3.5, 9, 3.8, 0.18, "#84979d");
-    box(-4.4, 1.8, 0, 0.18, 3.8, 7, "#647d88");
-    box(0, 1.05, -3.37, 8.8, 0.12, 0.1, "#bdd3cf");
-    box(2.9, 1.5, -3.33, 1.4, 3, 0.15, "#304854");
-    box(3.35, 1.3, -3.2, 0.06, 0.3, 0.08, "#cce2dd");
+    // Polished vinyl floor: low roughness lets the overhead pool read as a
+    // sheen, which is most of what makes the bay feel like a real room.
+    box(0, -0.1, 0, 9, 0.2, 8, "#2c3d49", undefined, {
+      roughness: 0.3,
+      metalness: 0.1,
+    });
+    box(0, 1.8, -3.5, 9, 3.8, 0.18, "#61757d", undefined, { roughness: 0.92 });
+    box(-4.4, 1.8, 0, 0.18, 3.8, 7, "#475e69", undefined, { roughness: 0.92 });
+    const rail = box(0, 1.05, -3.37, 8.8, 0.12, 0.1, "#e8f6ef");
+    rail.material.emissive.set("#7fd8c4");
+    rail.material.emissiveIntensity = 0.9;
+    box(2.9, 1.5, -3.33, 1.4, 3, 0.15, "#263c47", undefined, {
+      roughness: 0.55,
+    });
+    box(3.35, 1.3, -3.2, 0.06, 0.3, 0.08, "#cce2dd", undefined, {
+      roughness: 0.25,
+      metalness: 0.85,
+    });
     box(0, 0.6, 0, 1.6, 0.3, 3.6, "#bdc8c6", "Patient");
     box(0, 0.9, 0, 1.65, 0.3, 3.6, "#e0e8df", "Patient");
     box(0, 1.13, -1.15, 1.25, 0.2, 0.65, "#f4f0e1", "Patient");
@@ -121,13 +152,27 @@ export function Room({
     box(0, 1.18, 0.85, 1.22, 0.28, 1.65, "#4d7e8e", "Patient");
     sphere(-0.62, 1.2, -0.2, 0.12, 0.12, 0.65, "#b8856b");
     sphere(0.62, 1.2, -0.2, 0.12, 0.12, 0.65, "#b8856b");
+    const steel = { roughness: 0.28, metalness: 0.8 };
     for (const x of [-0.86, 0.86]) {
-      box(x, 1.27, 0.25, 0.07, 0.09, 2.1, "#d8e5e3", "Patient");
-      for (const z of [-1.2, 1.2]) box(x, 0.3, z, 0.1, 0.5, 0.1, "#a8babc");
+      box(x, 1.27, 0.25, 0.07, 0.09, 2.1, "#d8e5e3", "Patient", steel);
+      for (const z of [-1.2, 1.2])
+        box(x, 0.3, z, 0.1, 0.5, 0.1, "#a8babc", undefined, steel);
     }
-    box(-1.6, 1, -1.5, 0.09, 1.7, 0.09, "#a1b7bb", "Monitor");
+    // An unlit plane a hair in front of each screen: the bezel stays a normal
+    // lit hit target while the display itself reads as self-emitting.
+    function glow(x: number, y: number, z: number, w: number, h: number) {
+      const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(w, h),
+        new THREE.MeshBasicMaterial({ color: "#0d1f26" }),
+      );
+      mesh.position.set(x, y, z);
+      scene.add(mesh);
+      return mesh;
+    }
+    box(-1.6, 1, -1.5, 0.09, 1.7, 0.09, "#a1b7bb", "Monitor", steel);
     box(-1.6, 2, -1.5, 1.1, 0.8, 0.25, "#c1d4d2", "Monitor");
     const screen = box(-1.6, 2, -1.35, 0.93, 0.61, 0.03, "#13232c", "Monitor");
+    const screenGlow = glow(-1.6, 2, -1.32, 0.93, 0.61);
     const lead = box(-0.7, 1.52, -0.8, 0.025, 0.025, 1.3, "#72e9b1", "Monitor");
     const probe = box(0.63, 1.27, 0.32, 0.19, 0.12, 0.16, "#71d9ef", "Monitor");
     const cuff = box(-0.63, 1.22, -0.5, 0.25, 0.24, 0.25, "#374c65", "Monitor");
@@ -137,13 +182,15 @@ export function Room({
       box(-2, y, 2.34, 1.05, 0.035, 0.04, "#263e48", "Medication");
     box(-2.4, 1.44, 2, 0.2, 0.2, 0.22, "#f0d5a3", "Medication");
     box(-3, 1.8, -3.1, 0.65, 0.55, 0.25, "#c8d4cd", "Oxygen / IV");
-    box(-2.65, 1.3, -0.8, 0.05, 2.6, 0.05, "#bdcecc", "Oxygen / IV");
-    box(-2.65, 2.6, -0.8, 0.65, 0.06, 0.06, "#bdcecc", "Oxygen / IV");
+    box(-2.65, 1.3, -0.8, 0.05, 2.6, 0.05, "#bdcecc", "Oxygen / IV", steel);
+    box(-2.65, 2.6, -0.8, 0.65, 0.06, 0.06, "#bdcecc", "Oxygen / IV", steel);
     box(-2.4, 2.28, -0.8, 0.22, 0.4, 0.13, "#b0d9d7", "Oxygen / IV");
     box(-3.8, 1.9, -3.1, 0.35, 0.6, 0.22, "#647479");
     box(2.3, 0.75, 0.8, 1.4, 1.3, 0.8, "#72919c", "ECG / results");
     box(2.3, 1.5, 0.8, 0.9, 0.2, 0.6, "#d3ddd5", "ECG / results");
     box(2.3, 1.8, 0.7, 0.8, 0.5, 0.08, "#172e3d", "ECG / results");
+    // Standby, not running: this station is unavailable in the fixture.
+    glow(2.3, 1.8, 0.76, 0.72, 0.42).material.color.set("#12242f");
     box(1, 1, 2.3, 0.55, 0.07, 0.7, "#d5bd8b", "Clipboard");
     box(1, 1.05, 2.3, 0.44, 0.02, 0.55, "#f1eee1", "Clipboard");
     box(3.8, 1.65, -3.15, 0.35, 0.55, 0.18, "#c9a477", "Call station");
@@ -153,6 +200,16 @@ export function Room({
     );
     ring.rotation.x = -Math.PI / 2;
     scene.add(ring);
+    const pool = new THREE.Mesh(
+      new THREE.CircleGeometry(0.46, 48),
+      new THREE.MeshBasicMaterial({
+        color: "#8ce6cf",
+        transparent: true,
+        opacity: 0.12,
+      }),
+    );
+    pool.rotation.x = -Math.PI / 2;
+    scene.add(pool);
     const ray = new THREE.Raycaster();
     function pick(event: PointerEvent) {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -207,10 +264,14 @@ export function Room({
       else target.lerp(next, 0.06);
       camera.lookAt(target);
       ring.position.set(p[0], 0.025, p[2]);
+      pool.position.set(p[0], 0.02, p[2]);
       lead.visible = c.state.sensors.ecg;
       probe.visible = c.state.sensors.spo2;
       cuff.visible = c.state.sensors.cuff;
       screen.material.color.set(c.state.sensors.ecg ? "#205344" : "#13232c");
+      screenGlow.material.color.set(
+        c.state.sensors.ecg ? "#2f9370" : "#0d1f26",
+      );
       tray.material.color.set(c.state.receipts.length ? "#75c7a0" : "#cfddd8");
       if (!c.paused) breathingTime += Math.min(time - previousTime, 100);
       previousTime = time;
