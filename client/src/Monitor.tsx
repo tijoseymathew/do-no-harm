@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import type { ScenarioSnapshot } from "../../shared/contracts/scenario.js";
 
+const SWEEP_MS = 4000;
+
 export function beatPeriodMs(hr: number) {
   return 60000 / hr;
 }
@@ -42,13 +44,18 @@ function Trace({
     let frame = 0;
     function draw(now: number) {
       const width = node.clientWidth;
-      const height = 52;
+      const height = node.clientHeight;
+      if (width === 0 || height === 0) {
+        frame = requestAnimationFrame(draw);
+        return;
+      }
       const dpr = Math.min(devicePixelRatio, 2);
       node.width = width * dpr;
       node.height = height * dpr;
-      context.scale(dpr, dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, width, height);
-      context.strokeStyle = "#19343e";
+      const baseline = height * 0.74;
+      context.strokeStyle = "#0f2731";
       context.lineWidth = 0.5;
       for (let x = 0; x < width; x += 20) {
         context.beginPath();
@@ -56,23 +63,47 @@ function Trace({
         context.lineTo(x, height);
         context.stroke();
       }
+      context.beginPath();
+      context.moveTo(0, baseline);
+      context.lineTo(width, baseline);
+      context.stroke();
       if (hr !== null) {
         const end =
           time + (paused || reduced ? 0 : Math.min(now - start, 1000));
-        context.strokeStyle = pleth ? "#77d6ed" : "#83e6ad";
+        // The sweep window is fixed to the wall of the screen: the cursor walks
+        // left to right and the trace behind it is the four seconds just drawn.
+        const windowStart = Math.floor(end / SWEEP_MS) * SWEEP_MS;
+        const cursor = ((end - windowStart) / SWEEP_MS) * width;
+        const stroke = pleth ? "#45d6f0" : "#3ef08a";
+        const period = beatPeriodMs(hr);
+        context.strokeStyle = stroke;
+        context.shadowColor = stroke;
+        context.shadowBlur = 5;
         context.lineWidth = 1.7;
+        context.lineJoin = "round";
         context.beginPath();
+        let open = false;
         for (let x = 0; x <= width; x++) {
-          const sample = end - ((width - x) / width) * 4000;
-          const phase =
-            (((sample % beatPeriodMs(hr)) + beatPeriodMs(hr)) %
-              beatPeriodMs(hr)) /
-            beatPeriodMs(hr);
-          const y = 37 - waveform(phase, pleth) * 28;
-          if (x === 0) context.moveTo(x, y);
-          else context.lineTo(x, y);
+          // Blank the segment immediately ahead of the cursor, the way a
+          // monitor erases the previous sweep just before redrawing it.
+          if (x > cursor && x < cursor + 16) {
+            open = false;
+            continue;
+          }
+          const sample = windowStart + (x / width) * SWEEP_MS;
+          const phase = (((sample % period) + period) % period) / period;
+          const y = baseline - waveform(phase, pleth) * (height * 0.62);
+          if (!open) {
+            context.moveTo(x, y);
+            open = true;
+          } else context.lineTo(x, y);
         }
         context.stroke();
+        context.shadowBlur = 0;
+        // Drawn even when frozen: without it the erase gap reads as a fault in
+        // the trace rather than the position of the sweep.
+        context.fillStyle = stroke;
+        context.fillRect(cursor, 0, 1.5, height);
       }
       if (!paused && !reduced) frame = requestAnimationFrame(draw);
     }
@@ -80,18 +111,11 @@ function Trace({
     return () => cancelAnimationFrame(frame);
   }, [hr, time, paused, reduced, pleth]);
   return (
-    <div className={pleth ? "trace pleth" : "trace"}>
-      <div>
-        {label}{" "}
-        <span>
-          {hr === null ? "Not connected" : "4-second strip · engine"}
-        </span>
-      </div>
-      <canvas
-        ref={canvas}
-        aria-label={`${label}: ${hr === null ? "not connected" : `${hr} beats/min, four-second strip`}`}
-      />
-    </div>
+    <canvas
+      ref={canvas}
+      className="channel-trace"
+      aria-label={`${label}: ${hr === null ? "not connected" : `${hr} beats/min, four-second strip`}`}
+    />
   );
 }
 export function Monitor({
@@ -104,61 +128,76 @@ export function Monitor({
   reduced: boolean;
 }) {
   const m = state.measurements;
+  const plethRate = state.sensors.spo2 ? state.physiology.heartRate : null;
   return (
     <section className="monitor" aria-label="Bedside monitor summary">
-      <div className="panel-heading">
+      <div className="monitor-bar">
         <h2>Bedside monitor</h2>
+        <span className="monitor-alarms">ALARMS OFF</span>
         <span className="tag">ENGINE</span>
       </div>
-      <Trace
-        label="ECG"
-        hr={m.hr}
-        time={state.simulationTimeMs}
-        paused={paused}
-        reduced={reduced}
-      />
-      <Trace
-        label="Pleth"
-        hr={state.sensors.spo2 ? state.physiology.heartRate : null}
-        time={state.simulationTimeMs}
-        paused={paused}
-        reduced={reduced}
-        pleth
-      />
-      <div className="measurements">
-        <div className="ecg-number">
-          <span>HR · beats/min</span>
-          <strong>{m.hr ?? "—"}</strong>
-          <small>
-            {state.sensors.ecg ? "Leads connected" : "Not connected"}
-          </small>
+      <div className="monitor-screen">
+        <div className="channel" data-channel="ecg">
+          <div className="channel-lead">
+            <b>ECG</b>
+            <span>II · 4 s</span>
+          </div>
+          <Trace
+            label="ECG"
+            hr={m.hr}
+            time={state.simulationTimeMs}
+            paused={paused}
+            reduced={reduced}
+          />
+          <div className="channel-value">
+            <span>HR · beats/min</span>
+            <strong>{m.hr ?? "—"}</strong>
+            <small>
+              {state.sensors.ecg ? "Leads connected" : "Not connected"}
+            </small>
+          </div>
         </div>
-        <div className="spo2-number">
-          <span>SpO₂ · %</span>
-          <strong>{m.spo2 ?? "—"}</strong>
-          <small>
-            {state.sensors.spo2 ? "Probe connected" : "Not connected"}
-          </small>
+        <div className="channel" data-channel="pleth">
+          <div className="channel-lead">
+            <b>Pleth</b>
+            <span>SpO₂ · 4 s</span>
+          </div>
+          <Trace
+            label="Pleth"
+            hr={plethRate}
+            time={state.simulationTimeMs}
+            paused={paused}
+            reduced={reduced}
+            pleth
+          />
+          <div className="channel-value">
+            <span>SpO₂ · %</span>
+            <strong>{m.spo2 ?? "—"}</strong>
+            <small>
+              {state.sensors.spo2 ? "Probe connected" : "Not connected"}
+            </small>
+          </div>
         </div>
-        <div>
-          <span>RR · breaths/min</span>
-          <strong>{m.rr}</strong>
-          <small>Engine observation</small>
+        <div className="monitor-tiles">
+          <div className="tile" data-channel="resp">
+            <span>RR · breaths/min</span>
+            <strong>{m.rr}</strong>
+            <small>Engine observation · no resp sensor</small>
+          </div>
+          <div className="tile" data-channel="nibp">
+            <span>NIBP · mmHg</span>
+            <strong>{m.bp?.value ?? "—"}</strong>
+            <small>
+              {m.bp
+                ? `${Math.floor((state.simulationTimeMs - m.bp.measuredAtMs) / 1000)} s ago`
+                : "Apply cuff to measure"}
+            </small>
+            <small>
+              {state.sensors.cuff ? "Cuff connected" : "Cuff not connected"}
+              {m.bp && !state.sensors.cuff ? " · last reading retained" : ""}
+            </small>
+          </div>
         </div>
-      </div>
-      <div className="bp">
-        <span>
-          BP · mmHg <strong>{m.bp?.value ?? "Not measured"}</strong>
-        </span>
-        <span>
-          {m.bp
-            ? `${Math.floor((state.simulationTimeMs - m.bp.measuredAtMs) / 1000)} s ago`
-            : "Apply cuff to measure"}
-          <small>
-            {state.sensors.cuff ? "Cuff connected" : "Cuff not connected"}
-            {m.bp && !state.sensors.cuff ? " · last reading retained" : ""}
-          </small>
-        </span>
       </div>
       <p className="monitor-note">
         {state.branch.kind === "delayed_care"

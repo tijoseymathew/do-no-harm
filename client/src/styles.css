@@ -1,8 +1,25 @@
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   color: #eaf3f5;
   background: #071216;
   font-synthesis: none;
+
+  /* Surfaces, darkest to lightest. */
+  --bg-0: #050f14;
+  --bg-1: #0b1d25;
+  --bg-2: #112a34;
+  --line: #24414d;
+  --line-strong: #3a5d6b;
+
+  /* Monitor channels follow the usual bedside colour convention. */
+  --ecg: #3ef08a;
+  --spo2: #45d6f0;
+  --resp: #f0d64a;
+  --nibp: #e6eef1;
+  --screen: #04090c;
+
+  --accent: #72d9c5;
+  --text-2: #a7bcc3;
 }
 
 * {
@@ -239,9 +256,9 @@ footer button {
   padding: 9px 12px;
 }
 .clock {
-  font:
-    1.2rem ui-monospace,
-    monospace;
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
   margin-right: 6px;
 }
 .motion {
@@ -287,6 +304,19 @@ a {
   border: 1px solid #3a505c;
   border-radius: 10px;
 }
+/* Falls off the corners so the lit bed holds the eye. */
+.room::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 78% 72% at 44% 46%,
+    transparent 38%,
+    rgba(3, 10, 14, 0.42) 100%
+  );
+}
 .room canvas {
   display: block;
   position: absolute;
@@ -296,7 +326,7 @@ a {
   position: absolute;
   top: 22px;
   left: 24px;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
 }
 .room-label h2 {
@@ -316,7 +346,7 @@ a {
   position: absolute;
   left: 16px;
   bottom: 16px;
-  z-index: 1;
+  z-index: 2;
   padding: 9px 12px;
   background: #122631df;
   border: 1px solid #48636e;
@@ -329,7 +359,7 @@ a {
 .graphics-fallback {
   position: absolute;
   inset: 35% 15% auto;
-  z-index: 2;
+  z-index: 3;
   background: #152f3d;
   padding: 24px;
   border: 1px solid #92c9c4;
@@ -341,12 +371,140 @@ aside {
   flex-direction: column;
   gap: 12px;
 }
-.monitor,
 .equipment {
-  background: #0d2029;
+  background: var(--bg-1);
   border: 1px solid #314a55;
   border-radius: 10px;
   padding: 12px;
+}
+/* The monitor is a physical device, not another card: dark bezel, black
+   screen, and the only saturated colour in the interface. */
+.monitor {
+  background: linear-gradient(#1b2a31, #131f25);
+  border: 1px solid #35474f;
+  border-radius: 10px;
+  padding: 7px;
+  box-shadow:
+    inset 0 1px 0 #46585f,
+    0 10px 26px rgba(0, 0, 0, 0.45);
+}
+.monitor-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 1px 4px 7px;
+}
+.monitor-bar h2 {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+.monitor-alarms {
+  margin-left: auto;
+  font-size: 0.53rem;
+  letter-spacing: 0.13em;
+  color: #d8b978;
+  border: 1px solid #6d5a33;
+  border-radius: 3px;
+  padding: 3px 6px;
+}
+.monitor-screen {
+  background: var(--screen);
+  border: 1px solid #0f2630;
+  border-radius: 5px;
+  padding: 4px;
+  display: grid;
+  gap: 4px;
+}
+.channel {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 104px;
+  align-items: center;
+  gap: 6px;
+  height: 58px;
+}
+.channel + .channel {
+  border-top: 1px solid #0d2027;
+}
+.channel-lead {
+  align-self: start;
+  padding-top: 5px;
+  line-height: 1.35;
+}
+.channel-lead b {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+}
+.channel-lead span {
+  font-size: 0.5rem;
+  color: #6d858e;
+}
+.channel-trace {
+  display: block;
+  width: 100%;
+  height: 54px;
+}
+.channel-value {
+  text-align: right;
+  line-height: 1;
+}
+.channel-value span,
+.tile span {
+  display: block;
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  color: #7f99a2;
+}
+.channel-value strong {
+  display: block;
+  font-size: 2.3rem;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  margin: 1px 0 2px;
+}
+.channel-value small,
+.tile small {
+  display: block;
+  font-size: 0.5rem;
+  color: #7f99a2;
+}
+[data-channel="ecg"] .channel-lead b,
+[data-channel="ecg"] strong {
+  color: var(--ecg);
+}
+[data-channel="pleth"] .channel-lead b,
+[data-channel="pleth"] strong {
+  color: var(--spo2);
+}
+[data-channel="resp"] strong {
+  color: var(--resp);
+}
+[data-channel="nibp"] strong {
+  color: var(--nibp);
+}
+.monitor-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 4px;
+  border-top: 1px solid #0d2027;
+  padding-top: 5px;
+}
+.tile {
+  padding: 0 6px;
+  line-height: 1;
+}
+.tile + .tile {
+  border-left: 1px solid #0d2027;
+}
+.tile strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  margin: 3px 0 4px;
 }
 .panel-heading {
   display: flex;
@@ -366,76 +524,11 @@ aside {
   padding: 3px 6px;
   border-radius: 3px;
 }
-.trace {
-  color: #83e6ad;
-  font:
-    0.65rem ui-monospace,
-    monospace;
-}
-.trace span {
-  float: right;
-  color: #92aab3;
-  font-size: 0.6rem;
-}
-.trace canvas {
-  display: block;
-  width: 100%;
-  height: 24px;
-}
-.pleth {
-  color: #77d6ed;
-}
-.measurements {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 6px 0 12px;
-}
-.measurements span,
-.measurements small {
-  display: block;
-  color: #a4bac1;
-  font-size: 0.58rem;
-}
-.measurements strong {
-  display: block;
-  font:
-    2rem ui-monospace,
-    monospace;
-  line-height: 1.3;
-}
-.ecg-number strong {
-  color: #83e6ad;
-}
-.spo2-number strong {
-  color: #77d6ed;
-}
-.bp {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border-top: 1px solid #2a414c;
-  padding-top: 10px;
-  font-size: 0.68rem;
-}
-.bp strong {
-  font:
-    1.15rem ui-monospace,
-    monospace;
-  display: block;
-  margin-top: 3px;
-}
-.bp small {
-  display: block;
-  color: #a4bac1;
-  font-size: 0.6rem;
-  margin-top: 4px;
-}
 .monitor-note {
-  font-size: 0.6rem;
-  color: #a1b5bd;
-  margin: 9px 0 0;
+  font-size: 0.58rem;
+  color: #8fa5ad;
+  margin: 6px 0 1px;
+  padding: 0 4px;
 }
 .equipment {
   flex: 1;
@@ -607,32 +700,28 @@ footer {
     padding: 6px 8px;
     margin-bottom: 7px;
   }
-  .monitor .measurements {
-    margin: 2px 0 7px;
+  .monitor {
+    padding: 6px;
   }
-  .monitor .bp {
-    padding-top: 6px;
-  }
-  .monitor .bp strong {
-    font-size: 1rem;
+  .monitor-bar {
+    padding-bottom: 5px;
   }
   .monitor .monitor-note {
-    margin-top: 5px;
+    margin: 4px 0 0;
   }
-  .monitor {
-    padding: 9px 12px;
+  .channel {
+    height: 45px;
+    grid-template-columns: 46px minmax(0, 1fr) 92px;
   }
-  .monitor .panel-heading {
-    margin-bottom: 5px;
+  .channel-trace {
+    height: 42px;
   }
-  .monitor .measurements strong {
-    font-size: 1.35rem;
+  .channel-value strong {
+    font-size: 1.7rem;
   }
-  .monitor .bp {
-    padding-top: 3px;
-  }
-  .monitor .bp strong {
-    margin-top: 0;
+  .tile strong {
+    font-size: 1.15rem;
+    margin: 2px 0 3px;
   }
   .equipment .patient-check,
   .equipment .muted {
@@ -648,18 +737,9 @@ footer {
   .room {
     min-height: 470px;
   }
-  .monitor,
   .equipment {
     padding: 12px;
-  }
-  .equipment {
     min-height: 190px;
-  }
-  .trace canvas {
-    height: 16px;
-  }
-  .measurements strong {
-    font-size: 1.6rem;
   }
   .panel-heading {
     margin-bottom: 8px;
