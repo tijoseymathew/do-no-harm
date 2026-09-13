@@ -1,5 +1,3 @@
-import { appendFile, mkdir } from "node:fs/promises";
-import path from "node:path";
 import type { RunEvent } from "../shared/contracts/common.js";
 import type { CasePack } from "../shared/contracts/server.js";
 import type { ScenarioCommand, ScenarioSnapshot } from "../shared/contracts/scenario.js";
@@ -21,7 +19,7 @@ export class ScenarioStore {
 
   constructor(
     private readonly casePack: CasePack,
-    private readonly runDirectory = path.resolve("runs"),
+    private readonly runDirectory: string | null = "runs",
   ) {}
 
   get size() {
@@ -154,8 +152,14 @@ export class ScenarioStore {
   }
 
   private async append(id: string, records: unknown[]) {
-    await mkdir(this.runDirectory, { recursive: true });
+    if (!this.runDirectory) return;
+    const [{ appendFile, mkdir }, path] = await Promise.all([
+      import("node:fs/promises"),
+      import("node:path"),
+    ]);
+    const directory = path.resolve(this.runDirectory);
+    await mkdir(directory, { recursive: true });
     const body = records.map((record) => JSON.stringify(record)).join("\n") + "\n";
-    await appendFile(path.join(this.runDirectory, `${id}.jsonl`), body, "utf8");
+    await appendFile(path.join(directory, `${id}.jsonl`), body, "utf8");
   }
 }

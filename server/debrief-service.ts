@@ -33,10 +33,15 @@ export class DebriefService {
     return this.serialize(runId, () => this.evaluate(prepared.snapshot, "finish"));
   }
 
-  async startFinish(runId: string, input: FinishRunInput) {
+  async startFinish(
+    runId: string,
+    input: FinishRunInput,
+    waitUntil?: (operation: Promise<void>) => void,
+  ) {
     const prepared = await this.prepareFinish(runId, input);
     if (prepared.created) {
-      void this.serialize(runId, () => this.evaluate(prepared.snapshot, "finish")).catch(
+      const evaluation = this.serialize(runId, () => this.evaluate(prepared.snapshot, "finish")).then(
+        () => undefined,
         async (error) => {
           const current = this.debriefs.get(runId);
           if (!current) return;
@@ -46,6 +51,8 @@ export class DebriefService {
           this.save(current);
         },
       );
+      if (waitUntil) waitUntil(evaluation);
+      else void evaluation;
     }
     return prepared.snapshot;
   }
@@ -95,9 +102,10 @@ export class DebriefService {
     return this.serialize(runId, () => this.evaluate(prepared.snapshot, prepared.trigger));
   }
 
-  async startRetry(runId: string) {
+  async startRetry(runId: string, waitUntil?: (operation: Promise<void>) => void) {
     const prepared = await this.prepareRetry(runId);
-    void this.serialize(runId, () => this.evaluate(prepared.snapshot, prepared.trigger)).catch(
+    const evaluation = this.serialize(runId, () => this.evaluate(prepared.snapshot, prepared.trigger)).then(
+      () => undefined,
       (error) => {
         const current = this.debriefs.get(runId);
         if (!current) return;
@@ -107,6 +115,8 @@ export class DebriefService {
         this.save(current);
       },
     );
+    if (waitUntil) waitUntil(evaluation);
+    else void evaluation;
     return prepared.snapshot;
   }
 

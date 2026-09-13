@@ -9,5 +9,5 @@
     "sourceMap": true,
     "types": ["node"]
   },
-  "include": ["index.ts", "server", "shared", "case", "scripts"]
+  "include": ["sites", "server", "shared", "case", "scripts"]
 }

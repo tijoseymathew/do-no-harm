@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { CONTRACT_VERSION, RunEventSchema, type RunEvent } from "../shared/contracts/common.js";
 import type { CasePack, MedicationRule } from "../shared/contracts/server.js";
 import type {
@@ -42,7 +41,7 @@ export class ScenarioEngine {
 
   constructor(casePack: CasePack, options: EngineOptions = {}) {
     this.casePack = casePack;
-    this.createId = options.createId ?? randomUUID;
+    this.createId = options.createId ?? (() => crypto.randomUUID());
     this.now = options.now ?? (() => new Date());
     const baseline = casePack.scenarioRules.baseline;
     const clinicallyReviewed =

@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import type {
   ConversationMessage,
   ConversationSnapshot,
@@ -429,7 +428,7 @@ export class ConversationService {
     causedBy?: string,
     recordEvidence = true,
   ): Promise<ConversationMessage> {
-    const id = randomUUID();
+    const id = crypto.randomUUID();
     let event: RunEvent | null = null;
     if (recordEvidence) {
       const corrects = message.correctsMessageId
