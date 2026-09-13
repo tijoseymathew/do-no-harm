@@ -1,0 +1,11 @@
+{
+  "drugId": "aspirin_300mg_tablet",
+  "dose": 300,
+  "unit": "mg",
+  "route": "oral",
+  "id": "d0fb876e-c729-4b49-a675-0cb25fd415d9",
+  "simulationTimeMs": 30000,
+  "actor": "student",
+  "status": "administered",
+  "mode": "fixture"
+}

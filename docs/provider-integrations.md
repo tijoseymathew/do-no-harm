@@ -34,7 +34,7 @@ npm run dev:server
 npm run dev:client
 ```
 
-Then open `http://127.0.0.1:5173`, start the conversation, hear a spoken response, interrupt it naturally, and close the session. A pass requires observed audio and interruption; `session.started` alone is insufficient.
+Then open `http://127.0.0.1:5173/probe`, start the conversation, hear a spoken response, interrupt it naturally, and close the session. A pass requires observed audio and interruption; `session.started` alone is insufficient.
 
 ## Astra examiner probe
 

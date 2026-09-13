@@ -2,14 +2,14 @@
 
 [Product specification](../../specs.md) · [Repository overview](../../README.md)
 
-All phases are **not started**. Each phase has a bounded outcome, explicit dependencies, implementation tasks, and verification gates that can be checked before proceeding. These are incremental checkpoints; later phases build on earlier ones.
+Each phase has a bounded outcome, explicit dependencies, implementation tasks, and verification gates that can be checked before proceeding. These are incremental checkpoints; later phases build on earlier ones. Current implementation and verification status is recorded below.
 
 The specification defines product behavior and scope. Phase documents define execution and verification. Update both if an implementation decision changes product behavior.
 
 | Phase | Outcome | Depends on | Status |
 |---|---|---|---|
 | [01 — Foundation, case contract, and API proof](01-foundation-and-api-proof.md) | An application skeleton and independently runnable probes establish the project structure and both real provider integrations. | None. | Blocked (browser audio check) |
-| [02 — Visual room and bedside interaction slice](02-room-and-bedside-interaction.md) | A student can use the room to connect monitoring and complete a medication interaction against an explicitly labeled fixture-backed server. | Phase 01. | Not started |
+| [02 — Visual room and bedside interaction slice](02-room-and-bedside-interaction.md) | A student can use the room to connect monitoring and complete a medication interaction against an explicitly labeled fixture-backed server. | Phase 01. | Blocked (implemented and verified; Phase 01 audio gate pending) |
 | [03 — Deterministic scenario engine and treatment rules](03-deterministic-scenario-engine.md) | Patient physiology, observations, treatments, and timers are driven by reproducible server rules and reflected consistently in the room. | Phase 01; integrate with the Phase 02 room before closing this phase. | Not started |
 | [04 — Complete assessment, treatment, and handoff workflow](04-complete-bedside-workflow.md) | One complete student run can be performed through room and HTML controls, using text before full voice orchestration. | Phases 02 and 03. | Not started |
 | [05 — Grounded live conversation and examiner checkpoints](05-live-conversation-and-examiner.md) | Live conversation and the persistent examiner session use actual run evidence while respecting treatment and information boundaries. | Phases 01, 03, and 04. | Not started |
