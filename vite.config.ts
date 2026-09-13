@@ -1,17 +1,15 @@
-import react from "@vitejs/plugin-react";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { defineConfig } from "vite";
+import vinext from "vinext";
 
 export default defineConfig({
-  root: "client",
-  plugins: [react()],
-  build: {
-    outDir: "../dist/client",
-    emptyOutDir: false,
-  },
-  server: {
-    port: 5173,
-    proxy: {
-      "/api": "http://127.0.0.1:3000",
-    },
-  },
+  plugins: [
+    vinext(),
+    cloudflare({
+      viteEnvironment: {
+        name: "rsc",
+        childEnvironments: ["ssr"],
+      },
+    }),
+  ],
 });

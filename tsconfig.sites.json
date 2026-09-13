@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "types": ["vinext/types", "node", "@cloudflare/workers-types"]
+  },
+  "include": [
+    "app",
+    "worker",
+    "client",
+    "sites",
+    "server",
+    "shared",
+    "case"
+  ],
+  "exclude": ["**/*.test.ts", "tests"]
+}

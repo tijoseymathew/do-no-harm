@@ -1,7 +1,10 @@
+import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { extname, join } from "node:path";
+import { parseEnv } from "node:util";
 
-const root = join(process.cwd(), "dist", "client");
+const distRoot = join(process.cwd(), "dist");
+const root = join(distRoot, "client");
 const forbidden = [
   "hiddenRubric",
   "expectedEvidence",
@@ -9,7 +12,9 @@ const forbidden = [
   "OPENAI_API_KEY",
   "aspirin already administered for this presentation",
 ];
-const configuredSecret = process.env.OPENAI_API_KEY?.trim();
+const configuredSecret = existsSync(".env")
+  ? parseEnv(await readFile(".env", "utf8")).OPENAI_API_KEY?.trim()
+  : process.env.OPENAI_API_KEY?.trim();
 if (configuredSecret) forbidden.push(configuredSecret);
 
 async function filesUnder(directory: string): Promise<string[]> {
@@ -27,6 +32,17 @@ for (const file of files) {
   const content = await readFile(file, "utf8");
   for (const marker of forbidden) {
     if (content.includes(marker)) violations.push(`${file}: forbidden marker ${marker === configuredSecret ? "<configured secret>" : marker}`);
+  }
+}
+
+if (configuredSecret) {
+  for (const file of (await filesUnder(distRoot)).filter((candidate) =>
+    [".html", ".js", ".json", ".map", ".txt", ".vars"].includes(
+      extname(candidate),
+    ),
+  )) {
+    if ((await readFile(file, "utf8")).includes(configuredSecret))
+      violations.push(`${file}: configured secret embedded in build output`);
   }
 }
 

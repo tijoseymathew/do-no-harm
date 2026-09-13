@@ -4,6 +4,9 @@ dist/
 build/
 coverage/
 *.tsbuildinfo
+.next/
+.wrangler/
+next-env.d.ts
 
 # Local configuration and credentials
 .env

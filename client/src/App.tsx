@@ -76,7 +76,7 @@ export function App() {
   if (window.location.pathname === "/probe") return <Probe />;
   return <Bedside />;
 }
-function Bedside() {
+export function Bedside() {
   const [patient, setPatient] = useState<StudentCase>();
   const [state, setState] = useState<ScenarioSnapshot>();
   const [conversation, setConversation] = useState<ConversationSnapshot>();

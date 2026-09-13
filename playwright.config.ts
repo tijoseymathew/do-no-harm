@@ -19,7 +19,7 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "npm start",
+    command: "npm run build && npm start -- --port 3102",
     env: { PORT: "3102", OPENAI_API_KEY: "" },
     url: "http://127.0.0.1:3102/api/health",
     reuseExistingServer: false,
