@@ -8,7 +8,7 @@ The specification defines product behavior and scope. Phase documents define exe
 
 | Phase | Outcome | Depends on | Status |
 |---|---|---|---|
-| [01 — Foundation, case contract, and API proof](01-foundation-and-api-proof.md) | An application skeleton and independently runnable probes establish the project structure and both real provider integrations. | None. | Not started |
+| [01 — Foundation, case contract, and API proof](01-foundation-and-api-proof.md) | An application skeleton and independently runnable probes establish the project structure and both real provider integrations. | None. | Blocked (browser audio check) |
 | [02 — Visual room and bedside interaction slice](02-room-and-bedside-interaction.md) | A student can use the room to connect monitoring and complete a medication interaction against an explicitly labeled fixture-backed server. | Phase 01. | Not started |
 | [03 — Deterministic scenario engine and treatment rules](03-deterministic-scenario-engine.md) | Patient physiology, observations, treatments, and timers are driven by reproducible server rules and reflected consistently in the room. | Phase 01; integrate with the Phase 02 room before closing this phase. | Not started |
 | [04 — Complete assessment, treatment, and handoff workflow](04-complete-bedside-workflow.md) | One complete student run can be performed through room and HTML controls, using text before full voice orchestration. | Phases 02 and 03. | Not started |

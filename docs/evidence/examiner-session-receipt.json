@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "provider": "OpenAI Agents API",
+  "mode": "real",
+  "mocked": false,
+  "model": "gpt-6-astra",
+  "sessionId": "sess_…019ee",
+  "startedAt": "2026-09-13T08:15:34.017Z",
+  "completedAt": "2026-09-13T08:16:00.960Z",
+  "eventTypes": [
+    "agent.session.created",
+    "agent.session.turn.created",
+    "agent.session.turn.item.added",
+    "agent.session.in_progress",
+    "agent.session.turn.in_progress",
+    "agent.session.turn.item.added",
+    "agent.session.turn.content_part.added",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.done",
+    "agent.session.turn.content_part.done",
+    "agent.session.turn.item.done",
+    "agent.session.turn.item.added",
+    "agent.session.requires_action",
+    "agent.session.turn.item.added",
+    "agent.session.in_progress",
+    "agent.session.turn.item.done",
+    "agent.session.turn.item.added",
+    "agent.session.turn.content_part.added",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.delta",
+    "agent.session.turn.output_text.done",
+    "agent.session.turn.content_part.done",
+    "agent.session.turn.item.done",
+    "agent.session.turn.completed",
+    "agent.session.idle"
+  ],
+  "toolReceipts": [
+    {
+      "name": "get_visible_state",
+      "callId": "exec-…1f6b0",
+      "arguments": {},
+      "result": {
+        "observations": [
+          {
+            "id": "heart_rate",
+            "value": 104,
+            "unit": "beats/min"
+          }
+        ]
+      },
+      "success": true
+    }
+  ],
+  "outputText": "I’ll inspect the application’s visible state for the heart rate.\n\nThe heart rate is **104 beats/min**, from the application state."
+}
