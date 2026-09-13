@@ -55,4 +55,12 @@ describe("ChatGPT Sites worker", () => {
     expect(updated.status).toBe(200);
     expect(await updated.json()).toMatchObject({ sensors: { ecg: true } });
   });
+
+  it("returns JSON for unknown API routes instead of falling through to static hosting", async () => {
+    const response = await call("/api/not-a-route");
+
+    expect(response.status).toBe(404);
+    expect(response.headers.get("content-type")).toContain("application/json");
+    await expect(response.json()).resolves.toEqual({ error: "API endpoint not found." });
+  });
 });

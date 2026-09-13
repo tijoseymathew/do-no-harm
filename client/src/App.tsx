@@ -45,13 +45,31 @@ async function json<T>(url: string, body?: unknown): Promise<T> {
           body: JSON.stringify(body),
         }),
   });
-  const result = await response.json();
-  if (!response.ok)
+  const responseText = await response.text();
+  if (!responseText.trim()) {
+    const message =
+      response.status === 401 || response.status === 403
+        ? "The hosted session could not authorize this request. Reopen the site from ChatGPT and try again."
+        : `The server returned an empty response (HTTP ${response.status}). Try again.`;
+    throw new ApiError(message, response.status);
+  }
+  let result: unknown;
+  try {
+    result = JSON.parse(responseText);
+  } catch {
     throw new ApiError(
-      result.error ?? "Server unavailable",
+      `The server returned an invalid response (HTTP ${response.status}). Try again.`,
       response.status,
-      result.state,
     );
+  }
+  if (!response.ok) {
+    const failure = result as { error?: unknown; state?: ScenarioSnapshot };
+    throw new ApiError(
+      typeof failure.error === "string" ? failure.error : "Server unavailable",
+      response.status,
+      failure.state,
+    );
+  }
   return result as T;
 }
 export function App() {
@@ -101,7 +119,8 @@ function Bedside() {
         }
       })
       .catch((e) => {
-        if (active) setError(String(e));
+        if (active)
+          setError(e instanceof Error ? e.message : "Unable to load bedside");
       });
     return () => {
       active = false;

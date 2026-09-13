@@ -385,9 +385,18 @@ export default {
     environment: SitesEnvironment,
     context: SitesExecutionContext,
   ) {
-    const response = await apiResponse(request, environment, context);
-    if (response) return response;
-    if (environment.ASSETS) return environment.ASSETS.fetch(request);
-    return new Response("Not found", { status: 404 });
+    const path = new URL(request.url).pathname;
+    try {
+      const response = await apiResponse(request, environment, context);
+      if (response) return response;
+      if (path.startsWith("/api/"))
+        return json({ error: "API endpoint not found." }, 404);
+      if (environment.ASSETS) return environment.ASSETS.fetch(request);
+      return new Response("Not found", { status: 404 });
+    } catch (error) {
+      if (path.startsWith("/api/"))
+        return errorResponse(error, "Unexpected server error.", 500);
+      throw error;
+    }
   },
 };

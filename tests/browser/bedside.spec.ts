@@ -55,6 +55,23 @@ async function station(page: Page, name: string) {
     .getByRole("button", { name, exact: false })
     .click();
 }
+
+test("reports an empty API response without surfacing a JSON parse error", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.route("**/api/cases/current", (route) =>
+    route.fulfill({ status: 502, body: "" }),
+  );
+
+  await page.goto("/");
+
+  await expect(page.getByRole("alert")).toContainText(
+    "The server returned an empty response (HTTP 502). Try again.",
+  );
+  expect(pageErrors).not.toContainEqual(
+    expect.stringContaining("Unexpected end of JSON input"),
+  );
+});
 async function inViewport(page: Page, locator: ReturnType<Page["getByRole"]>) {
   const box = await locator.boundingBox();
   expect(box).not.toBeNull();
