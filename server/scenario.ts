@@ -37,6 +37,17 @@ export function scenarioRouter(casePack: CasePack, runDirectory?: string) {
     response.json({ events });
   });
 
+  router.get("/:id/export", (request, response) => {
+    const exported = store.export(request.params.id);
+    if (!exported) {
+      response.status(404).json({ error: "Scenario session not found." });
+      return;
+    }
+    response
+      .setHeader("Content-Disposition", `attachment; filename="run-${request.params.id}.json"`)
+      .json(exported);
+  });
+
   router.post("/:id/commands", async (request, response) => {
     const parsed = CommandEnvelopeSchema.safeParse(request.body);
     if (!parsed.success) {

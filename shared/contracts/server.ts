@@ -49,6 +49,35 @@ export const FluidRuleSchema = z
   })
   .strict();
 
+export const OxygenRuleSchema = z
+  .object({
+    contractVersion: ContractVersionSchema,
+    id: z.string().regex(/^[a-z][a-z0-9_]*$/),
+    name: z.string().min(1),
+    settingLabel: z.string().min(1),
+    unit: z.string().min(1),
+    minimum: z.number().nonnegative(),
+    maximum: z.number().positive(),
+    step: z.number().positive(),
+    effectRule: z.string().min(1),
+    clinicalReview: ClinicalReviewSchema,
+  })
+  .strict();
+
+export const InvestigationRuleSchema = z
+  .object({
+    contractVersion: ContractVersionSchema,
+    id: z.string().regex(/^[a-z][a-z0-9_]*$/),
+    label: z.string().min(1),
+    kind: z.enum(["ecg", "laboratory"]),
+    collectionLabel: z.string().min(1),
+    acquisitionDelayMs: z.number().int().nonnegative(),
+    result: z.string().min(1),
+    report: z.string().min(1),
+    clinicalReview: ClinicalReviewSchema,
+  })
+  .strict();
+
 export const ScenarioRulesSchema = z
   .object({
     baseline: z
@@ -187,6 +216,8 @@ export const CasePackSchema = z
     voiceBriefing: z.string().min(1),
     observations: z.array(ObservationSchema).min(1),
     equipment: z.array(EquipmentSchema).min(1),
+    investigations: z.array(InvestigationRuleSchema).min(1),
+    oxygenRules: z.array(OxygenRuleSchema).min(1),
     medicationRules: z.array(MedicationRuleSchema).min(1),
     fluidRules: z.array(FluidRuleSchema).min(1),
     scenarioRules: ScenarioRulesSchema,
@@ -197,6 +228,8 @@ export const CasePackSchema = z
 
 export type MedicationRule = z.infer<typeof MedicationRuleSchema>;
 export type FluidRule = z.infer<typeof FluidRuleSchema>;
+export type OxygenRule = z.infer<typeof OxygenRuleSchema>;
+export type InvestigationRule = z.infer<typeof InvestigationRuleSchema>;
 export type ScenarioRules = z.infer<typeof ScenarioRulesSchema>;
 export type HiddenRubric = z.infer<typeof HiddenRubricSchema>;
 export type ExaminerOutput = z.infer<typeof ExaminerOutputSchema>;
@@ -225,6 +258,54 @@ export function toStudentCase(casePack: CasePack) {
       (observation) => observation.studentVisible && observation.observableBy === "initial",
     ),
     equipment: casePack.equipment,
+    assessmentOptions: casePack.observations
+      .filter((observation) =>
+        ["history", "assessment"].includes(observation.observableBy),
+      )
+      .map(({ id, label, observableBy }) => ({
+        id,
+        label,
+        kind: observableBy as "history" | "assessment",
+      })),
+    investigations: casePack.investigations.map(
+      ({ id, label, kind, collectionLabel, acquisitionDelayMs }) => ({
+        id,
+        label,
+        kind,
+        collectionLabel,
+        acquisitionDelayMs,
+      }),
+    ),
+    oxygenOptions: casePack.oxygenRules.map(
+      ({ id, name, settingLabel, unit, minimum, maximum, step }) => ({
+        id,
+        name,
+        settingLabel,
+        unit,
+        minimum,
+        maximum,
+        step,
+      }),
+    ),
+    fluids: casePack.fluidRules.map(
+      ({
+        id,
+        name,
+        allowedVolumeUnits,
+        allowedRateUnits,
+        maximumVolumeMl,
+        maximumRateMlPerHour,
+        authorizationRule,
+      }) => ({
+        id,
+        name,
+        allowedVolumeUnits,
+        allowedRateUnits,
+        maximumVolumeMl,
+        maximumRateMlPerHour,
+        authorizationRule,
+      }),
+    ),
     formulary: casePack.medicationRules.map(
       ({
         contractVersion,

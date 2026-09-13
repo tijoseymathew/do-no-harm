@@ -79,14 +79,18 @@ describe("scenario API and run persistence", () => {
       administrationHistoryReviewed: true,
     });
     const key = randomUUID();
-    const command = {
-      type: "administer",
+    await run.command({
+      type: "prepare_medication",
       order: {
         drugId: "aspirin_300mg_tablet",
         dose: 300,
         unit: "mg",
         route: "oral",
       },
+    });
+    const command = {
+      type: "administer_prepared",
+      preparedOrderId: run.state.treatments.preparedOrders.at(-1).id,
     } as const;
     const first = await run.command(command, 200, key);
     const retry = await request(run.app)
@@ -133,7 +137,7 @@ describe("scenario API and run persistence", () => {
         revision: 0,
         idempotencyKey: randomUUID(),
         command: {
-          type: "administer",
+          type: "prepare_medication",
           order: {
             drugId: "aspirin_300mg_tablet",
             dose: "300",
@@ -147,5 +151,23 @@ describe("scenario API and run persistence", () => {
     expect(fresh.body.id).not.toBe(run.state.id);
     expect(fresh.body.receipts).toEqual([]);
     expect(fresh.body.clock.simulationTimeMs).toBe(0);
+  });
+
+  it("exports the complete student run without hidden case rules", async () => {
+    const run = await session();
+    await run.command({ type: "save_note", content: "Assessment saved." });
+    const response = await request(run.app)
+      .get(`/api/runs/${run.state.id}/export`)
+      .expect("Content-Disposition", /attachment; filename="run-/)
+      .expect(200);
+    expect(response.body).toMatchObject({
+      exportVersion: "1.0.0",
+      case: { id: "adult_chest_pain" },
+      state: { id: run.state.id },
+    });
+    expect(response.body.events.some(({ type }: { type: string }) => type === "note.saved")).toBe(true);
+    const serialized = JSON.stringify(response.body);
+    expect(serialized).not.toContain("hiddenRubric");
+    expect(serialized).not.toContain("referenceDoseRule");
   });
 });

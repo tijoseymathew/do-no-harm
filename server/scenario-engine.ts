@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { CONTRACT_VERSION, RunEventSchema, type RunEvent } from "../shared/contracts/common.js";
 import type { CasePack, MedicationRule } from "../shared/contracts/server.js";
 import type {
+  MedicationOrderInput,
   ScenarioCommand,
   ScenarioSnapshot,
   ScenarioState,
@@ -52,6 +53,12 @@ export class ScenarioEngine {
       ) &&
       casePack.fluidRules.every(
         (rule) => rule.clinicalReview.reviewStatus === "reviewed",
+      ) &&
+      casePack.oxygenRules.every(
+        (rule) => rule.clinicalReview.reviewStatus === "reviewed",
+      ) &&
+      casePack.investigations.every(
+        (rule) => rule.clinicalReview.reviewStatus === "reviewed",
       );
     this.state = {
       id: options.runId ?? this.createId(),
@@ -68,8 +75,28 @@ export class ScenarioEngine {
         rr: baseline.respiratoryRate,
         bp: null,
       },
+      assessments: [],
+      investigations: casePack.investigations.map(({ id, label, kind }) => ({
+        id,
+        label,
+        kind,
+        status: "not_requested",
+        requestedAtMs: null,
+        collectedAtMs: null,
+        availableAtMs: null,
+        displayedAtMs: null,
+        displayedViews: [],
+        result: null,
+        report: null,
+        interpretations: [],
+      })),
       devices: {
-        ivAccess: { established: false },
+        oxygen: { status: "off", deviceId: null, setting: 0, unit: null },
+        ivAccess: {
+          established: false,
+          patency: "not_assessed",
+          lastInspectedAtMs: null,
+        },
         fluidPump: {
           status: "idle",
           fluidId: null,
@@ -85,11 +112,16 @@ export class ScenarioEngine {
           administrationHistoryReviewed: false,
         },
         receipts: [],
+        preparedOrders: [],
         cumulativeDoses: {},
         pendingEffects: [],
         appliedEffects: [],
       },
       senior: { requestedAtMs: null, acknowledgedAtMs: null },
+      authorizations: [],
+      notes: [],
+      handoffs: [],
+      finishedAtMs: null,
       branch: {
         kind: "arrival",
         enteredAtMs: 0,
@@ -236,6 +268,73 @@ export class ScenarioEngine {
           { idempotencyKey, stateVersion },
         );
         return null;
+      case "perform_assessment":
+        return this.performAssessment(command.findingId, idempotencyKey, stateVersion);
+      case "request_investigation":
+        return this.requestInvestigation(
+          command.investigationId,
+          idempotencyKey,
+          stateVersion,
+        );
+      case "collect_investigation":
+        return this.collectInvestigation(
+          command.investigationId,
+          idempotencyKey,
+          stateVersion,
+        );
+      case "display_investigation":
+        return this.displayInvestigation(
+          command.investigationId,
+          command.view,
+          idempotencyKey,
+          stateVersion,
+        );
+      case "interpret_investigation":
+        return this.interpretInvestigation(
+          command.investigationId,
+          command.interpretation,
+          idempotencyKey,
+          stateVersion,
+        );
+      case "request_case_item":
+        this.emit(
+          "student",
+          "case.item_unavailable",
+          {
+            kind: command.kind,
+            requestedName: command.name,
+            message: `${command.name} is outside this authored case and no result or treatment has been invented.`,
+          },
+          { idempotencyKey, stateVersion },
+        );
+        return null;
+      case "set_oxygen":
+        return this.setOxygen(command, idempotencyKey, stateVersion);
+      case "stop_oxygen":
+        if (this.state.devices.oxygen.status !== "running")
+          return this.commandRejected(
+            "No oxygen delivery is running.",
+            command,
+            idempotencyKey,
+            stateVersion,
+          );
+        this.emit(
+          "student",
+          "equipment.setting_changed",
+          {
+            equipment: "oxygen",
+            operation: "stopped",
+            previous: { ...this.state.devices.oxygen },
+          },
+          { idempotencyKey, stateVersion },
+        );
+        this.state.devices.oxygen = {
+          status: "off",
+          deviceId: null,
+          setting: 0,
+          unit: null,
+        };
+        return null;
       case "confirm_medication_checks":
         this.state.treatments.prerequisites = {
           allergyHistoryReviewed: command.allergyHistoryReviewed,
@@ -268,6 +367,24 @@ export class ScenarioEngine {
           { idempotencyKey, stateVersion },
         );
         return null;
+      case "inspect_iv_patency":
+        if (!this.state.devices.ivAccess.established)
+          return this.commandRejected(
+            "Establish IV access before inspecting patency.",
+            command,
+            idempotencyKey,
+            stateVersion,
+          );
+        this.state.devices.ivAccess.patency = "patent";
+        this.state.devices.ivAccess.lastInspectedAtMs =
+          this.state.clock.simulationTimeMs;
+        this.emit(
+          "student",
+          "assessment.performed",
+          { assessment: "iv_patency", finding: "Line flushes and is patent." },
+          { idempotencyKey, stateVersion },
+        );
+        return null;
       case "start_fluid":
         return this.startFluid(command, idempotencyKey, stateVersion);
       case "stop_fluid":
@@ -286,8 +403,20 @@ export class ScenarioEngine {
           { idempotencyKey, stateVersion },
         );
         return null;
-      case "administer":
-        return this.administer(command.order, idempotencyKey, stateVersion);
+      case "prepare_medication":
+        return this.prepareMedication(command.order, idempotencyKey, stateVersion);
+      case "cancel_medication":
+        return this.cancelMedication(
+          command.preparedOrderId,
+          idempotencyKey,
+          stateVersion,
+        );
+      case "administer_prepared":
+        return this.administerPrepared(
+          command.preparedOrderId,
+          idempotencyKey,
+          stateVersion,
+        );
       case "request_senior":
         if (this.state.senior.requestedAtMs !== null)
           return this.commandRejected(
@@ -305,16 +434,395 @@ export class ScenarioEngine {
         );
         this.processMilestones(stateVersion);
         return null;
+      case "request_authorization":
+        return this.requestAuthorization(command, idempotencyKey, stateVersion);
+      case "save_note": {
+        const saved = this.emit(
+          "student",
+          "note.saved",
+          {
+            revision: this.state.notes.length + 1,
+            content: command.content,
+          },
+          { idempotencyKey, stateVersion },
+        );
+        this.state.notes.push({
+          revision: this.state.notes.length + 1,
+          content: command.content,
+          savedAtMs: this.state.clock.simulationTimeMs,
+          eventId: saved.id,
+        });
+        return null;
+      }
+      case "record_handoff": {
+        const handoff = this.emit(
+          "student",
+          "handoff.recorded",
+          { content: command.content },
+          { idempotencyKey, stateVersion },
+        );
+        this.state.handoffs.push({
+          content: command.content,
+          recordedAtMs: this.state.clock.simulationTimeMs,
+          eventId: handoff.id,
+        });
+        if (this.state.lifecycle === "active") {
+          this.state.lifecycle = "handoff";
+          this.emit(
+            "student",
+            "session.handoff_started",
+            {},
+            { causedBy: handoff.id, idempotencyKey, stateVersion },
+          );
+        }
+        return null;
+      }
+      case "finish":
+        if (!this.state.handoffs.length)
+          return this.commandRejected(
+            "Record a handoff before finishing the run.",
+            command,
+            idempotencyKey,
+            stateVersion,
+          );
+        this.state.finishedAtMs = this.state.clock.simulationTimeMs;
+        this.state.lifecycle = "ended";
+        this.state.clock.running = false;
+        this.emit(
+          "student",
+          "session.ended",
+          { evidenceCutoffSequence: this.events.length + 1 },
+          { idempotencyKey, stateVersion },
+        );
+        return null;
       case "set_lifecycle":
         return this.setLifecycle(command.lifecycle, idempotencyKey, stateVersion);
     }
   }
 
-  private administer(
-    order: Extract<ScenarioCommand, { type: "administer" }>["order"],
+  private performAssessment(
+    findingId: string,
     idempotencyKey: string,
     stateVersion: number,
   ): string | null {
+    const finding = this.casePack.observations.find(
+      ({ id, observableBy, studentVisible, availableAtSimulationMs }) =>
+        id === findingId &&
+        ["history", "assessment"].includes(observableBy) &&
+        studentVisible &&
+        availableAtSimulationMs <= this.state.clock.simulationTimeMs,
+    );
+    if (!finding)
+      return this.commandRejected(
+        "That finding is not currently available in this case.",
+        { type: "perform_assessment", findingId },
+        idempotencyKey,
+        stateVersion,
+      );
+    const requested = this.emit(
+      "student",
+      "assessment.requested",
+      { findingId },
+      { idempotencyKey, stateVersion },
+    );
+    const existing = this.state.assessments.find(({ id }) => id === finding.id);
+    const value = currentFindingValue(finding.id, finding.value, this.state);
+    if (existing) {
+      existing.value = value;
+      existing.lastPerformedAtMs = this.state.clock.simulationTimeMs;
+      existing.count += 1;
+    } else {
+      this.state.assessments.push({
+        id: finding.id,
+        label: finding.label,
+        kind: finding.observableBy as "history" | "assessment",
+        value,
+        ...(finding.unit ? { unit: finding.unit } : {}),
+        firstPerformedAtMs: this.state.clock.simulationTimeMs,
+        lastPerformedAtMs: this.state.clock.simulationTimeMs,
+        count: 1,
+      });
+    }
+    this.emit(
+      finding.observableBy === "history" ? "patient" : "student",
+      "assessment.performed",
+      { findingId, label: finding.label, value, unit: finding.unit ?? null },
+      { causedBy: requested.id, idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private requestInvestigation(
+    investigationId: string,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const investigation = this.state.investigations.find(
+      ({ id }) => id === investigationId,
+    );
+    if (!investigation)
+      return this.commandRejected(
+        "That investigation is outside this authored case; no finding was invented.",
+        { type: "request_investigation", investigationId },
+        idempotencyKey,
+        stateVersion,
+      );
+    if (investigation.status !== "not_requested")
+      return this.commandRejected(
+        `${investigation.label} has already been requested.`,
+        { type: "request_investigation", investigationId },
+        idempotencyKey,
+        stateVersion,
+      );
+    investigation.status = "requested";
+    investigation.requestedAtMs = this.state.clock.simulationTimeMs;
+    this.emit(
+      "student",
+      "investigation.requested",
+      { investigationId, label: investigation.label },
+      { idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private collectInvestigation(
+    investigationId: string,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const investigation = this.state.investigations.find(
+      ({ id }) => id === investigationId,
+    );
+    const rule = this.casePack.investigations.find(({ id }) => id === investigationId);
+    if (!investigation || !rule)
+      return this.commandRejected(
+        "That investigation is outside this authored case; no finding was invented.",
+        { type: "collect_investigation", investigationId },
+        idempotencyKey,
+        stateVersion,
+      );
+    if (investigation.status !== "requested")
+      return this.commandRejected(
+        `Request ${investigation.label} before collection.`,
+        { type: "collect_investigation", investigationId },
+        idempotencyKey,
+        stateVersion,
+      );
+    const now = this.state.clock.simulationTimeMs;
+    investigation.status = rule.acquisitionDelayMs === 0 ? "available" : "pending";
+    investigation.collectedAtMs = now;
+    investigation.availableAtMs = now + rule.acquisitionDelayMs;
+    const collected = this.emit(
+      "student",
+      "investigation.collected",
+      {
+        investigationId,
+        availableAtMs: investigation.availableAtMs,
+      },
+      { idempotencyKey, stateVersion },
+    );
+    if (rule.acquisitionDelayMs === 0)
+      this.emit(
+        "engine",
+        "investigation.available",
+        { investigationId },
+        { causedBy: collected.id, stateVersion },
+      );
+    return null;
+  }
+
+  private displayInvestigation(
+    investigationId: string,
+    view: "result" | "report" | "artwork",
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const investigation = this.state.investigations.find(
+      ({ id }) => id === investigationId,
+    );
+    const rule = this.casePack.investigations.find(({ id }) => id === investigationId);
+    if (!investigation || !rule)
+      return this.commandRejected(
+        "That investigation is outside this authored case; no finding was invented.",
+        { type: "display_investigation", investigationId, view },
+        idempotencyKey,
+        stateVersion,
+      );
+    if (!["available", "displayed"].includes(investigation.status))
+      return this.commandRejected(
+        `${investigation.label} is not yet available.`,
+        { type: "display_investigation", investigationId, view },
+        idempotencyKey,
+        stateVersion,
+      );
+    if (view === "artwork" && rule.kind !== "ecg")
+      return this.commandRejected(
+        "Artwork view is only available for the 12-lead ECG.",
+        { type: "display_investigation", investigationId, view },
+        idempotencyKey,
+        stateVersion,
+      );
+    investigation.status = "displayed";
+    investigation.displayedAtMs ??= this.state.clock.simulationTimeMs;
+    if (!investigation.displayedViews.includes(view))
+      investigation.displayedViews.push(view);
+    if (view === "report") investigation.report = rule.report;
+    else investigation.result = rule.result;
+    this.emit(
+      "student",
+      "investigation.displayed",
+      { investigationId, view },
+      { idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private interpretInvestigation(
+    investigationId: string,
+    interpretation: string,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const investigation = this.state.investigations.find(
+      ({ id }) => id === investigationId,
+    );
+    if (!investigation || investigation.status !== "displayed")
+      return this.commandRejected(
+        "Display the investigation before recording an interpretation.",
+        { type: "interpret_investigation", investigationId, interpretation },
+        idempotencyKey,
+        stateVersion,
+      );
+    investigation.interpretations.push({
+      content: interpretation,
+      simulationTimeMs: this.state.clock.simulationTimeMs,
+    });
+    this.emit(
+      "student",
+      "investigation.interpreted",
+      { investigationId, interpretation },
+      { idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private setOxygen(
+    command: Extract<ScenarioCommand, { type: "set_oxygen" }>,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const rule = this.casePack.oxygenRules.find(({ id }) => id === command.deviceId);
+    if (
+      !rule ||
+      command.unit !== rule.unit ||
+      command.setting < rule.minimum ||
+      command.setting > rule.maximum ||
+      (command.setting - rule.minimum) % rule.step !== 0
+    )
+      return this.commandRejected(
+        "Select a supported oxygen device and setting for this case.",
+        command,
+        idempotencyKey,
+        stateVersion,
+      );
+    const operation =
+      this.state.devices.oxygen.status === "running" ? "adjusted" : "applied";
+    this.state.devices.oxygen = {
+      status: "running",
+      deviceId: rule.id,
+      setting: command.setting,
+      unit: command.unit,
+    };
+    this.emit(
+      "student",
+      "equipment.setting_changed",
+      {
+        equipment: "oxygen",
+        operation,
+        deviceId: rule.id,
+        setting: command.setting,
+        unit: command.unit,
+        effectRule: rule.effectRule,
+      },
+      { idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private prepareMedication(
+    order: Extract<ScenarioCommand, { type: "prepare_medication" }>["order"],
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const rule = this.casePack.medicationRules.find(({ id }) => id === order.drugId);
+    const reasons = validateOrderShape(rule, order);
+    if (reasons.length || !rule)
+      return this.commandRejected(
+        reasons.join(" ") || "Medication is not in the active formulary.",
+        { type: "prepare_medication", order },
+        idempotencyKey,
+        stateVersion,
+      );
+    const prepared = this.emit(
+      "student",
+      "medication.prepared",
+      medicationPayload(order, null, [], "prepared"),
+      { idempotencyKey, stateVersion },
+    );
+    this.state.treatments.preparedOrders.push({
+      id: prepared.id,
+      order: structuredClone(order),
+      preparedAtMs: this.state.clock.simulationTimeMs,
+      status: "prepared",
+      statusAtMs: this.state.clock.simulationTimeMs,
+      message: "Prepared for final bedside confirmation.",
+    });
+    return null;
+  }
+
+  private cancelMedication(
+    preparedOrderId: string,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const prepared = this.state.treatments.preparedOrders.find(
+      ({ id }) => id === preparedOrderId,
+    );
+    if (!prepared || prepared.status !== "prepared")
+      return this.commandRejected(
+        "That prepared order is no longer active.",
+        { type: "cancel_medication", preparedOrderId },
+        idempotencyKey,
+        stateVersion,
+      );
+    prepared.status = "canceled";
+    prepared.statusAtMs = this.state.clock.simulationTimeMs;
+    prepared.message = "Canceled without administration.";
+    this.emit(
+      "student",
+      "medication.canceled",
+      medicationPayload(prepared.order, null, [], "canceled"),
+      { causedBy: prepared.id, idempotencyKey, stateVersion },
+    );
+    return null;
+  }
+
+  private administerPrepared(
+    preparedOrderId: string,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const prepared = this.state.treatments.preparedOrders.find(
+      ({ id }) => id === preparedOrderId,
+    );
+    if (!prepared || prepared.status !== "prepared")
+      return this.commandRejected(
+        "That prepared order is no longer active.",
+        { type: "administer_prepared", preparedOrderId },
+        idempotencyKey,
+        stateVersion,
+      );
+    const order = prepared.order;
     const rule = this.casePack.medicationRules.find(({ id }) => id === order.drugId);
     const validation = this.validateMedication(rule, order);
     const attempted = this.emit(
@@ -331,6 +839,9 @@ export class ScenarioEngine {
         medicationPayload(order, validation.normalized, validation.reasons, "blocked"),
         { causedBy: attempted.id, idempotencyKey, stateVersion },
       );
+      prepared.status = "blocked";
+      prepared.statusAtMs = this.state.clock.simulationTimeMs;
+      prepared.message = reason;
       this.enterInappropriateAttempt(reason, attempted.id, stateVersion);
       return reason;
     }
@@ -373,6 +884,9 @@ export class ScenarioEngine {
       mode: this.state.mode,
       effectDueAtMs,
     });
+    prepared.status = "administered";
+    prepared.statusAtMs = now;
+    prepared.message = "Administration accepted.";
     if (effectDueAtMs !== null) {
       this.state.treatments.pendingEffects.push({
         id: this.createId(),
@@ -388,7 +902,7 @@ export class ScenarioEngine {
 
   private validateMedication(
     rule: MedicationRule | undefined,
-    order: Extract<ScenarioCommand, { type: "administer" }>["order"],
+    order: MedicationOrderInput,
   ) {
     const reasons: string[] = [];
     if (!rule) reasons.push("Medication is not in the active formulary.");
@@ -424,7 +938,7 @@ export class ScenarioEngine {
       reasons.push("Review the medication administration history first.");
     if (
       rule?.authorizationRule === "senior_required" &&
-      this.state.senior.acknowledgedAtMs === null
+      !this.hasAuthorization("medication", rule.id)
     )
       reasons.push("Senior authorization is required.");
     if (rule && normalized) {
@@ -481,7 +995,7 @@ export class ScenarioEngine {
       reasons.push(`Rate exceeds the ${rule.maximumRateMlPerHour} mL/h scenario limit.`);
     if (
       rule?.authorizationRule === "senior_required" &&
-      this.state.senior.acknowledgedAtMs === null
+      !this.hasAuthorization("fluid", rule.id)
     )
       reasons.push("Senior authorization is required.");
     if (reasons.length || !rule || volumeMl === null || rateMlPerHour === null)
@@ -508,6 +1022,64 @@ export class ScenarioEngine {
     return null;
   }
 
+  private requestAuthorization(
+    command: Extract<ScenarioCommand, { type: "request_authorization" }>,
+    idempotencyKey: string,
+    stateVersion: number,
+  ): string | null {
+    const exists =
+      command.actionKind === "fluid"
+        ? this.casePack.fluidRules.some(({ id }) => id === command.itemId)
+        : this.casePack.medicationRules.some(({ id }) => id === command.itemId);
+    if (!exists)
+      return this.commandRejected(
+        "That supervised action is outside this authored case.",
+        command,
+        idempotencyKey,
+        stateVersion,
+      );
+    if (
+      this.state.authorizations.some(
+        ({ actionKind, itemId }) =>
+          actionKind === command.actionKind && itemId === command.itemId,
+      )
+    )
+      return this.commandRejected(
+        "Authorization has already been requested for that action.",
+        command,
+        idempotencyKey,
+        stateVersion,
+      );
+    const requested = this.emit(
+      "student",
+      "authorization.requested",
+      { actionKind: command.actionKind, itemId: command.itemId },
+      { idempotencyKey, stateVersion },
+    );
+    this.state.authorizations.push({
+      id: requested.id,
+      actionKind: command.actionKind,
+      itemId: command.itemId,
+      status: "requested",
+      requestedAtMs: this.state.clock.simulationTimeMs,
+      authorizedAtMs: null,
+    });
+    this.grantEligibleAuthorizations(stateVersion);
+    return null;
+  }
+
+  private hasAuthorization(
+    actionKind: "medication" | "fluid",
+    itemId: string,
+  ) {
+    return this.state.authorizations.some(
+      (authorization) =>
+        authorization.actionKind === actionKind &&
+        authorization.itemId === itemId &&
+        authorization.status === "authorized",
+    );
+  }
+
   private advance(deltaMs: number, idempotencyKey: string, stateVersion: number) {
     const end = this.state.clock.simulationTimeMs + deltaMs;
     this.emit(
@@ -528,6 +1100,13 @@ export class ScenarioEngine {
   private nextMilestones(end: number): number[] {
     const now = this.state.clock.simulationTimeMs;
     const values = this.state.treatments.pendingEffects.map(({ dueAtMs }) => dueAtMs);
+    values.push(
+      ...this.state.investigations
+        .filter(({ status, availableAtMs }) =>
+          status === "pending" && availableAtMs !== null,
+        )
+        .map(({ availableAtMs }) => availableAtMs!),
+    );
     const seniorDue = this.seniorAcknowledgementDueAt();
     if (seniorDue !== null) values.push(seniorDue);
     const delayedAt = this.casePack.scenarioRules.delayedCare.entersAtMs;
@@ -549,6 +1128,31 @@ export class ScenarioEngine {
 
   private processMilestones(stateVersion: number) {
     const now = this.state.clock.simulationTimeMs;
+    for (const investigation of this.state.investigations) {
+      if (
+        investigation.status === "pending" &&
+        investigation.availableAtMs !== null &&
+        investigation.availableAtMs <= now
+      ) {
+        investigation.status = "available";
+        const collected = [...this.events]
+          .reverse()
+          .find(
+            ({ type, payload }) =>
+              type === "investigation.collected" &&
+              typeof payload === "object" &&
+              payload !== null &&
+              "investigationId" in payload &&
+              payload.investigationId === investigation.id,
+          );
+        this.emit(
+          "engine",
+          "investigation.available",
+          { investigationId: investigation.id },
+          { causedBy: collected?.id, stateVersion },
+        );
+      }
+    }
     const due = this.state.treatments.pendingEffects.filter(
       ({ dueAtMs }) => dueAtMs <= now,
     );
@@ -585,6 +1189,7 @@ export class ScenarioEngine {
         { disposition: "Senior review acknowledged; continue monitored care." },
         { causedBy: request?.id, stateVersion },
       );
+      this.grantEligibleAuthorizations(stateVersion);
     }
     if (this.state.devices.fluidPump.status === "running") {
       const pump = this.state.devices.fluidPump;
@@ -601,6 +1206,24 @@ export class ScenarioEngine {
     }
     this.updateBranchForTime(stateVersion);
     this.completeBranchIfEligible(stateVersion);
+  }
+
+  private grantEligibleAuthorizations(stateVersion: number) {
+    if (this.state.senior.acknowledgedAtMs === null) return;
+    for (const authorization of this.state.authorizations) {
+      if (authorization.status !== "requested") continue;
+      authorization.status = "authorized";
+      authorization.authorizedAtMs = this.state.clock.simulationTimeMs;
+      this.emit(
+        "nurse",
+        "authorization.granted",
+        {
+          actionKind: authorization.actionKind,
+          itemId: authorization.itemId,
+        },
+        { causedBy: authorization.id, stateVersion },
+      );
+    }
   }
 
   private deliverFluid(deltaMs: number) {
@@ -883,12 +1506,14 @@ export class ScenarioEngine {
 }
 
 function medicationPayload(
-  order: Extract<ScenarioCommand, { type: "administer" }>["order"],
+  order: MedicationOrderInput,
   normalized: { quantity: number; unit: string } | null,
   reasons: string[],
   administrationStatus:
     | "attempted"
+    | "prepared"
     | "blocked"
+    | "canceled"
     | "authorized"
     | "administered",
 ) {
@@ -902,6 +1527,36 @@ function medicationPayload(
     },
     administrationStatus,
   };
+}
+
+function validateOrderShape(
+  rule: MedicationRule | undefined,
+  order: MedicationOrderInput,
+) {
+  const reasons: string[] = [];
+  if (!rule) reasons.push("Medication is not in the active formulary.");
+  if (order.dose === null || !Number.isFinite(order.dose) || order.dose <= 0)
+    reasons.push("Enter a positive dose.");
+  if (order.unit === null) reasons.push("Select a unit.");
+  else if (rule && !rule.allowedUnits.includes(order.unit))
+    reasons.push(`Unit ${order.unit} is not supported.`);
+  if (order.route === null) reasons.push("Select a route.");
+  else if (rule && !rule.allowedRoutes.includes(order.route))
+    reasons.push(`Route ${order.route} is not supported.`);
+  return unique(reasons);
+}
+
+function currentFindingValue(
+  findingId: string,
+  authoredValue: string | number | boolean,
+  state: ScenarioState,
+) {
+  if (findingId === "pain_score") return state.physiology.painScore;
+  if (findingId === "breathing_assessment")
+    return `Equal chest movement, no audible wheeze or stridor; respiratory rate ${state.physiology.respiratoryRate} breaths/min.`;
+  if (findingId === "perfusion_assessment")
+    return `Radial pulse regular at ${state.physiology.heartRate} beats/min; hands cool and clammy with a two-second capillary refill.`;
+  return authoredValue;
 }
 
 function normalizeQuantity(quantity: number, unit: string, targetUnit: string) {
@@ -929,12 +1584,20 @@ function commandMessage(command: ScenarioCommand) {
   switch (command.type) {
     case "advance":
       return `Advanced simulation by ${command.seconds} seconds.`;
-    case "administer":
+    case "administer_prepared":
       return "Medication administration accepted.";
     case "start_fluid":
       return "Fluid delivery started.";
     case "stop_fluid":
       return "Fluid delivery stopped.";
+    case "request_case_item":
+      return `${command.name} is outside this authored case; no finding or treatment was invented.`;
+    case "prepare_medication":
+      return "Medication prepared but not administered.";
+    case "record_handoff":
+      return "Handoff recorded separately from the senior request.";
+    case "finish":
+      return "Run finished and evidence frozen.";
     default:
       return "Command accepted.";
   }

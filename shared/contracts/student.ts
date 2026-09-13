@@ -37,6 +37,44 @@ export const StudentCaseSchema = z
     voiceBriefing: z.string().min(1),
     initialObservations: z.array(ObservationSchema),
     equipment: z.array(EquipmentSchema),
+    assessmentOptions: z.array(
+      z.object({
+        id: z.string().min(1),
+        label: z.string().min(1),
+        kind: z.enum(["history", "assessment"]),
+      }).strict(),
+    ),
+    investigations: z.array(
+      z.object({
+        id: z.string().min(1),
+        label: z.string().min(1),
+        kind: z.enum(["ecg", "laboratory"]),
+        collectionLabel: z.string().min(1),
+        acquisitionDelayMs: z.number().int().nonnegative(),
+      }).strict(),
+    ),
+    oxygenOptions: z.array(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+        settingLabel: z.string().min(1),
+        unit: z.string().min(1),
+        minimum: z.number().nonnegative(),
+        maximum: z.number().positive(),
+        step: z.number().positive(),
+      }).strict(),
+    ),
+    fluids: z.array(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+        allowedVolumeUnits: z.array(z.enum(["mL", "L"])),
+        allowedRateUnits: z.array(z.enum(["mL/h", "L/h"])),
+        maximumVolumeMl: z.number().positive(),
+        maximumRateMlPerHour: z.number().positive(),
+        authorizationRule: z.enum(["student_permitted", "senior_required"]),
+      }).strict(),
+    ),
     formulary: z.array(StudentMedicationSchema),
   })
   .strict();

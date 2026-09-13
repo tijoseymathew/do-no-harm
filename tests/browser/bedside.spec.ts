@@ -142,22 +142,24 @@ for (const viewport of [
     await page.getByLabel("Dose", { exact: true }).fill("300");
     await page.getByLabel("Unit", { exact: true }).selectOption("mg");
     await page.getByLabel("Route", { exact: true }).selectOption("oral");
+    await page.getByLabel("Allergy history reviewed").check();
+    await page.getByLabel("Prior doses reviewed").check();
     const administrations: unknown[] = [];
     page.on("request", (r) => {
       if (
         r.url().endsWith("/commands") &&
-        r.postDataJSON()?.command?.type === "administer"
+        r.postDataJSON()?.command?.type === "administer_prepared"
       )
         administrations.push(r.postDataJSON());
     });
-    await page.getByRole("button", { name: "Review medication" }).click();
+    await page.getByRole("button", { name: "Review and prepare medication" }).click();
     await inViewport(
       page,
       page.getByRole("button", { name: "Administer", exact: true }),
     );
-    await page.getByRole("button", { name: "Cancel review" }).click();
+    await page.getByRole("button", { name: "Cancel prepared order" }).click();
     expect(administrations).toHaveLength(0);
-    await page.getByRole("button", { name: "Review medication" }).click();
+    await page.getByRole("button", { name: "Review and prepare medication" }).click();
     await mkdir(evidence, { recursive: true });
     await inViewport(page, page.getByRole("navigation"));
     await page.evaluate(
@@ -172,7 +174,7 @@ for (const viewport of [
     const accepted = page.waitForResponse(
       (r) =>
         r.url().endsWith("/commands") &&
-        r.request().postDataJSON()?.command?.type === "administer",
+        r.request().postDataJSON()?.command?.type === "administer_prepared",
     );
     await page.getByRole("button", { name: "Administer", exact: true }).click();
     const receipt = (await (await accepted).json()).receipts[0];
@@ -259,7 +261,11 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     await page.keyboard.press("m");
     await page.keyboard.press("Tab");
     await page.keyboard.press("o");
-    await tabTo("Review medication");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Space");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Space");
+    await tabTo("Review and prepare medication");
     await page.keyboard.press("Enter");
     await tabTo("Administer");
     await page.keyboard.press("Enter");
@@ -277,7 +283,10 @@ test("lost acknowledgment pauses locally and refresh recovers the accepted recei
   await page.getByLabel("Dose", { exact: true }).fill("300");
   await page.getByLabel("Unit", { exact: true }).selectOption("mg");
   await page.getByLabel("Route", { exact: true }).selectOption("oral");
-  await page.getByRole("button", { name: "Review medication" }).click();
+  await page.getByLabel("Allergy history reviewed").check();
+  await page.getByLabel("Prior doses reviewed").check();
+  await page.getByRole("button", { name: "Review and prepare medication" }).click();
+  await expect(page.getByRole("heading", { name: "Prepared — not administered" })).toBeVisible();
   await page.route("**/commands", async (route) => {
     await route.fetch(); // The server accepts the action; its reply is lost.
     await route.abort("failed");
@@ -326,7 +335,9 @@ test("WebGL unavailable keeps sensor and medication controls functional", async 
   await page.getByLabel("Dose", { exact: true }).fill("300");
   await page.getByLabel("Unit", { exact: true }).selectOption("mg");
   await page.getByLabel("Route", { exact: true }).selectOption("oral");
-  await page.getByRole("button", { name: "Review medication" }).click();
+  await page.getByLabel("Allergy history reviewed").check();
+  await page.getByLabel("Prior doses reviewed").check();
+  await page.getByRole("button", { name: "Review and prepare medication" }).click();
   await page.getByRole("button", { name: "Administer", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Administration accepted" }),

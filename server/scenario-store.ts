@@ -44,6 +44,24 @@ export class ScenarioStore {
     return this.runs.get(id)?.engine.eventLog() ?? null;
   }
 
+  export(id: string) {
+    const engine = this.runs.get(id)?.engine;
+    if (!engine) return null;
+    return {
+      exportVersion: "1.0.0",
+      exportedAt: new Date().toISOString(),
+      case: {
+        id: this.casePack.caseId,
+        version: this.casePack.caseVersion,
+        title: this.casePack.title,
+        educationalUse: this.casePack.educationalUse,
+        clinicalReviewStatus: this.casePack.clinicalReview.reviewStatus,
+      },
+      state: engine.snapshot(),
+      events: engine.eventLog(),
+    };
+  }
+
   async execute(id: string, envelope: CommandEnvelope): Promise<CommandResult | null> {
     const run = this.runs.get(id);
     if (!run) return null;

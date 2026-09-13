@@ -325,7 +325,7 @@ export function Room({
       <div className="room-legend">
         Fixed camera · Select equipment or use bedside controls
         <br />
-        Suction and oxygen unavailable · IV{" "}
+        Oxygen station available · suction unavailable · IV{" "}
         {state.devices.ivAccess.established ? "established" : "not connected"}
       </div>
     </div>
