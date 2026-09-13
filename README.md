@@ -15,7 +15,7 @@ One fictional chest-pain case supports timely care, delayed care, and inappropri
 
 ## What the two integrations do
 
-**GPT-Live-1:** server-created WebRTC sessions carry full-duplex audio. The browser accumulates input transcripts and sends them through the application’s bounded fact, visible-state, and draft-order workflow. Client delegations receive those grounded results through `session.commentary.append` using the original delegation ID. Transcript corrections remain append-only. The current language router is deliberately bounded; arbitrary conversation understanding and human microphone interruption verification remain limitations.
+**GPT-Live-1:** server-created WebRTC sessions carry full-duplex audio. The server supplies only authored, immediately available patient history to prevent guessed answers; bedside/action requests must wait for application results. The browser accumulates input transcripts and sends them through the application’s bounded fact, visible-state, and draft-order workflow. Client delegations receive those grounded results through `session.commentary.append` using the original delegation ID. Transcript corrections remain append-only. The current language router is deliberately bounded; arbitrary conversation understanding and human microphone interruption verification remain limitations.
 
 **Agents API:** a real managed `gpt-6-astra` session reads evidence through application functions and continues across checkpoints. Only schema-valid output with resolvable evidence citations is accepted. Finish freezes a named evidence cutoff; the examiner returns six criterion outcomes, a strength, a priority improvement, and a next-practice objective. It cannot administer treatment or alter the deterministic scenario engine.
 

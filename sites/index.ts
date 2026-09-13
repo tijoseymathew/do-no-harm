@@ -1,3 +1,4 @@
+import { liveInstructions } from "../server/live-instructions.js";
 import OpenAI from "openai";
 import { z } from "zod";
 import { chestPainCaseV1 } from "../case/index.js";
@@ -420,8 +421,7 @@ async function apiResponse(
       const result = await runtime.openai.live.create({
         session: {
           model: runtime.liveModel,
-          instructions:
-            "You facilitate a clearly labeled formative clinical simulation. When the application appends the authored Nurse briefing, speak it verbatim before accepting clinical questions. Thereafter label your role in speech, keep Patient answers brief, allow interruptions, and delegate fact, visible-state, and draft-action requests to the application. Never invent findings, reveal a rubric, recommend a next action, or claim treatment was performed.",
+          instructions: liveInstructions(runtime.casePack),
           delegation: { type: "client" },
           input: [
             {

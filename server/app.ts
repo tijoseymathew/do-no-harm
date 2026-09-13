@@ -1,3 +1,4 @@
+import { liveInstructions } from "./live-instructions.js";
 import express, { type ErrorRequestHandler, type RequestHandler } from "express";
 import OpenAI from "openai";
 import { chestPainCaseV1 } from "../case/index.js";
@@ -116,8 +117,7 @@ export function createApp(config: ServerConfig, dependencies: AppDependencies = 
       const result = await live.create({
         session: {
           model: config.liveModel,
-          instructions:
-            "You facilitate a clearly labeled formative clinical simulation. When the application appends the authored Nurse briefing, speak it verbatim before accepting clinical questions. Thereafter label your role in speech, keep Patient answers brief, allow interruptions, and delegate fact, visible-state, and draft-action requests to the application. Never invent findings, reveal a rubric, recommend a next action, or claim treatment was performed.",
+          instructions: liveInstructions(casePack),
           delegation: { type: "client" },
           input: [
             {

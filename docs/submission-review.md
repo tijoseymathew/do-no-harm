@@ -16,12 +16,13 @@ The strongest differentiator is the separation between what a learner says and w
 ## Verification
 
 - The deployed site returned HTTP 200 and reported both real providers configured. Browser inspection confirmed the patient, equipment, conversation, and examiner controls were accessible.
-- Type checking passed; 55 unit/contract tests passed.
+- Type checking passed; 56 unit/contract tests passed.
 - All 15 browser tests passed, including the new simulated WebRTC delegation/microphone test, treatment boundaries, recovery, transcript corrections, and citation-linked debrief. Voice/checkpoint tests were repeated after final connection cleanup changes.
+- A real WebRTC smoke test with synthetic learner audio exposed an ungrounded onset answer. Added server-only authored patient history to the voice instructions and explicit waiting for application results on bedside/action requests. The repeated check spoke the correct onset, delegated medication preparation, and returned the verified draft-only response. [Sanitized Live receipt](evidence/phase-05/real-live-synthetic-check.json).
 - Production vinext build and browser credential/rubric boundary scan passed.
 - A fresh real `npm run verify:phase06:real` completed successfully, with six criteria and every citation resolved. [Timestamped sanitized receipt](evidence/phase-06/real-debrief-checkpoint.json).
 
-The real receipt proves the Agents API debrief contract. The simulated WebRTC test proves event handling and grounded application responses; it does not prove real microphone audio or human interruption quality.
+The real receipt proves the Agents API debrief contract. The simulated WebRTC test proves event handling. The separate real WebRTC check proves received audio, recognized synthetic speech, and an actual delegated draft response. Neither proves human microphone interruption quality.
 
 ## Video review and remaining presentation opportunity
 

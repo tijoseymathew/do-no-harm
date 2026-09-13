@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-09-13T14:52:09.749Z",
+  "mode": "real",
+  "input": "Previously generated synthetic learner audio; not a human microphone test",
+  "eventTypes": [
+    "session.started",
+    "session.commentary.append",
+    "session.output_transcript.delta",
+    "session.input_transcript.delta",
+    "session.delegation.created"
+  ],
+  "inputTranscript": " When did it start Prepare aspirin",
+  "outputTranscript": "Nurse: This is a formative emergency simulation. You are the medical student at the bedside. The patient is Morgan Lee, 58 years old, with central chest pressure, pale and clammy. Assess and manage the patient. What do you want to do?Patient: It started about forty-five minutes ago, all of a sudden while I was resting.Okay, checking.Nurse: Medication draft opened for review. Missing parameters remain unset; nothing has been administered.",
+  "groundedReplies": [
+    "nurse: Medication draft opened for review. Missing parameters remain unset; nothing has been administered."
+  ],
+  "receivedAudioBytes": 267147,
+  "receivedAudioEnergy": 0.8747246319322893,
+  "voiceStatus": "Voice connected. Interrupt naturally at any time.",
+  "errors": [],
+  "environment": "Local Vite/Express application with real OpenAI GPT-Live-1 WebRTC provider",
+  "model": "gpt-live-1",
+  "mockedProvider": false,
+  "humanMicrophoneVerification": false,
+  "checks": {
+    "authoredOnsetSpoken": true,
+    "clientDelegationObserved": true,
+    "groundedDraftResponseReturned": true,
+    "receivedAudio": true,
+    "pageErrors": 0
+  }
+}
